@@ -1,27 +1,25 @@
 services:
   influxdb:
-    image: influxdb:2.7
+    image: influxdb:3.9.2-core
     container_name: puda-influxdb
     restart: unless-stopped
     ports:
-      - "8086:8086"
+      - "8181:8181"
     environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: adminpassword
-      DOCKER_INFLUXDB_INIT_ORG: puda
-      DOCKER_INFLUXDB_INIT_BUCKET: machines
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: puda-admin-token
+      INFLUXDB3_NODE_IDENTIFIER_PREFIX: puda
+      INFLUXDB3_LOG_FILTER: info
+      INFLUXDB3_ADMIN_TOKEN_FILE: /run/secrets/admin-token
     volumes:
-      - influxdb_data:/var/lib/influxdb2
+      - influxdb_data:/home/influxdb3/.influxdb
+      - ./admin-token.json:/run/secrets/admin-token:ro
     healthcheck:
-      test: ["CMD", "influx", "ping"]
+      test: ["CMD", "curl", "-f", "-H", "Authorization: Bearer apiv3_puda", "http://localhost:8181/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
 
   grafana:
-    image: grafana/grafana:11.5.0
+    image: grafana/grafana:13.0.1
     container_name: puda-grafana
     restart: unless-stopped
     ports:
@@ -45,10 +43,9 @@ services:
     restart: unless-stopped
     network_mode: host
     environment:
-      INFLUXDB_URL: http://localhost:8086
-      INFLUXDB_TOKEN: puda-admin-token
-      INFLUXDB_ORG: puda
-      INFLUXDB_BUCKET: machines
+      INFLUXDB_URL: http://localhost:8181
+      INFLUXDB_TOKEN: apiv3_puda
+      INFLUXDB_DATABASE: machines
       NATS_SERVERS: nats://100.109.131.12:4222,nats://100.109.131.12:4223,nats://100.109.131.12:4224
       MACHINES: biologic,first,opentrons
     depends_on:

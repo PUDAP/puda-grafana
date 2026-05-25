@@ -17,17 +17,15 @@ import threading
 import time
 from datetime import datetime, timezone
 
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client_3 import InfluxDBClient3, Point, WritePrecision
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
 # ── InfluxDB ──────────────────────────────────────────────────────────────────
-INFLUXDB_URL    = os.getenv("INFLUXDB_URL",    "http://localhost:8086")
-INFLUXDB_TOKEN  = os.getenv("INFLUXDB_TOKEN",  "puda-admin-token")
-INFLUXDB_ORG    = os.getenv("INFLUXDB_ORG",    "puda")
-INFLUXDB_BUCKET = os.getenv("INFLUXDB_BUCKET", "machines")
+INFLUXDB_URL      = os.getenv("INFLUXDB_URL",      "http://localhost:8181")
+INFLUXDB_TOKEN    = os.getenv("INFLUXDB_TOKEN",    "apiv3_puda")
+INFLUXDB_DATABASE = os.getenv("INFLUXDB_DATABASE", "machines")
 
 # ── PUDA / NATS ───────────────────────────────────────────────────────────────
 NATS_SERVERS = os.getenv(
@@ -53,7 +51,7 @@ def derive_status(machine_id: str, data: dict) -> str:
 
 
 def write_status(
-    write_api,
+    client,
     machine_id: str,
     status: str,
     ts: datetime,
@@ -69,11 +67,11 @@ def write_status(
         for k, v in extra.items():
             if isinstance(v, (int, float)):
                 point = point.field(k, float(v))
-    write_api.write(bucket=INFLUXDB_BUCKET, org=INFLUXDB_ORG, record=point)
+    client.write(record=point)
     log.debug("wrote  machine_id=%-10s  status=%s", machine_id, status)
 
 
-def offline_monitor(write_api) -> None:
+def offline_monitor(client) -> None:
     """Background thread: marks machines offline when they stop sending health."""
     while True:
         time.sleep(10)
@@ -86,17 +84,16 @@ def offline_monitor(write_api) -> None:
                 if (now - ls) > OFFLINE_TIMEOUT_SECS:
                     if last_status.get(machine_id) != "offline":
                         log.info("%s went offline (no heartbeat for >%ds)", machine_id, OFFLINE_TIMEOUT_SECS)
-                        write_status(write_api, machine_id, "offline", datetime.now(timezone.utc))
+                        write_status(client, machine_id, "offline", datetime.now(timezone.utc))
                         last_status[machine_id] = "offline"
                     last_seen[machine_id] = None
 
 
 def main() -> None:
     log.info("Connecting to InfluxDB at %s …", INFLUXDB_URL)
-    client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
-    write_api = client.write_api(write_options=SYNCHRONOUS)
+    client = InfluxDBClient3(host=INFLUXDB_URL, token=INFLUXDB_TOKEN, database=INFLUXDB_DATABASE)
 
-    threading.Thread(target=offline_monitor, args=(write_api,), daemon=True).start()
+    threading.Thread(target=offline_monitor, args=(client,), daemon=True).start()
 
     cmd = [
         "puda", "machine", "watch",
@@ -134,7 +131,7 @@ def main() -> None:
             status = derive_status(machine_id, data)
             extra = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp")}
 
-            write_status(write_api, machine_id, status, ts, extra)
+            write_status(client, machine_id, status, ts, extra)
 
             with state_lock:
                 last_seen[machine_id] = time.time()
