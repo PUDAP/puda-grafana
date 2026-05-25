@@ -12,8 +12,11 @@ fi
 
 bash scripts/render-config.sh
 
+echo "▶ Waiting for InfluxDB to be ready …"
+docker compose up --force-recreate influxdb-init
+
 echo "▶ Building and starting all services …"
-docker compose up -d --build
+docker compose up -d --build --remove-orphans
 
 bash scripts/init.sh
 

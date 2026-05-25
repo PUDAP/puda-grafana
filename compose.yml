@@ -1,4 +1,10 @@
 services:
+  influxdb-init: 
+    image: alpine:3
+    command: sh -c "chown -R 1500:1500 /data"
+    volumes:
+      - influxdb_data:/data
+
   influxdb:
     image: influxdb:3.9.2-core
     container_name: puda-influxdb
@@ -12,6 +18,9 @@ services:
     volumes:
       - influxdb_data:/home/influxdb3/.influxdb
       - ./admin-token.json:/run/secrets/admin-token:ro
+    depends_on:
+      influxdb-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "-H", "Authorization: Bearer ${INFLUXDB_TOKEN:-apiv3_puda}", "http://localhost:8181/health"]
       interval: 10s
