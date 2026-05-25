@@ -1,2 +1,3 @@
 puda
 .venv/
+__pycache__/

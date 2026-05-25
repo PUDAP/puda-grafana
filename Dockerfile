@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-ARG PUDA_VERSION=0.0.26
+ARG PUDA_VERSION=0.0.27
 RUN apt-get update && apt-get install -y --no-install-recommends curl tar \
     && curl -fsSL "https://github.com/PUDAP/puda/releases/download/v${PUDA_VERSION}/puda_linux_x86_64.tar.gz" \
        | tar -xz -C /usr/local/bin puda \

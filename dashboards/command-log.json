@@ -1,0 +1,573 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Live log of all NATS commands sent and responses received for every PUDA machine",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "icon": "dashboard",
+      "title": "Machine Status",
+      "tooltip": "Go to Machine Status dashboard",
+      "type": "link",
+      "url": "/d/puda-machine-status",
+      "targetBlank": false
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Summary",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "blue", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["sum"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN (${machine_id:singlequote})",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands Sent",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "purple", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["sum"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN (${machine_id:singlequote})",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Responses Received",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red",    "value": null },
+              { "color": "orange", "value": 70 },
+              { "color": "green",  "value": 95 }
+            ]
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN (${machine_id:singlequote})",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Success Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red",   "value": 1 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["sum"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN (${machine_id:singlequote})",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Errors",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "Activity",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" },
+            "barAlignment": 0
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "biologic" },
+            "properties": [{ "id": "displayName", "value": "Biologic" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "first" },
+            "properties": [{ "id": "displayName", "value": "First" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "opentrons" },
+            "properties": [{ "id": "displayName", "value": "Opentrons" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Errors" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } },
+              { "id": "custom.drawStyle", "value": "line" },
+              { "id": "custom.stacking", "value": { "group": "A", "mode": "none" } },
+              { "id": "custom.fillOpacity", "value": 0 },
+              { "id": "custom.lineWidth", "value": 2 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS biologic, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS first, COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS opentrons FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) GROUP BY 1 ORDER BY 1 ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN (${machine_id:singlequote}) GROUP BY 1 ORDER BY 1 ASC",
+          "refId": "B",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands per Minute by Machine",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 14 },
+      "id": 102,
+      "title": "Command Log",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "inspect": false,
+            "minWidth": 50,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "time" },
+            "properties": [
+              { "id": "displayName", "value": "Time" },
+              { "id": "custom.width", "value": 180 },
+              { "id": "unit", "value": "dateTimeAsLocal" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "machine_id" },
+            "properties": [
+              { "id": "displayName", "value": "Machine" },
+              { "id": "custom.width", "value": 100 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "msg_type" },
+            "properties": [
+              { "id": "displayName", "value": "Type" },
+              { "id": "custom.width", "value": 90 },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "command":  { "text": "CMD",  "color": "blue",  "index": 0 },
+                      "response": { "text": "RESP", "color": "purple", "index": 1 }
+                    }
+                  }
+                ]
+              },
+              { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "basic" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "command" },
+            "properties": [
+              { "id": "displayName", "value": "Command" },
+              { "id": "custom.width", "value": 180 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "status" },
+            "properties": [
+              { "id": "displayName", "value": "Status" },
+              { "id": "custom.width", "value": 90 },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "sent":    { "text": "Sent",    "color": "blue",  "index": 0 },
+                      "success": { "text": "Success", "color": "green", "index": 1 },
+                      "error":   { "text": "Error",   "color": "red",   "index": 2 }
+                    }
+                  }
+                ]
+              },
+              { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "basic" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "step" },
+            "properties": [
+              { "id": "displayName", "value": "Step" },
+              { "id": "custom.width", "value": 60 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "username" },
+            "properties": [
+              { "id": "displayName", "value": "User" },
+              { "id": "custom.width", "value": 110 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "run_id" },
+            "properties": [
+              { "id": "displayName", "value": "Run ID" },
+              { "id": "custom.width", "value": 120 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "message" },
+            "properties": [
+              { "id": "displayName", "value": "Message / Error" },
+              { "id": "custom.width", "value": 260 },
+              { "id": "custom.cellOptions", "value": { "type": "auto", "wrapText": true } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "params" },
+            "properties": [
+              { "id": "displayName", "value": "Params" },
+              { "id": "custom.cellOptions", "value": { "type": "auto", "wrapText": true } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 18, "w": 24, "x": 0, "y": 15 },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Time" }]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(data_json, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN (${machine_id:singlequote}) AND ('${msg_type}' = 'All' OR msg_type = '${msg_type}') AND ('${status}' = 'All' OR status = '${status}') AND ('${run_id}' = '' OR run_id = '${run_id}') ORDER BY time DESC LIMIT 500",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Command Log  (latest 500)",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 33 },
+      "id": 103,
+      "title": "Per-Machine Detail",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 34 },
+      "id": 7,
+      "options": {
+        "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS biologic, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS first, COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS opentrons FROM machine_commands WHERE msg_type = 'response' AND status = 'success' AND $__timeFilter(time) GROUP BY 1 ORDER BY 1 ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Successful Responses / min",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "red", "mode": "fixed" },
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "biologic" },
+            "properties": [{ "id": "displayName", "value": "Biologic" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "first" },
+            "properties": [{ "id": "displayName", "value": "First" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "opentrons" },
+            "properties": [{ "id": "displayName", "value": "Opentrons" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 34 },
+      "id": 8,
+      "options": {
+        "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS biologic, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS first, COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS opentrons FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) GROUP BY 1 ORDER BY 1 ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Errors / min by Machine",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["puda", "machines", "commands", "nats"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+        "definition": "SELECT DISTINCT machine_id FROM machine_commands ORDER BY 1",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "machine_id",
+        "options": [],
+        "query": {
+          "query": "SELECT DISTINCT machine_id FROM machine_commands ORDER BY 1",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query",
+        "label": "Machine",
+        "allValue": null
+      },
+      {
+        "current": { "selected": true, "text": "All", "value": "All" },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "msg_type",
+        "options": [
+          { "selected": true,  "text": "All",      "value": "All" },
+          { "selected": false, "text": "Command",  "value": "command" },
+          { "selected": false, "text": "Response", "value": "response" }
+        ],
+        "query": "All,command,response",
+        "type": "custom",
+        "label": "Type"
+      },
+      {
+        "current": { "selected": true, "text": "All", "value": "All" },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "status",
+        "options": [
+          { "selected": true,  "text": "All",     "value": "All" },
+          { "selected": false, "text": "Sent",    "value": "sent" },
+          { "selected": false, "text": "Success", "value": "success" },
+          { "selected": false, "text": "Error",   "value": "error" }
+        ],
+        "query": "All,sent,success,error",
+        "type": "custom",
+        "label": "Status"
+      },
+      {
+        "current": { "selected": true, "text": "", "value": "" },
+        "hide": 0,
+        "name": "run_id",
+        "query": "",
+        "type": "textbox",
+        "label": "Run ID"
+      }
+    ]
+  },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Command Log",
+  "uid": "puda-command-log",
+  "version": 1
+}
