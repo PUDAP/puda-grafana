@@ -4,12 +4,13 @@ datasources:
   - name: InfluxDB
     type: influxdb
     uid: influxdb-puda
-    url: http://influxdb:8086
+    url: http://influxdb:8181
     access: proxy
     isDefault: true
+    database: machines
     jsonData:
-      version: Flux
-      organization: puda
-      defaultBucket: machines
+      version: SQL
+      database: machines
+      insecureGrpc: true
     secureJsonData:
-      token: puda-admin-token
+      token: apiv3_puda

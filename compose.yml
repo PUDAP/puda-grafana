@@ -37,6 +37,23 @@ services:
       influxdb:
         condition: service_healthy
 
+  telegraf:
+    image: telegraf:1.33
+    container_name: puda-telegraf
+    restart: unless-stopped
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+    environment:
+      HOST_PROC: /host/proc
+      HOST_SYS: /host/sys
+      HOST_ETC: /host/etc
+    depends_on:
+      influxdb:
+        condition: service_healthy
+
   watcher:
     build: .
     container_name: puda-watcher

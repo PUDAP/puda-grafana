@@ -35,8 +35,8 @@
               "options": {
                 "online":    { "text": "Online",    "color": "green",  "index": 0 },
                 "offline":   { "text": "Offline",   "color": "red",    "index": 1 },
-                "idle":      { "text": "Idle",       "color": "blue",   "index": 2 },
-                "running":   { "text": "Running",    "color": "green",  "index": 3 },
+                "idle":      { "text": "Idle",       "color": "gray",   "index": 2 },
+                "running":   { "text": "Running",    "color": "blue",  "index": 3 },
                 "succeeded": { "text": "Succeeded",  "color": "green",  "index": 4 },
                 "paused":    { "text": "Paused",     "color": "yellow", "index": 5 },
                 "stopped":   { "text": "Stopped",    "color": "orange", "index": 6 },
@@ -57,7 +57,7 @@
           },
           {
             "matcher": { "id": "byName", "options": "first" },
-            "properties": [{ "id": "displayName", "value": "FIRST" }]
+            "properties": [{ "id": "displayName", "value": "First" }]
           },
           {
             "matcher": { "id": "byName", "options": "opentrons" },
@@ -82,8 +82,21 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\")\n  |> keep(columns: [\"_time\", \"_value\", \"machine_id\"])\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"machine_id\"], valueColumn: \"_value\")",
-          "refId": "A"
+          "rawSql": "SELECT time, status AS biologic FROM machine_status WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, status AS first FROM machine_status WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "B",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, status AS opentrons FROM machine_status WHERE machine_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "C",
+          "rawQuery": true
         }
       ],
       "title": "Machine Status Timeline",
@@ -123,8 +136,9 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"biologic\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
-          "refId": "A"
+          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'biologic' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
         }
       ],
       "title": "Biologic",
@@ -164,11 +178,12 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"first\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
-          "refId": "A"
+          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'first' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
         }
       ],
-      "title": "FIRST",
+      "title": "First",
       "type": "stat"
     },
     {
@@ -182,8 +197,8 @@
               "options": {
                 "online":    { "text": "Online",   "color": "green",  "index": 0 },
                 "offline":   { "text": "Offline",  "color": "red",    "index": 1 },
-                "idle":      { "text": "Idle",      "color": "blue",   "index": 2 },
-                "running":   { "text": "Running",   "color": "green",  "index": 3 },
+                "idle":      { "text": "Idle",      "color": "gray",   "index": 2 },
+                "running":   { "text": "Running",   "color": "blue",  "index": 3 },
                 "succeeded": { "text": "Succeeded", "color": "green",  "index": 4 },
                 "paused":    { "text": "Paused",    "color": "yellow", "index": 5 },
                 "stopped":   { "text": "Stopped",   "color": "orange", "index": 6 },
@@ -211,8 +226,9 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"opentrons\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
-          "refId": "A"
+          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'opentrons' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
         }
       ],
       "title": "Opentrons",
@@ -250,8 +266,21 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"cpu\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
-          "refId": "A"
+          "rawSql": "SELECT time, cpu AS biologic FROM machine_status WHERE machine_id = 'biologic' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, cpu AS first FROM machine_status WHERE machine_id = 'first' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "B",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, cpu AS opentrons FROM machine_status WHERE machine_id = 'opentrons' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "C",
+          "rawQuery": true
         }
       ],
       "title": "CPU Utilization %",
@@ -288,8 +317,21 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"mem\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
-          "refId": "A"
+          "rawSql": "SELECT time, mem AS biologic FROM machine_status WHERE machine_id = 'biologic' AND mem IS NOT NULL AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, mem AS first FROM machine_status WHERE machine_id = 'first' AND mem IS NOT NULL AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "B",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, mem AS opentrons FROM machine_status WHERE machine_id = 'opentrons' AND mem IS NOT NULL AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "C",
+          "rawQuery": true
         }
       ],
       "title": "Memory Usage %",
@@ -326,8 +368,21 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
-          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"temp\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
-          "refId": "A"
+          "rawSql": "SELECT time, temp AS biologic FROM machine_status WHERE machine_id = 'biologic' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, temp AS first FROM machine_status WHERE machine_id = 'first' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "B",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "rawSql": "SELECT time, temp AS opentrons FROM machine_status WHERE machine_id = 'opentrons' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "C",
+          "rawQuery": true
         }
       ],
       "title": "Temperature °C",
@@ -340,7 +395,7 @@
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "PUDA Machine Status",
+  "title": "Machine Status",
   "uid": "puda-machine-status",
-  "version": 6
+  "version": 8
 }

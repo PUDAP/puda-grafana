@@ -1,0 +1,272 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Host system metrics collected by Telegraf",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" },
+            "axisSoftMin": 0,
+            "axisSoftMax": 100
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "usage_user" },
+            "properties": [{ "id": "displayName", "value": "User" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "usage_system" },
+            "properties": [{ "id": "displayName", "value": "System" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "usage_iowait" },
+            "properties": [{ "id": "displayName", "value": "I/O Wait" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "usage_steal" },
+            "properties": [{ "id": "displayName", "value": "Steal" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "legend": { "calcs": ["last", "max"], "displayMode": "table", "placement": "right", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "SELECT time, usage_user, usage_system, usage_iowait, usage_steal FROM cpu WHERE cpu = 'cpu-total' AND $__timeFilter ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "CPU Usage %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green",  "value": null },
+              { "color": "orange", "value": 75 },
+              { "color": "red",    "value": 90 }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "used_percent" },
+            "properties": [{ "id": "displayName", "value": "RAM" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "SELECT time, used_percent FROM mem WHERE $__timeFilter ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Memory Usage %",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green",  "value": null },
+              { "color": "orange", "value": 75 },
+              { "color": "red",    "value": 90 }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "used_percent" },
+            "properties": [{ "id": "displayName", "value": "Disk /" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "id": 3,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "SELECT time, used_percent FROM disk WHERE path = '/' AND $__timeFilter ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Disk Usage % (/)",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green",  "value": null },
+              { "color": "orange", "value": 4 },
+              { "color": "red",    "value": 8 }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "load1" },
+            "properties": [{ "id": "displayName", "value": "1m" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "load5" },
+            "properties": [{ "id": "displayName", "value": "5m" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "load15" },
+            "properties": [{ "id": "displayName", "value": "15m" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "SELECT time, load1, load5, load15 FROM system WHERE $__timeFilter ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "System Load",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "Bps"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "bytes_recv" },
+            "properties": [{ "id": "displayName", "value": "Received" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "bytes_sent" },
+            "properties": [{ "id": "displayName", "value": "Sent" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "id": 5,
+      "options": {
+        "legend": { "calcs": ["last", "mean"], "displayMode": "table", "placement": "right", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "SELECT time, bytes_recv, bytes_sent FROM net WHERE interface != 'lo' AND $__timeFilter ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Network I/O",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["puda", "system", "telegraf"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "System Metrics",
+  "uid": "puda-system-metrics",
+  "version": 1
+}
