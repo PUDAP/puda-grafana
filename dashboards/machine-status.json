@@ -1,0 +1,346 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Real-time status timeline for all PUDA machines",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online":    { "text": "Online",    "color": "green",  "index": 0 },
+                "offline":   { "text": "Offline",   "color": "red",    "index": 1 },
+                "idle":      { "text": "Idle",       "color": "blue",   "index": 2 },
+                "running":   { "text": "Running",    "color": "green",  "index": 3 },
+                "succeeded": { "text": "Succeeded",  "color": "green",  "index": 4 },
+                "paused":    { "text": "Paused",     "color": "yellow", "index": 5 },
+                "stopped":   { "text": "Stopped",    "color": "orange", "index": 6 },
+                "failed":    { "text": "Failed",     "color": "red",    "index": 7 },
+                "error":     { "text": "Error",      "color": "orange", "index": 8 }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "biologic" },
+            "properties": [{ "id": "displayName", "value": "Biologic" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "first" },
+            "properties": [{ "id": "displayName", "value": "FIRST" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "opentrons" },
+            "properties": [{ "id": "displayName", "value": "Opentrons" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 14, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.85,
+        "showValue": "auto",
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\")\n  |> keep(columns: [\"_time\", \"_value\", \"machine_id\"])\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"machine_id\"], valueColumn: \"_value\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Machine Status Timeline",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online":  { "text": "Online",  "color": "green", "index": 0 },
+                "offline": { "text": "Offline", "color": "red",   "index": 1 }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 14 },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": [], "fields": "/.*/", "values": true, "limit": 1 },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"biologic\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
+          "refId": "A"
+        }
+      ],
+      "title": "Biologic",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online":  { "text": "Online",  "color": "green", "index": 0 },
+                "offline": { "text": "Offline", "color": "red",   "index": 1 }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 14 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": [], "fields": "/.*/", "values": true, "limit": 1 },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"first\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
+          "refId": "A"
+        }
+      ],
+      "title": "FIRST",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online":    { "text": "Online",   "color": "green",  "index": 0 },
+                "offline":   { "text": "Offline",  "color": "red",    "index": 1 },
+                "idle":      { "text": "Idle",      "color": "blue",   "index": 2 },
+                "running":   { "text": "Running",   "color": "green",  "index": 3 },
+                "succeeded": { "text": "Succeeded", "color": "green",  "index": 4 },
+                "paused":    { "text": "Paused",    "color": "yellow", "index": 5 },
+                "stopped":   { "text": "Stopped",   "color": "orange", "index": 6 },
+                "failed":    { "text": "Failed",    "color": "red",    "index": 7 }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 14 },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": [], "fields": "/.*/", "values": true, "limit": 1 },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"status\" and r.machine_id == \"opentrons\")\n  |> sort(columns: [\"_time\"])\n  |> tail(n: 1)",
+          "refId": "A"
+        }
+      ],
+      "title": "Opentrons",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" },
+            "axisSoftMin": 0,
+            "axisSoftMax": 100
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 18 },
+      "id": 5,
+      "options": {
+        "legend": { "calcs": ["last", "max"], "displayMode": "table", "placement": "right", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"cpu\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Utilization %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green",  "value": null },
+              { "color": "orange", "value": 80 },
+              { "color": "red",    "value": 90 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 26 },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"mem\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage %",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green",  "value": null },
+              { "color": "yellow", "value": 65 },
+              { "color": "orange", "value": 75 },
+              { "color": "red",    "value": 85 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 26 },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "query": "from(bucket: \"machines\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"machine_status\" and r._field == \"temp\")\n  |> map(fn: (r) => ({r with _field: r.machine_id}))\n  |> drop(columns: [\"machine_id\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperature °C",
+      "type": "stat"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["puda", "machines", "status"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PUDA Machine Status",
+  "uid": "puda-machine-status",
+  "version": 6
+}
