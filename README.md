@@ -1,7 +1,7 @@
-# PUDA Machine Status — Grafana Dashboard
+# PUDA Machine Monitoring — Grafana Dashboards
 
-Real-time monitoring dashboard for PUDA lab machines (Biologic, FIRST, Opentrons).
-Machine health data is streamed via NATS, stored in InfluxDB, and visualised in Grafana.
+Real-time monitoring for PUDA lab machines (Biologic, FIRST, Opentrons).
+Health and command data is streamed via NATS, stored in InfluxDB 3, and visualised in Grafana.
 
 ## Architecture
 
@@ -9,70 +9,91 @@ Machine health data is streamed via NATS, stored in InfluxDB, and visualised in 
 puda machine watch (NATS)
         │
         ▼
-   watcher.py          ← streams health events, writes to InfluxDB
+   watcher.py          ← health + command events → InfluxDB
         │
         ▼
-   InfluxDB 2.7        ← time-series storage (bucket: machines)
+   InfluxDB 3 Core     ← time-series storage (database: machines)
         │
         ▼
-  Grafana 11.5         ← dashboard at http://localhost:3000
+   Grafana 13           ← dashboards at http://localhost:3000
 ```
 
-## Dashboard panels
+## Dashboards
 
-| Panel | Description |
-|---|---|
-| State timeline | Per-machine status history (Online / Running / Succeeded / …) |
-| Biologic / FIRST / Opentrons | Current status badge |
-| CPU Utilization % | Live CPU % for biologic and first |
-| Memory Usage % | Gauge showing current memory % |
-| Temperature °C | Current temperature per machine |
+| Dashboard | URL | Description |
+|---|---|---|
+| Machine Status | `/d/machine-status` | Status timeline, CPU, memory, temperature |
+| Command Log | `/d/command-log` | NATS commands sent and responses received |
 
 ## Quick start
 
 ```bash
+cp .env.example .env   # optional — edit NATS servers / machines
 ./start.sh
 ```
 
-This builds the watcher image and starts all three services in the background.
+`start.sh` generates the local InfluxDB admin token file, builds and starts all services, creates the InfluxDB database if needed, and resets Grafana state once if superseded dashboard UIDs (`puda-*`) are detected.
+
+Use `./start.sh` rather than `docker compose up` directly — the generated `admin-token.json` is required at startup.
 
 | Service | URL | Credentials |
 |---|---|---|
-| Grafana | http://localhost:3000 | admin / admin |
-| InfluxDB | http://localhost:8086 | admin / adminpassword |
+| Grafana | http://localhost:3000 | admin / admin (override via `.env`) |
+| InfluxDB | http://localhost:8181 | token: `INFLUXDB_TOKEN` from `.env` (default `apiv3_puda`) |
 
 ## Services
 
-### `watcher` (Python)
+### `watcher`
 
-`watcher.py` runs `puda machine watch` and pipes JSON health events into InfluxDB.
+`watcher.py` runs `puda machine watch` and writes two measurements to InfluxDB:
 
-- Writes a `machine_status` measurement with tag `machine_id`
-- Fields: `status` (string), `cpu` (float), `mem` (float), `temp` (float)
-- Marks a machine **offline** after 30 s of silence
+| Measurement | Source | Key fields |
+|---|---|---|
+| `machine_status` | `tlm/health` | `status`, `cpu`, `mem`, `temp` |
+| `machine_commands` | `cmd/*` | `cmd_name`, `step_number`, `params_json`, `response_code`, … |
+
+Machines are marked **offline** after 30 s without a health heartbeat.
+
+Uses `network_mode: host` so the container can reach NATS on the host network (Linux only).
 
 ### `influxdb`
 
-InfluxDB 2.7 with auto-initialised org `puda` and bucket `machines`.
-Token: `puda-admin-token` (set via environment variable `INFLUXDB_TOKEN`).
+InfluxDB 3 Core on port **8181**. `start.sh` generates `admin-token.json` from `INFLUXDB_TOKEN` before starting containers.
+The `machines` database is created automatically by `scripts/init.sh` on first run.
 
 ### `grafana`
 
-Grafana 11.5 with provisioned InfluxDB data source and dashboard.
+Grafana 13 with provisioned InfluxDB data source and file-based dashboards.
 Anonymous viewer access is enabled.
 
-## Environment variables
+## Configuration
 
-All variables have sensible defaults for local development and can be overridden in `compose.yml` or at runtime.
+Copy `.env.example` to `.env` and adjust as needed. All variables have defaults matching the PUDA lab setup.
 
 | Variable | Default | Description |
 |---|---|---|
-| `INFLUXDB_URL` | `http://localhost:8086` | InfluxDB endpoint |
-| `INFLUXDB_TOKEN` | `puda-admin-token` | InfluxDB API token |
-| `INFLUXDB_ORG` | `puda` | InfluxDB organisation |
-| `INFLUXDB_BUCKET` | `machines` | InfluxDB bucket |
+| `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; passed to Grafana as an environment variable) |
+| `INFLUXDB_DATABASE` | `machines` | InfluxDB database name |
 | `NATS_SERVERS` | `nats://100.109.131.12:4222,…` | NATS cluster endpoints |
 | `MACHINES` | `biologic,first,opentrons` | Comma-separated machine IDs to watch |
+| `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
+| `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
+
+Watcher-specific variables (`INFLUXDB_URL`, etc.) are set in `compose.yml` and can be extended there if needed.
+
+## Deploying to a new host
+
+1. Clone the repo and install Docker + Docker Compose.
+2. Copy `.env.example` → `.env` and set `NATS_SERVERS` / `MACHINES` for the target environment.
+3. Run `./start.sh`.
+4. Open Grafana at http://localhost:3000 and confirm both dashboards load data.
+
+For a completely clean slate (wipes all stored metrics and Grafana state):
+
+```bash
+docker compose down -v
+./start.sh
+```
 
 ## Useful commands
 
@@ -83,7 +104,7 @@ All variables have sensible defaults for local development and can be overridden
 # Tail watcher logs
 docker compose logs -f watcher
 
-# Stop and remove containers
+# Stop containers
 docker compose down
 
 # Stop and wipe all data volumes

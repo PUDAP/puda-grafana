@@ -7,10 +7,10 @@ datasources:
     url: http://influxdb:8181
     access: proxy
     isDefault: true
-    database: machines
+    database: $INFLUXDB_DATABASE
     jsonData:
       version: SQL
-      database: machines
+      database: $INFLUXDB_DATABASE
       insecureGrpc: true
     secureJsonData:
-      token: apiv3_puda
+      token: $INFLUXDB_TOKEN

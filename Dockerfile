@@ -9,10 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl tar \
     && chmod +x /usr/local/bin/puda \
     && apt-get purge -y curl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY pyproject.toml .
-RUN pip install --no-cache-dir influxdb3-python
-
-COPY watcher.py .
+COPY pyproject.toml watcher.py ./
+RUN pip install --no-cache-dir .
 
 CMD ["python", "-u", "watcher.py"]

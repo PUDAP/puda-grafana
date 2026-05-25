@@ -396,6 +396,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Machine Status",
-  "uid": "puda-machine-status",
+  "uid": "machine-status",
   "version": 8
 }

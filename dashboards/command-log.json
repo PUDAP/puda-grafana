@@ -23,7 +23,7 @@
       "title": "Machine Status",
       "tooltip": "Go to Machine Status dashboard",
       "type": "link",
-      "url": "/d/puda-machine-status",
+      "url": "/d/machine-status",
       "targetBlank": false
     }
   ],
@@ -568,6 +568,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Command Log",
-  "uid": "puda-command-log",
+  "uid": "command-log",
   "version": 1
 }
