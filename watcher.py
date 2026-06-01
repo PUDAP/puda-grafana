@@ -25,8 +25,11 @@ from datetime import datetime, timezone
 
 from influxdb_client_3 import InfluxDBClient3, Point, WritePrecision
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-log = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.WARNING,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 # ── InfluxDB ──────────────────────────────────────────────────────────────────
 INFLUXDB_URL      = os.getenv("INFLUXDB_URL",      "http://localhost:8181")
@@ -82,7 +85,7 @@ def write_status(client, machine_id: str, status: str, ts: datetime, extra: dict
             if isinstance(v, (int, float)):
                 point = point.field(k, float(v))
     client.write(record=point)
-    log.debug("health  machine_id=%-10s  status=%s", machine_id, status)
+    logger.debug("health  machine_id=%-10s  status=%s", machine_id, status)
 
 
 def offline_monitor(client) -> None:
@@ -97,7 +100,7 @@ def offline_monitor(client) -> None:
                     continue
                 if (now - ls) > OFFLINE_TIMEOUT_SECS:
                     if last_status.get(machine_id) != "offline":
-                        log.info("%s went offline (no heartbeat for >%ds)", machine_id, OFFLINE_TIMEOUT_SECS)
+                        logger.info("%s went offline (no heartbeat for >%ds)", machine_id, OFFLINE_TIMEOUT_SECS)
                         write_status(client, machine_id, "offline", datetime.now(timezone.utc))
                         last_status[machine_id] = "offline"
                     last_seen[machine_id] = None
@@ -181,13 +184,13 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
         point = point.field("completed_at", str(completed_at))
 
     client.write(record=point)
-    log.debug("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic, "cmd" if is_command else "resp")
+    logger.debug("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic, "cmd" if is_command else "resp")
 
 
 # ── main ───────────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    log.info("Connecting to InfluxDB at %s …", INFLUXDB_URL)
+    logger.info("Connecting to InfluxDB at %s …", INFLUXDB_URL)
     client = InfluxDBClient3(host=INFLUXDB_URL, token=INFLUXDB_TOKEN, database=INFLUXDB_DATABASE)
 
     threading.Thread(target=offline_monitor, args=(client,), daemon=True).start()
@@ -198,9 +201,17 @@ def main() -> None:
         "--nats-servers", NATS_SERVERS,
         "--subjects", "tlm,cmd",
     ]
-    log.info("Running: %s", " ".join(cmd))
+    logger.info("Running: %s", " ".join(cmd))
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=sys.stderr, text=True)
+    child_env = os.environ.copy()
+    child_env["RUST_LOG"] = os.getenv("PUDA_WATCHER_RUST_LOG", "warn")
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=sys.stderr,
+        text=True,
+        env=child_env,
+    )
     try:
         for raw in proc.stdout:
             line = raw.strip()
@@ -209,7 +220,7 @@ def main() -> None:
             try:
                 msg = json.loads(line)
             except json.JSONDecodeError as exc:
-                log.warning("JSON parse error: %s — %r", exc, line[:120])
+                logger.warning("JSON parse error: %s — %r", exc, line[:120])
                 continue
 
             machine_id = msg.get("machine_id")
@@ -232,23 +243,23 @@ def main() -> None:
                     prev = last_status.get(machine_id)
                     last_status[machine_id] = status
                     if prev != status:
-                        log.info("%s status changed: %s → %s", machine_id, prev or "(none)", status)
+                        logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", status)
 
             elif category == "cmd" and topic in COMMAND_TOPICS | RESPONSE_TOPICS:
                 try:
                     write_command(client, machine_id, topic, msg)
-                    log.info("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic,
+                    logger.info("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic,
                              "cmd" if topic in COMMAND_TOPICS else "resp")
                 except Exception as exc:
-                    log.error("cmd_log write failed: %s", exc)
+                    logger.error("cmd_log write failed: %s", exc)
 
     except KeyboardInterrupt:
-        log.info("Interrupted — shutting down")
+        logger.info("Interrupted — shutting down")
     finally:
         proc.terminate()
         proc.wait()
         client.close()
-        log.info("Done")
+        logger.info("Done")
 
 
 if __name__ == "__main__":
