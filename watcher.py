@@ -1,29 +1,30 @@
 """
 PUDA Machine Status Watcher
 
-Streams `puda machine watch` output and writes to InfluxDB:
+Streams PUDA NATS machine traffic and writes to InfluxDB:
   - machine_status   : health messages → real-time state timeline
   - machine_commands : cmd/response messages → command log dashboard
 
 Topic routing:
-  health                      → machine_status
-  cmd.queue / immediate       → machine_commands (msg_type=command)
-  cmd.response.*              → machine_commands (msg_type=response)
+  puda.<machine>.tlm.health             → machine_status
+  puda.<machine>.cmd.queue / immediate  → machine_commands (msg_type=command)
+  puda.<machine>.cmd.response.*         → machine_commands (msg_type=response)
 
 Status mapping:
   - biologic / first : "online" when health received, "offline" after 30s silence
   - opentrons        : uses run_status field from health data
 """
+import asyncio
 import json
 import logging
 import os
-import subprocess
-import sys
 import threading
 import time
 from datetime import datetime, timezone
 
 from influxdb_client_3 import InfluxDBClient3, Point, WritePrecision
+import nats
+from nats.aio.msg import Msg
 
 logging.basicConfig(
     level=logging.WARNING,
@@ -41,10 +42,10 @@ NATS_SERVERS = os.getenv(
     "NATS_SERVERS",
     "nats://100.109.131.12:4222,nats://100.109.131.12:4223,nats://100.109.131.12:4224",
 )
-MACHINES = os.getenv("MACHINES", "biologic,first,opentrons").split(",")
+MACHINES = [machine.strip() for machine in os.getenv("MACHINES", "biologic,first,opentrons").split(",") if machine.strip()]
 OFFLINE_TIMEOUT_SECS = 30
 
-# topic values as reported by `puda machine watch` (the part after category)
+# topic values from puda.<machine_id>.cmd.<topic>
 COMMAND_TOPICS   = {"queue", "immediate"}
 RESPONSE_TOPICS  = {"response.queue", "response.immediate"}
 
@@ -61,6 +62,36 @@ def _parse_ts(ts_str: str) -> datetime:
         return datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
     except (ValueError, AttributeError):
         return datetime.now(timezone.utc)
+
+
+def _nats_servers() -> list[str]:
+    return [server.strip() for server in NATS_SERVERS.split(",") if server.strip()]
+
+
+def _parse_subject(subject: str) -> tuple[str, str, str] | None:
+    """Return (machine_id, category, topic) for puda.<machine_id>.<category>.<topic>."""
+    parts = subject.split(".")
+    if len(parts) < 4 or parts[0] != "puda":
+        return None
+    return parts[1], parts[2], ".".join(parts[3:])
+
+
+def _decode_payload(msg: Msg) -> dict | None:
+    try:
+        return json.loads(msg.data.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        logger.warning("NATS payload parse error on %s: %s", msg.subject, exc)
+        return None
+
+
+def _message_timestamp(data: dict) -> str:
+    header = data.get("header") or {}
+    if isinstance(header, dict):
+        header_ts = header.get("timestamp")
+        if header_ts:
+            return str(header_ts)
+    data_ts = data.get("timestamp")
+    return str(data_ts) if data_ts else datetime.now(timezone.utc).isoformat()
 
 
 # ── health ────────────────────────────────────────────────────────────────────
@@ -111,7 +142,7 @@ def offline_monitor(client) -> None:
 def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
     """Write a CommandRequest or CommandResponse to machine_commands.
 
-    puda machine watch JSON envelope:
+    Internal JSON envelope:
       { timestamp, subject, machine_id, category, topic,
         data: { header: {...}, command: {...}, response: {...} } }
     response key is absent on command messages.
@@ -187,80 +218,106 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
     logger.debug("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic, "cmd" if is_command else "resp")
 
 
+# ── NATS message handling ─────────────────────────────────────────────────────
+
+def handle_nats_message(client, msg: Msg) -> None:
+    parsed_subject = _parse_subject(msg.subject)
+    if parsed_subject is None:
+        logger.debug("Ignoring unexpected subject: %s", msg.subject)
+        return
+
+    machine_id, category, topic = parsed_subject
+    if machine_id not in last_seen:
+        logger.debug("Ignoring unconfigured machine %s on %s", machine_id, msg.subject)
+        return
+
+    data = _decode_payload(msg)
+    if data is None:
+        return
+
+    envelope = {
+        "timestamp": _message_timestamp(data),
+        "subject": msg.subject,
+        "machine_id": machine_id,
+        "category": category,
+        "topic": topic,
+        "data": data,
+    }
+
+    if category == "tlm" and topic == "health":
+        ts = _parse_ts(envelope["timestamp"])
+        status = derive_status(machine_id, data)
+        extra = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp")}
+        write_status(client, machine_id, status, ts, extra)
+
+        with state_lock:
+            last_seen[machine_id] = time.time()
+            prev = last_status.get(machine_id)
+            last_status[machine_id] = status
+            if prev != status:
+                logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", status)
+
+    elif category == "cmd" and topic in COMMAND_TOPICS | RESPONSE_TOPICS:
+        try:
+            write_command(client, machine_id, topic, envelope)
+            logger.info(
+                "cmd_log  machine=%-12s  topic=%-20s  type=%s",
+                machine_id,
+                topic,
+                "cmd" if topic in COMMAND_TOPICS else "resp",
+            )
+        except Exception as exc:
+            logger.error("cmd_log write failed: %s", exc)
+
+
 # ── main ───────────────────────────────────────────────────────────────────────
 
-def main() -> None:
+async def main() -> None:
     logger.info("Connecting to InfluxDB at %s …", INFLUXDB_URL)
     client = InfluxDBClient3(host=INFLUXDB_URL, token=INFLUXDB_TOKEN, database=INFLUXDB_DATABASE)
 
     threading.Thread(target=offline_monitor, args=(client,), daemon=True).start()
 
-    cmd = [
-        "puda", "machine", "watch",
-        "--targets", ",".join(MACHINES),
-        "--nats-servers", NATS_SERVERS,
-        "--subjects", "tlm,cmd",
-    ]
-    logger.info("Running: %s", " ".join(cmd))
+    async def on_error(exc: Exception) -> None:
+        logger.error("NATS error: %s", exc)
 
-    child_env = os.environ.copy()
-    child_env["RUST_LOG"] = os.getenv("PUDA_WATCHER_RUST_LOG", "warn")
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=sys.stderr,
-        text=True,
-        env=child_env,
+    async def on_disconnect() -> None:
+        logger.warning("Disconnected from NATS")
+
+    async def on_reconnect() -> None:
+        logger.info("Reconnected to NATS")
+
+    servers = _nats_servers()
+    logger.info("Connecting to NATS at %s", ",".join(servers))
+    nc = await nats.connect(
+        servers=servers,
+        error_cb=on_error,
+        disconnected_cb=on_disconnect,
+        reconnected_cb=on_reconnect,
     )
     try:
-        for raw in proc.stdout:
-            line = raw.strip()
-            if not line:
-                continue
-            try:
-                msg = json.loads(line)
-            except json.JSONDecodeError as exc:
-                logger.warning("JSON parse error: %s — %r", exc, line[:120])
-                continue
+        subscriptions = []
+        for machine_id in MACHINES:
+            for category in ("tlm", "cmd"):
+                subject = f"puda.{machine_id}.{category}.>"
 
-            machine_id = msg.get("machine_id")
-            category   = msg.get("category", "")
-            topic      = msg.get("topic", "")
-            data       = msg.get("data", {})
-            ts_str     = msg.get("timestamp", "")
+                async def callback(msg: Msg) -> None:
+                    handle_nats_message(client, msg)
 
-            if not machine_id:
-                continue
+                subscriptions.append(await nc.subscribe(subject, cb=callback))
+                logger.info("Subscribed to %s", subject)
 
-            if category == "tlm" and topic == "health":
-                ts     = _parse_ts(ts_str)
-                status = derive_status(machine_id, data)
-                extra  = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp")}
-                write_status(client, machine_id, status, ts, extra)
-
-                with state_lock:
-                    last_seen[machine_id] = time.time()
-                    prev = last_status.get(machine_id)
-                    last_status[machine_id] = status
-                    if prev != status:
-                        logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", status)
-
-            elif category == "cmd" and topic in COMMAND_TOPICS | RESPONSE_TOPICS:
-                try:
-                    write_command(client, machine_id, topic, msg)
-                    logger.info("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic,
-                             "cmd" if topic in COMMAND_TOPICS else "resp")
-                except Exception as exc:
-                    logger.error("cmd_log write failed: %s", exc)
-
-    except KeyboardInterrupt:
+        await asyncio.Future()
+    except asyncio.CancelledError:
         logger.info("Interrupted — shutting down")
     finally:
-        proc.terminate()
-        proc.wait()
+        await nc.drain()
         client.close()
         logger.info("Done")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass

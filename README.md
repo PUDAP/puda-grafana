@@ -6,7 +6,7 @@ Health and command data is streamed via NATS, stored in InfluxDB 3, and visualis
 ## Architecture
 
 ```
-puda machine watch (NATS)
+PUDA NATS subjects
         │
         ▼
    watcher.py          ← health + command events → InfluxDB
@@ -45,7 +45,7 @@ Use `./start.sh` rather than `docker compose up` directly — the generated `adm
 
 ### `watcher`
 
-`watcher.py` runs `puda machine watch` and writes two measurements to InfluxDB:
+`watcher.py` connects directly to NATS with the Python NATS SDK and writes two measurements to InfluxDB:
 
 | Measurement | Source | Key fields |
 |---|---|---|
@@ -54,6 +54,7 @@ Use `./start.sh` rather than `docker compose up` directly — the generated `adm
 
 Machines are marked **offline** after 30 s without a health heartbeat.
 
+It subscribes to `puda.<machine_id>.tlm.>` and `puda.<machine_id>.cmd.>` for every machine listed in `MACHINES`.
 Uses `network_mode: host` so the container can reach NATS on the host network (Linux only).
 
 ### `influxdb`
