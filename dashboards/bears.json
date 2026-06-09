@@ -597,6 +597,82 @@
         "x": 0,
         "y": 10
       },
+      "id": 140,
+      "title": "Cameras",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 11
+      },
+      "id": 141,
+      "options": {
+        "content": "<iframe src=\"http://bears:8889/first\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "FIRST Camera",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 11
+      },
+      "id": 142,
+      "options": {
+        "content": "<iframe src=\"http://opentron:8889/cam0/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Opentrons Camera",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 11
+      },
+      "id": 143,
+      "options": {
+        "content": "<iframe src=\"http://bears:8889/elephant-front\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Elephant Front",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 11
+      },
+      "id": 144,
+      "options": {
+        "content": "<iframe src=\"http://bears:8889/elephant-side/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Elephant Side",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
       "id": 110,
       "title": "Health Metrics",
       "type": "row"
@@ -655,7 +731,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 11
+        "y": 19
       },
       "id": 5,
       "options": {
@@ -768,7 +844,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 11
+        "y": 19
       },
       "id": 7,
       "options": {
@@ -806,7 +882,7 @@
           "rawQuery": true
         }
       ],
-      "title": "Temperature °C",
+      "title": "Temperature \u00b0C",
       "type": "timeseries"
     },
     {
@@ -815,7 +891,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 120,
       "title": "Command Activity",
@@ -850,7 +926,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 20
+        "y": 28
       },
       "id": 30,
       "options": {
@@ -910,7 +986,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 20
+        "y": 28
       },
       "id": 31,
       "options": {
@@ -979,7 +1055,7 @@
         "h": 4,
         "w": 6,
         "x": 12,
-        "y": 20
+        "y": 28
       },
       "id": 32,
       "options": {
@@ -1039,7 +1115,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 20
+        "y": 28
       },
       "id": 33,
       "options": {
@@ -1137,7 +1213,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 32
       },
       "id": 40,
       "options": {
@@ -1183,7 +1259,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 40
       },
       "id": 130,
       "title": "Command Log",
@@ -1459,7 +1535,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 41
       },
       "id": 50,
       "options": {

@@ -91,6 +91,7 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `NATS_SERVERS` | `nats://localhost:4222,…` | Local NATS cluster endpoints |
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
+| `GF_PANELS_DISABLE_SANITIZE_HTML` | `true` | Allows provisioned text panels to embed VIPSA camera/control iframes |
 
 Watcher-specific variables (`INFLUXDB_URL`, etc.) are set in `compose.yml` and can be extended there if needed.
 
