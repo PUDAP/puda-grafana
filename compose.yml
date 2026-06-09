@@ -9,6 +9,10 @@ services:
     image: influxdb:3.9.2-core
     container_name: puda-influxdb
     restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     ports:
       - "8181:8181"
     environment:
@@ -57,8 +61,8 @@ services:
       INFLUXDB_URL: http://localhost:8181
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN:-apiv3_puda}
       INFLUXDB_DATABASE: ${INFLUXDB_DATABASE:-machines}
-      NATS_SERVERS: ${NATS_SERVERS:-nats://100.109.131.12:4222,nats://100.109.131.12:4223,nats://100.109.131.12:4224}
-      MACHINES: ${MACHINES:-biologic,first,opentrons}
+      LOG_LEVEL: ${WATCHER_LOG_LEVEL:-INFO}
+      NATS_SERVERS: ${NATS_SERVERS:-nats://localhost:4222,nats://localhost:4223,nats://localhost:4224}
     depends_on:
       influxdb:
         condition: service_healthy

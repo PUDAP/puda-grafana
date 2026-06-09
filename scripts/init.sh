@@ -12,7 +12,14 @@ GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
 GRAFANA_USER="${GF_SECURITY_ADMIN_USER:-admin}"
 GRAFANA_PASS="${GF_SECURITY_ADMIN_PASSWORD:-admin}"
 
-SUPERSEDED_UIDS=(puda-machine-status puda-command-log puda-system-metrics)
+SUPERSEDED_UIDS=(
+  puda-machine-status
+  puda-command-log
+  puda-system-metrics
+  bears-machines
+  ifim-machines
+  vipsa-machines
+)
 
 echo "▶ Ensuring InfluxDB database '${INFLUXDB_DATABASE}' exists …"
 code=$(curl -s -o /dev/null -w "%{http_code}" \

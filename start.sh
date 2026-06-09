@@ -3,6 +3,21 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+build_args=()
+if [[ "${1:-}" == "--build" ]]; then
+  build_args=(--build)
+elif [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  echo "Usage: ./start.sh [--build]"
+  echo ""
+  echo "Starts the stack without rebuilding images by default."
+  echo "Use --build after changing watcher.py, Dockerfile, or Python dependencies."
+  exit 0
+elif [[ -n "${1:-}" ]]; then
+  echo "Unknown option: $1" >&2
+  echo "Usage: ./start.sh [--build]" >&2
+  exit 2
+fi
+
 if [[ -f .env ]]; then
   set -a
   # shellcheck disable=SC1091
@@ -15,8 +30,12 @@ bash scripts/render-config.sh
 echo "▶ Waiting for InfluxDB to be ready …"
 docker compose up --force-recreate influxdb-init
 
-echo "▶ Building and starting all services …"
-docker compose up -d --build --remove-orphans
+if [[ "${#build_args[@]}" -gt 0 ]]; then
+  echo "▶ Building and starting all services …"
+else
+  echo "▶ Starting all services without rebuilding images …"
+fi
+docker compose up -d "${build_args[@]}" --remove-orphans
 
 bash scripts/init.sh
 
@@ -27,5 +46,8 @@ echo ""
 echo "  Dashboards:"
 echo "    Machine Status  → /d/machine-status"
 echo "    Command Log     → /d/command-log"
+echo "    Bears           → /d/bears"
+echo "    IFIM            → /d/ifim"
+echo "    VIPSA           → /d/vipsa"
 echo ""
 echo "Logs: docker compose logs -f watcher"

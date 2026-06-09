@@ -6,12 +6,11 @@ Streams PUDA NATS machine traffic and writes to InfluxDB:
   - machine_commands : cmd/response messages → command log dashboard
 
 Topic routing:
-  puda.<machine>.tlm.health             → machine_status
-  puda.<machine>.cmd.queue / immediate  → machine_commands (msg_type=command)
-  puda.<machine>.cmd.response.*         → machine_commands (msg_type=response)
+  puda.*.tlm.health                     → machine_status
+  puda.*.cmd.>                          → machine_commands
 
 Status mapping:
-  - biologic / first : "online" when health received, "offline" after 30s silence
+  - machines         : "online" when health received, "offline" after 30s silence
   - opentrons        : uses run_status field from health data
 """
 import asyncio
@@ -26,8 +25,10 @@ from influxdb_client_3 import InfluxDBClient3, Point, WritePrecision
 import nats
 from nats.aio.msg import Msg
 
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
 logging.basicConfig(
-    level=logging.WARNING,
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
     format="%(asctime)s %(levelname)s %(message)s",
 )
 logger = logging.getLogger(__name__)
@@ -40,17 +41,12 @@ INFLUXDB_DATABASE = os.getenv("INFLUXDB_DATABASE", "machines")
 # ── PUDA / NATS ───────────────────────────────────────────────────────────────
 NATS_SERVERS = os.getenv(
     "NATS_SERVERS",
-    "nats://100.109.131.12:4222,nats://100.109.131.12:4223,nats://100.109.131.12:4224",
+    "nats://localhost:4222,nats://localhost:4223,nats://localhost:4224",
 )
-MACHINES = [machine.strip() for machine in os.getenv("MACHINES", "biologic,first,opentrons").split(",") if machine.strip()]
 OFFLINE_TIMEOUT_SECS = 30
-
-# topic values from puda.<machine_id>.cmd.<topic>
-COMMAND_TOPICS   = {"queue", "immediate"}
-RESPONSE_TOPICS  = {"response.queue", "response.immediate"}
-
+NATS_RECONNECT_WAIT_SECS = float(os.getenv("NATS_RECONNECT_WAIT_SECS", "2"))
 # ── shared state (written by main thread, read by offline monitor) ────────────
-last_seen: dict[str, float | None] = {m: None for m in MACHINES}
+last_seen: dict[str, float | None] = {}
 last_status: dict[str, str] = {}
 state_lock = threading.Lock()
 
@@ -78,10 +74,13 @@ def _parse_subject(subject: str) -> tuple[str, str, str] | None:
 
 def _decode_payload(msg: Msg) -> dict | None:
     try:
-        return json.loads(msg.data.decode("utf-8"))
+        decoded = json.loads(msg.data.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         logger.warning("NATS payload parse error on %s: %s", msg.subject, exc)
         return None
+    if isinstance(decoded, dict):
+        return decoded
+    return {"payload": decoded}
 
 
 def _message_timestamp(data: dict) -> str:
@@ -92,6 +91,28 @@ def _message_timestamp(data: dict) -> str:
             return str(header_ts)
     data_ts = data.get("timestamp")
     return str(data_ts) if data_ts else datetime.now(timezone.utc).isoformat()
+
+
+def _as_dict(value) -> dict:
+    return value if isinstance(value, dict) else {}
+
+
+def _json_dump(value) -> str:
+    try:
+        return json.dumps(value if value is not None else {})
+    except TypeError:
+        return json.dumps(str(value))
+
+
+def _safe_int(value) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _is_response_message(topic: str, body: dict) -> bool:
+    return topic.startswith("response") or "response" in body
 
 
 # ── health ────────────────────────────────────────────────────────────────────
@@ -124,17 +145,33 @@ def offline_monitor(client) -> None:
     while True:
         time.sleep(10)
         now = time.time()
+        offline_machines = []
         with state_lock:
-            for machine_id in MACHINES:
-                ls = last_seen.get(machine_id)
+            for machine_id, ls in list(last_seen.items()):
                 if ls is None:
                     continue
                 if (now - ls) > OFFLINE_TIMEOUT_SECS:
                     if last_status.get(machine_id) != "offline":
-                        logger.info("%s went offline (no heartbeat for >%ds)", machine_id, OFFLINE_TIMEOUT_SECS)
-                        write_status(client, machine_id, "offline", datetime.now(timezone.utc))
+                        offline_machines.append(machine_id)
                         last_status[machine_id] = "offline"
                     last_seen[machine_id] = None
+        for machine_id in offline_machines:
+            logger.info("%s went offline (no heartbeat for >%ds)", machine_id, OFFLINE_TIMEOUT_SECS)
+            write_status(client, machine_id, "offline", datetime.now(timezone.utc))
+
+
+def refresh_liveness(client, machine_id: str, status: str | None = None, ts: datetime | None = None) -> None:
+    with state_lock:
+        last_seen[machine_id] = time.time()
+        prev = last_status.get(machine_id)
+        next_status = status or ("online" if prev == "offline" else prev)
+        if next_status:
+            last_status[machine_id] = next_status
+
+    if next_status and prev != next_status:
+        if status is None:
+            write_status(client, machine_id, next_status, ts or datetime.now(timezone.utc))
+        logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", next_status)
 
 
 # ── command log ───────────────────────────────────────────────────────────────
@@ -147,10 +184,10 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
         data: { header: {...}, command: {...}, response: {...} } }
     response key is absent on command messages.
     """
-    body:     dict = msg.get("data") or {}
-    header:   dict = body.get("header") or {}
-    command:  dict = body.get("command") or {}
-    response: dict | None = body.get("response")  # None for command messages
+    body: dict = _as_dict(msg.get("data"))
+    header: dict = _as_dict(body.get("header"))
+    command: dict = _as_dict(body.get("command"))
+    response: dict | None = body.get("response") if isinstance(body.get("response"), dict) else None
 
     username = header.get("username") or ""
     user_id  = header.get("user_id")  or ""
@@ -158,21 +195,24 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
     ts_str   = header.get("timestamp") or msg.get("timestamp") or ""
     ts       = _parse_ts(ts_str)
 
-    is_command = topic in COMMAND_TOPICS  # "queue" or "immediate"
+    is_response = _is_response_message(topic, body)
+    msg_type = "response" if is_response else "command"
 
     point = (
         Point("machine_commands")
         .tag("machine_id", machine_id)
-        .tag("msg_type", "command" if is_command else "response")
+        .tag("msg_type", msg_type)
         .tag("username", username or "unknown")
+        .field("subject", str(msg.get("subject") or ""))
         .field("topic", topic)
         .field("user_id", user_id)
+        .field("raw_json", _json_dump(body))
         .time(ts, WritePrecision.NS)
     )
     if run_id is not None:
         point = point.tag("run_id", str(run_id))
 
-    if is_command:
+    if not is_response:
         cmd_name    = command.get("name", "")
         step_number = command.get("step_number", 0)
         version     = command.get("version") or ""
@@ -183,10 +223,10 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
             point
             .tag("status", "sent")
             .field("cmd_name", cmd_name)
-            .field("step_number", int(step_number))
+            .field("step_number", _safe_int(step_number))
             .field("cmd_version", str(version))
-            .field("params_json", json.dumps(params))
-            .field("kwargs_json", json.dumps(kwargs))
+            .field("params_json", _json_dump(params))
+            .field("kwargs_json", _json_dump(kwargs))
             .field("response_code", "")
             .field("response_message", "")
             .field("data_json", "")
@@ -205,17 +245,17 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
 
         point = point.tag("status", status)
         point = point.field("cmd_name", cmd_name)
-        point = point.field("step_number", int(step_number))
+        point = point.field("step_number", _safe_int(step_number))
         point = point.field("cmd_version", str(command.get("version") or ""))
-        point = point.field("params_json", json.dumps(command.get("params") or {}))
-        point = point.field("kwargs_json", json.dumps(command.get("kwargs") or {}))
+        point = point.field("params_json", _json_dump(command.get("params") or {}))
+        point = point.field("kwargs_json", _json_dump(command.get("kwargs") or {}))
         point = point.field("response_code", str(code))
         point = point.field("response_message", str(message))
-        point = point.field("data_json", json.dumps(resp_data))
+        point = point.field("data_json", _json_dump(resp_data))
         point = point.field("completed_at", str(completed_at))
 
     client.write(record=point)
-    logger.debug("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic, "cmd" if is_command else "resp")
+    logger.debug("cmd_log  machine=%-12s  topic=%-20s  type=%s", machine_id, topic, msg_type)
 
 
 # ── NATS message handling ─────────────────────────────────────────────────────
@@ -227,9 +267,6 @@ def handle_nats_message(client, msg: Msg) -> None:
         return
 
     machine_id, category, topic = parsed_subject
-    if machine_id not in last_seen:
-        logger.debug("Ignoring unconfigured machine %s on %s", machine_id, msg.subject)
-        return
 
     data = _decode_payload(msg)
     if data is None:
@@ -244,27 +281,37 @@ def handle_nats_message(client, msg: Msg) -> None:
         "data": data,
     }
 
-    if category == "tlm" and topic == "health":
+    if category == "tlm" and topic == "heartbeat":
+        payload_ts = _parse_ts(envelope["timestamp"])
+        received_ts = datetime.now(timezone.utc)
+        with state_lock:
+            prev_status = last_status.get(machine_id)
+        heartbeat_status = prev_status if prev_status and prev_status != "offline" else "online"
+        logger.info(
+            "heartbeat_received  machine=%-12s  subject=%s  payload_ts=%s  received_ts=%s",
+            machine_id,
+            msg.subject,
+            payload_ts.isoformat(),
+            received_ts.isoformat(),
+        )
+        write_status(client, machine_id, heartbeat_status, received_ts)
+        refresh_liveness(client, machine_id, status=heartbeat_status, ts=received_ts)
+
+    elif category == "tlm" and topic == "health":
         ts = _parse_ts(envelope["timestamp"])
         status = derive_status(machine_id, data)
         extra = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp")}
         write_status(client, machine_id, status, ts, extra)
+        refresh_liveness(client, machine_id, status=status, ts=ts)
 
-        with state_lock:
-            last_seen[machine_id] = time.time()
-            prev = last_status.get(machine_id)
-            last_status[machine_id] = status
-            if prev != status:
-                logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", status)
-
-    elif category == "cmd" and topic in COMMAND_TOPICS | RESPONSE_TOPICS:
+    elif category == "cmd":
         try:
             write_command(client, machine_id, topic, envelope)
             logger.info(
                 "cmd_log  machine=%-12s  topic=%-20s  type=%s",
                 machine_id,
                 topic,
-                "cmd" if topic in COMMAND_TOPICS else "resp",
+                "resp" if _is_response_message(topic, data) else "cmd",
             )
         except Exception as exc:
             logger.error("cmd_log write failed: %s", exc)
@@ -279,13 +326,19 @@ async def main() -> None:
     threading.Thread(target=offline_monitor, args=(client,), daemon=True).start()
 
     async def on_error(exc: Exception) -> None:
-        logger.error("NATS error: %s", exc)
+        logger.error("NATS error: %r", exc)
 
     async def on_disconnect() -> None:
-        logger.warning("Disconnected from NATS")
+        logger.warning(
+            "Disconnected from NATS; reconnecting every %.1fs",
+            NATS_RECONNECT_WAIT_SECS,
+        )
 
     async def on_reconnect() -> None:
-        logger.info("Reconnected to NATS")
+        logger.info("Reconnected to NATS at %s", nc.connected_url.netloc)
+
+    async def on_closed() -> None:
+        logger.error("NATS connection closed; watcher process will exit for Docker restart")
 
     servers = _nats_servers()
     logger.info("Connecting to NATS at %s", ",".join(servers))
@@ -294,18 +347,21 @@ async def main() -> None:
         error_cb=on_error,
         disconnected_cb=on_disconnect,
         reconnected_cb=on_reconnect,
+        closed_cb=on_closed,
+        max_reconnect_attempts=-1,
+        reconnect_time_wait=NATS_RECONNECT_WAIT_SECS,
     )
+    logger.info("Connected to NATS at %s", nc.connected_url.netloc)
     try:
         subscriptions = []
-        for machine_id in MACHINES:
-            for category in ("tlm", "cmd"):
-                subject = f"puda.{machine_id}.{category}.>"
+        for category in ("tlm", "cmd"):
+            subject = f"puda.*.{category}.>"
 
-                async def callback(msg: Msg) -> None:
-                    handle_nats_message(client, msg)
+            async def callback(msg: Msg) -> None:
+                handle_nats_message(client, msg)
 
-                subscriptions.append(await nc.subscribe(subject, cb=callback))
-                logger.info("Subscribed to %s", subject)
+            subscriptions.append(await nc.subscribe(subject, cb=callback))
+            logger.info("Subscribed to %s", subject)
 
         await asyncio.Future()
     except asyncio.CancelledError:

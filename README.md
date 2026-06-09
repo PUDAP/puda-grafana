@@ -24,6 +24,9 @@ PUDA NATS subjects
 |---|---|---|
 | Machine Status | `/d/machine-status` | Status timeline, CPU, memory, temperature |
 | Command Log | `/d/command-log` | NATS commands sent and responses received |
+| VIPSA | `/d/vipsa` | VIPSA machine status and command logs |
+| IFIM | `/d/ifim` | IFIM PL system status and command logs |
+| Bears | `/d/bears` | Bears FIRST, Biologic, and Opentrons status and command logs |
 
 ## Quick start
 
@@ -32,9 +35,13 @@ cp .env.example .env   # optional — edit NATS servers / machines
 ./start.sh
 ```
 
-`start.sh` generates the local InfluxDB admin token file, builds and starts all services, creates the InfluxDB database if needed, and resets Grafana state once if superseded dashboard UIDs (`puda-*`) are detected.
+`start.sh` generates the local InfluxDB admin token file, starts all services, creates the InfluxDB database if needed, and resets Grafana state once if superseded dashboard UIDs (`puda-*`) are detected.
 
 Use `./start.sh` rather than `docker compose up` directly — the generated `admin-token.json` is required at startup.
+
+Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so changing a dashboard does not require rebuilding the Docker image. Grafana polls provisioned dashboards every 10 seconds; refresh the browser after editing a dashboard file.
+
+Use `./start.sh --build` only after changing image contents such as `watcher.py`, `Dockerfile`, `pyproject.toml`, or `uv.lock`.
 
 | Service | URL | Credentials |
 |---|---|---|
@@ -52,9 +59,9 @@ Use `./start.sh` rather than `docker compose up` directly — the generated `adm
 | `machine_status` | `tlm/health` | `status`, `cpu`, `mem`, `temp` |
 | `machine_commands` | `cmd/*` | `cmd_name`, `step_number`, `params_json`, `response_code`, … |
 
-Machines are marked **offline** after 30 s without a health heartbeat.
+Machines are discovered from NATS traffic and marked **offline** after 30 s without a health heartbeat.
 
-It subscribes to `puda.<machine_id>.tlm.>` and `puda.<machine_id>.cmd.>` for every machine listed in `MACHINES`.
+It subscribes to `puda.*.tlm.>` and `puda.*.cmd.>`, so all PUDA machine IDs matching those subjects are captured.
 Uses `network_mode: host` so the container can reach NATS on the host network (Linux only).
 
 ### `influxdb`
@@ -75,8 +82,7 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 |---|---|---|
 | `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; passed to Grafana as an environment variable) |
 | `INFLUXDB_DATABASE` | `machines` | InfluxDB database name |
-| `NATS_SERVERS` | `nats://100.109.131.12:4222,…` | NATS cluster endpoints |
-| `MACHINES` | `biologic,first,opentrons` | Comma-separated machine IDs to watch |
+| `NATS_SERVERS` | `nats://localhost:4222,…` | Local NATS cluster endpoints |
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
 
@@ -85,7 +91,7 @@ Watcher-specific variables (`INFLUXDB_URL`, etc.) are set in `compose.yml` and c
 ## Deploying to a new host
 
 1. Clone the repo and install Docker + Docker Compose.
-2. Copy `.env.example` → `.env` and set `NATS_SERVERS` / `MACHINES` for the target environment.
+2. Copy `.env.example` → `.env` and set `NATS_SERVERS` for the target environment.
 3. Run `./start.sh`.
 4. Open Grafana at http://localhost:3000 and confirm both dashboards load data.
 
@@ -101,6 +107,9 @@ docker compose down -v
 ```bash
 # Start everything
 ./start.sh
+
+# Rebuild the watcher image, then start everything
+./start.sh --build
 
 # Tail watcher logs
 docker compose logs -f watcher
