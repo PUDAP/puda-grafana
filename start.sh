@@ -10,7 +10,8 @@ elif [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   echo "Usage: ./start.sh [--build]"
   echo ""
   echo "Starts the stack without rebuilding images by default."
-  echo "Use --build after changing watcher.py, Dockerfile, or Python dependencies."
+  echo "Use --build after changing Dockerfile or Python dependencies."
+  echo "After changing watcher.py, run: docker compose restart watcher"
   exit 0
 elif [[ -n "${1:-}" ]]; then
   echo "Unknown option: $1" >&2
@@ -51,3 +52,4 @@ echo "    IFIM            → /d/ifim"
 echo "    VIPSA           → /d/vipsa"
 echo ""
 echo "Logs: docker compose logs -f watcher"
+echo "Restart watcher after code edits: docker compose restart watcher"

@@ -17,6 +17,7 @@ import asyncio
 import json
 import logging
 import os
+import queue
 import threading
 import time
 from datetime import datetime, timezone
@@ -33,10 +34,20 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+def make_influx_client() -> InfluxDBClient3:
+    return InfluxDBClient3(
+        host=INFLUXDB_URL,
+        token=INFLUXDB_TOKEN,
+        database=INFLUXDB_DATABASE,
+        write_timeout=INFLUXDB_WRITE_TIMEOUT_MS,
+    )
+
 # ── InfluxDB ──────────────────────────────────────────────────────────────────
 INFLUXDB_URL      = os.getenv("INFLUXDB_URL",      "http://localhost:8181")
 INFLUXDB_TOKEN    = os.getenv("INFLUXDB_TOKEN",    "apiv3_puda")
 INFLUXDB_DATABASE = os.getenv("INFLUXDB_DATABASE", "machines")
+INFLUXDB_WRITE_TIMEOUT_MS = int(os.getenv("INFLUXDB_WRITE_TIMEOUT_MS", "5000"))
 
 # ── PUDA / NATS ───────────────────────────────────────────────────────────────
 NATS_SERVERS = os.getenv(
@@ -45,9 +56,14 @@ NATS_SERVERS = os.getenv(
 )
 OFFLINE_TIMEOUT_SECS = 30
 NATS_RECONNECT_WAIT_SECS = float(os.getenv("NATS_RECONNECT_WAIT_SECS", "2"))
+HEALTH_STALL_TIMEOUT_SECS = float(os.getenv("HEALTH_STALL_TIMEOUT_SECS", "90"))
+TLM_WRITE_INTERVAL_SECS = float(os.getenv("TLM_WRITE_INTERVAL_SECS", "5"))
+WRITE_QUEUE_MAXSIZE = int(os.getenv("WRITE_QUEUE_MAXSIZE", "10000"))
 # ── shared state (written by main thread, read by offline monitor) ────────────
 last_seen: dict[str, float | None] = {}
 last_status: dict[str, str] = {}
+latest_tlm: dict[str, tuple[str, datetime, dict]] = {}
+last_health_write = time.time()
 state_lock = threading.Lock()
 
 
@@ -72,11 +88,11 @@ def _parse_subject(subject: str) -> tuple[str, str, str] | None:
     return parts[1], parts[2], ".".join(parts[3:])
 
 
-def _decode_payload(msg: Msg) -> dict | None:
+def _decode_payload(subject: str, payload: bytes) -> dict | None:
     try:
-        decoded = json.loads(msg.data.decode("utf-8"))
+        decoded = json.loads(payload.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        logger.warning("NATS payload parse error on %s: %s", msg.subject, exc)
+        logger.warning("NATS payload parse error on %s: %s", subject, exc)
         return None
     if isinstance(decoded, dict):
         return decoded
@@ -125,7 +141,7 @@ def derive_status(machine_id: str, data: dict) -> str:
     return "online"
 
 
-def write_status(client, machine_id: str, status: str, ts: datetime, extra: dict | None = None) -> None:
+def status_point(machine_id: str, status: str, ts: datetime, extra: dict | None = None) -> Point:
     point = (
         Point("machine_status")
         .tag("machine_id", machine_id)
@@ -136,8 +152,36 @@ def write_status(client, machine_id: str, status: str, ts: datetime, extra: dict
         for k, v in extra.items():
             if isinstance(v, (int, float)):
                 point = point.field(k, float(v))
+    return point
+
+
+def write_status(client, machine_id: str, status: str, ts: datetime, extra: dict | None = None) -> None:
+    point = status_point(machine_id, status, ts, extra)
     client.write(record=point)
     logger.debug("health  machine_id=%-10s  status=%s", machine_id, status)
+
+
+def note_metric_write() -> None:
+    global last_health_write
+    with state_lock:
+        last_health_write = time.time()
+
+
+def update_liveness(machine_id: str, status: str | None = None) -> None:
+    with state_lock:
+        last_seen[machine_id] = time.time()
+        prev = last_status.get(machine_id)
+        next_status = status or ("online" if prev in (None, "offline") else prev)
+        if next_status:
+            last_status[machine_id] = next_status
+
+    if next_status and prev != next_status:
+        logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", next_status)
+
+
+def remember_tlm(machine_id: str, status: str, ts: datetime, extra: dict) -> None:
+    with state_lock:
+        latest_tlm[machine_id] = (status, ts, extra)
 
 
 def offline_monitor(client) -> None:
@@ -160,18 +204,43 @@ def offline_monitor(client) -> None:
             write_status(client, machine_id, "offline", datetime.now(timezone.utc))
 
 
-def refresh_liveness(client, machine_id: str, status: str | None = None, ts: datetime | None = None) -> None:
-    with state_lock:
-        last_seen[machine_id] = time.time()
-        prev = last_status.get(machine_id)
-        next_status = status or ("online" if prev == "offline" else prev)
-        if next_status:
-            last_status[machine_id] = next_status
+def health_watchdog() -> None:
+    """Exit when metric ingestion stalls while the process is otherwise alive."""
+    if HEALTH_STALL_TIMEOUT_SECS <= 0:
+        logger.info("Health watchdog disabled")
+        return
 
-    if next_status and prev != next_status:
-        if status is None:
-            write_status(client, machine_id, next_status, ts or datetime.now(timezone.utc))
-        logger.info("%s status changed: %s → %s", machine_id, prev or "(none)", next_status)
+    while True:
+        time.sleep(min(10, max(1, HEALTH_STALL_TIMEOUT_SECS / 3)))
+        with state_lock:
+            stalled_for = time.time() - last_health_write
+        if stalled_for > HEALTH_STALL_TIMEOUT_SECS:
+            logger.error(
+                "No successful health metric write for %.1fs; exiting for Docker restart",
+                stalled_for,
+            )
+            os._exit(1)
+
+
+def telemetry_flusher(client) -> None:
+    while True:
+        time.sleep(TLM_WRITE_INTERVAL_SECS)
+        with state_lock:
+            samples = list(latest_tlm.items())
+
+        if not samples:
+            continue
+
+        points = [
+            status_point(machine_id, status, ts, extra)
+            for machine_id, (status, ts, extra) in samples
+        ]
+        try:
+            client.write(record=points)
+            if any(extra for _, (_, _, extra) in samples):
+                note_metric_write()
+        except Exception:
+            logger.exception("telemetry batch write failed")
 
 
 # ── command log ───────────────────────────────────────────────────────────────
@@ -260,21 +329,21 @@ def write_command(client, machine_id: str, topic: str, msg: dict) -> None:
 
 # ── NATS message handling ─────────────────────────────────────────────────────
 
-def handle_nats_message(client, msg: Msg) -> None:
-    parsed_subject = _parse_subject(msg.subject)
+def handle_nats_message(client, subject: str, payload: bytes) -> None:
+    parsed_subject = _parse_subject(subject)
     if parsed_subject is None:
-        logger.debug("Ignoring unexpected subject: %s", msg.subject)
+        logger.debug("Ignoring unexpected subject: %s", subject)
         return
 
     machine_id, category, topic = parsed_subject
 
-    data = _decode_payload(msg)
+    data = _decode_payload(subject, payload)
     if data is None:
         return
 
     envelope = {
         "timestamp": _message_timestamp(data),
-        "subject": msg.subject,
+        "subject": subject,
         "machine_id": machine_id,
         "category": category,
         "topic": topic,
@@ -282,27 +351,14 @@ def handle_nats_message(client, msg: Msg) -> None:
     }
 
     if category == "tlm" and topic == "heartbeat":
-        payload_ts = _parse_ts(envelope["timestamp"])
-        received_ts = datetime.now(timezone.utc)
-        with state_lock:
-            prev_status = last_status.get(machine_id)
-        heartbeat_status = prev_status if prev_status and prev_status != "offline" else "online"
-        logger.info(
-            "heartbeat_received  machine=%-12s  subject=%s  payload_ts=%s  received_ts=%s",
-            machine_id,
-            msg.subject,
-            payload_ts.isoformat(),
-            received_ts.isoformat(),
-        )
-        write_status(client, machine_id, heartbeat_status, received_ts)
-        refresh_liveness(client, machine_id, status=heartbeat_status, ts=received_ts)
+        update_liveness(machine_id)
 
     elif category == "tlm" and topic == "health":
         ts = _parse_ts(envelope["timestamp"])
         status = derive_status(machine_id, data)
-        extra = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp")}
-        write_status(client, machine_id, status, ts, extra)
-        refresh_liveness(client, machine_id, status=status, ts=ts)
+        extra = {k: v for k, v in data.items() if k in ("cpu", "mem", "temp") and isinstance(v, (int, float))}
+        remember_tlm(machine_id, status, ts, extra)
+        update_liveness(machine_id, status=status)
 
     elif category == "cmd":
         try:
@@ -317,13 +373,53 @@ def handle_nats_message(client, msg: Msg) -> None:
             logger.error("cmd_log write failed: %s", exc)
 
 
+def write_worker(name: str, client, work_queue: queue.Queue[tuple[str, bytes] | None]) -> None:
+    while True:
+        item = work_queue.get()
+        if item is None:
+            work_queue.task_done()
+            return
+
+        subject, payload = item
+        try:
+            handle_nats_message(client, subject, payload)
+        except Exception:
+            logger.exception("%s message handling failed for %s", name, subject)
+        finally:
+            work_queue.task_done()
+
+
+def enqueue_message(
+    telemetry_queue: queue.Queue[tuple[str, bytes] | None],
+    command_queue: queue.Queue[tuple[str, bytes] | None],
+    msg: Msg,
+) -> None:
+    work_queue = command_queue if ".cmd." in msg.subject else telemetry_queue
+    try:
+        work_queue.put_nowait((msg.subject, bytes(msg.data)))
+    except queue.Full:
+        logger.error(
+            "Write queue full (%d messages) for %s; exiting for Docker restart",
+            WRITE_QUEUE_MAXSIZE,
+            msg.subject,
+        )
+        os._exit(1)
+
+
 # ── main ───────────────────────────────────────────────────────────────────────
 
 async def main() -> None:
     logger.info("Connecting to InfluxDB at %s …", INFLUXDB_URL)
-    client = InfluxDBClient3(host=INFLUXDB_URL, token=INFLUXDB_TOKEN, database=INFLUXDB_DATABASE)
+    status_client = make_influx_client()
+    command_client = make_influx_client()
 
-    threading.Thread(target=offline_monitor, args=(client,), daemon=True).start()
+    telemetry_queue: queue.Queue[tuple[str, bytes] | None] = queue.Queue(maxsize=WRITE_QUEUE_MAXSIZE)
+    command_queue: queue.Queue[tuple[str, bytes] | None] = queue.Queue(maxsize=WRITE_QUEUE_MAXSIZE)
+    threading.Thread(target=write_worker, args=("telemetry", status_client, telemetry_queue), daemon=True).start()
+    threading.Thread(target=write_worker, args=("command", command_client, command_queue), daemon=True).start()
+    threading.Thread(target=telemetry_flusher, args=(status_client,), daemon=True).start()
+    threading.Thread(target=offline_monitor, args=(status_client,), daemon=True).start()
+    threading.Thread(target=health_watchdog, daemon=True).start()
 
     async def on_error(exc: Exception) -> None:
         logger.error("NATS error: %r", exc)
@@ -353,22 +449,27 @@ async def main() -> None:
     )
     logger.info("Connected to NATS at %s", nc.connected_url.netloc)
     try:
-        subscriptions = []
-        for category in ("tlm", "cmd"):
-            subject = f"puda.*.{category}.>"
+        async def callback(msg: Msg) -> None:
+            enqueue_message(telemetry_queue, command_queue, msg)
 
-            async def callback(msg: Msg) -> None:
-                handle_nats_message(client, msg)
-
-            subscriptions.append(await nc.subscribe(subject, cb=callback))
+        subjects = (
+            "puda.*.tlm.heartbeat",
+            "puda.*.tlm.health",
+            "puda.*.cmd.>",
+        )
+        for subject in subjects:
+            await nc.subscribe(subject, cb=callback)
             logger.info("Subscribed to %s", subject)
 
         await asyncio.Future()
     except asyncio.CancelledError:
         logger.info("Interrupted — shutting down")
     finally:
+        telemetry_queue.put(None)
+        command_queue.put(None)
         await nc.drain()
-        client.close()
+        status_client.close()
+        command_client.close()
         logger.info("Done")
 
 

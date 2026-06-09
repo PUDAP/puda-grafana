@@ -57,6 +57,8 @@ services:
     container_name: puda-watcher
     restart: unless-stopped
     network_mode: host
+    volumes:
+      - ./watcher.py:/app/watcher.py:ro
     environment:
       INFLUXDB_URL: http://localhost:8181
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN:-apiv3_puda}

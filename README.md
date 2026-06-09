@@ -41,7 +41,13 @@ Use `./start.sh` rather than `docker compose up` directly — the generated `adm
 
 Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so changing a dashboard does not require rebuilding the Docker image. Grafana polls provisioned dashboards every 10 seconds; refresh the browser after editing a dashboard file.
 
-Use `./start.sh --build` only after changing image contents such as `watcher.py`, `Dockerfile`, `pyproject.toml`, or `uv.lock`.
+`watcher.py` is also bind-mounted into the watcher container, so changing it does not require rebuilding the image. Restart the running process after edits:
+
+```bash
+docker compose restart watcher
+```
+
+Use `./start.sh --build` only after changing image contents such as `Dockerfile`, `pyproject.toml`, or `uv.lock`.
 
 | Service | URL | Credentials |
 |---|---|---|
@@ -110,6 +116,9 @@ docker compose down -v
 
 # Rebuild the watcher image, then start everything
 ./start.sh --build
+
+# Restart watcher after editing watcher.py
+docker compose restart watcher
 
 # Tail watcher logs
 docker compose logs -f watcher
