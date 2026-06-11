@@ -157,6 +157,18 @@
                 "value": "opentrons"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "elephant"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "elephant"
+              }
+            ]
           }
         ]
       },
@@ -208,6 +220,15 @@
           },
           "rawSql": "SELECT time, status AS \"opentrons\" FROM machine_status WHERE machine_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-puda"
+          },
+          "rawSql": "SELECT time, status AS \"elephant\" FROM machine_status WHERE machine_id = 'elephant' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "D",
           "rawQuery": true
         }
       ],
@@ -590,6 +611,131 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-puda"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                },
+                "idle": {
+                  "text": "Idle",
+                  "color": "gray",
+                  "index": 2
+                },
+                "running": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 3
+                },
+                "succeeded": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 4
+                },
+                "paused": {
+                  "text": "Paused",
+                  "color": "yellow",
+                  "index": 5
+                },
+                "stopped": {
+                  "text": "Stopped",
+                  "color": "orange",
+                  "index": 6
+                },
+                "failed": {
+                  "text": "Failed",
+                  "color": "red",
+                  "index": 7
+                },
+                "error": {
+                  "text": "Error",
+                  "color": "orange",
+                  "index": 8
+                },
+                "sent": {
+                  "text": "Sent",
+                  "color": "blue",
+                  "index": 9
+                },
+                "success": {
+                  "text": "Success",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "dateTimeAsIso"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "time",
+          "values": false,
+          "limit": 1
+        },
+        "textMode": "auto",
+        "text": {
+          "titleSize": 12,
+          "valueSize": 18
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-puda"
+          },
+          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'elephant' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "elephant",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -614,7 +760,7 @@
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "FIRST Camera",
+      "title": "first Camera",
       "type": "text"
     },
     {
@@ -785,6 +931,24 @@
           "rawSql": "SELECT time, mem AS \"biologic Memory\" FROM machine_status WHERE machine_id = 'biologic' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-puda"
+          },
+          "rawSql": "SELECT time, cpu AS \"elephant CPU\" FROM machine_status WHERE machine_id = 'elephant' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "E",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-puda"
+          },
+          "rawSql": "SELECT time, mem AS \"elephant Memory\" FROM machine_status WHERE machine_id = 'elephant' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "F",
+          "rawQuery": true
         }
       ],
       "title": "CPU and Memory %",
@@ -880,6 +1044,15 @@
           "rawSql": "SELECT time, temp AS \"biologic\" FROM machine_status WHERE machine_id = 'biologic' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-puda"
+          },
+          "rawSql": "SELECT time, temp AS \"elephant\" FROM machine_status WHERE machine_id = 'elephant' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "C",
+          "rawQuery": true
         }
       ],
       "title": "Temperature \u00b0C",
@@ -949,7 +1122,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1009,7 +1182,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1078,7 +1251,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1138,7 +1311,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1236,7 +1409,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\", COUNT(CASE WHEN machine_id = 'elephant' THEN 1 END) AS \"elephant\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1245,7 +1418,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -1528,6 +1701,29 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "response"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Response Data"
+              },
+              {
+                "id": "custom.width",
+                "value": 320
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -1563,7 +1759,7 @@
             "type": "influxdb",
             "uid": "influxdb-puda"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), substr(data_json, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant') ORDER BY time DESC LIMIT 500",
           "refId": "A",
           "rawQuery": true
         }
