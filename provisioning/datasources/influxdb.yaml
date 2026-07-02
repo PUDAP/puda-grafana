@@ -20,6 +20,7 @@ datasources:
     uid: influxdb-hermes-first
     url: $INFLUXDB_URL
     access: proxy
+    database: hermes-first
     jsonData:
       version: SQL
       database: hermes-first

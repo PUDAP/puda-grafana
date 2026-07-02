@@ -14,6 +14,8 @@ services:
       INFLUXDB_URL: ${INFLUXDB_URL}
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
       INFLUXDB_DATABASE: ${INFLUXDB_DATABASE}
+    extra_hosts:
+      - "bearsnas:100.87.23.102"
     volumes:
       - grafana_data:/var/lib/grafana
       - ./provisioning:/etc/grafana/provisioning

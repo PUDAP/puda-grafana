@@ -46,14 +46,12 @@
             {
               "type": "value",
               "options": {
-                "start": { "text": "start", "color": "green", "index": 0 },
-                "end": { "text": "end", "color": "blue", "index": 1 },
-                "turn_start": { "text": "turn_start", "color": "#FADE2A", "index": 2 },
-                "turn_end": { "text": "turn_end", "color": "super-light-purple", "index": 3 },
-                "api_start": { "text": "api_start", "color": "orange", "index": 4 },
-                "api_end": { "text": "api_end", "color": "dark-green", "index": 5 },
-                "verify": { "text": "verify", "color": "light-blue", "index": 6 },
-                "ping": { "text": "ping", "color": "light-blue", "index": 7 }
+                "start":          { "text": "start",          "color": "green",             "index": 0 },
+                "end":            { "text": "end",            "color": "blue",              "index": 1 },
+                "turn_start":     { "text": "turn_start",     "color": "#FADE2A",           "index": 2 },
+                "turn_end":       { "text": "turn_end",       "color": "super-light-purple","index": 3 },
+                "subagent_start": { "text": "subagent_start", "color": "purple",            "index": 4 },
+                "subagent_stop":  { "text": "subagent_stop",  "color": "dark-purple",       "index": 5 }
               }
             }
           ],
@@ -62,18 +60,54 @@
             "steps": [{ "color": "green", "value": null }]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Tool Call" },
+            "properties": [
+              { "id": "color", "value": { "mode": "palette-classic" } },
+              {
+                "id": "mappings",
+                "value": [
+                  { "type": "regex", "options": { "pattern": "^tool_(start|end): terminal\\b", "result": { "color": "blue", "index": 0 } } },
+                  { "type": "regex", "options": { "pattern": "^tool_(start|end): read_file\\b", "result": { "color": "green", "index": 1 } } },
+                  { "type": "regex", "options": { "pattern": "^tool_(start|end): search_files\\b", "result": { "color": "orange", "index": 2 } } },
+                  { "type": "regex", "options": { "pattern": "^tool_(start|end): skill_view\\b", "result": { "color": "purple", "index": 3 } } },
+                  { "type": "regex", "options": { "pattern": "^tool_(start|end): execute_code\\b", "result": { "color": "red", "index": 4 } } }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View tool call detail (args/result)",
+                    "url": "/d/hermes/hermes-agent?viewPanel=10&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "API Request" },
+            "properties": [
+              { "id": "color", "value": { "mode": "palette-classic" } },
+              { "id": "mappings", "value": [] }
+            ]
+          }
+        ]
       },
       "gridPos": { "h": 14, "w": 24, "x": 0, "y": 1 },
       "id": 1,
       "options": {
-        "alignValue": "left",
+        "alignValue": "center",
+        "colWidth": 0.3,
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "mergeValues": true,
+        "mergeValues": false,
         "rowHeight": 0.85,
         "showValue": "auto",
         "tooltip": { "mode": "single", "sort": "none" }
@@ -81,209 +115,94 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type AS \"Session\" FROM hermes_session WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"Session\" FROM hermes_session WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type AS \"LLM Turn\" FROM hermes_llm_turn WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM hermes_llm_turn WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type AS \"API Request\" FROM hermes_api_request WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, model AS \"API Request\" FROM hermes_api_request WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type AS \"Logger\" FROM hermes_logger_verify WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event || ': ' || tool_name AS \"Tool Call\" FROM hermes_tool_call WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "rawSql": "SELECT time, event AS \"Subagent\" FROM hermes_subagent WHERE $__timeFilter(time) ORDER BY time ASC",
+          "refId": "E",
           "rawQuery": true
         }
       ],
       "title": "Event Timeline",
-      "type": "state-timeline"
+      "type": "status-history"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
-      "id": 101,
-      "title": "Session Details",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "blue" },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 16 },
-      "id": 2,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
+      "id": 104,
+      "title": "Tool Call Detail (click a tool call point above)",
+      "type": "row",
+      "panels": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, model FROM hermes_session WHERE session_id = '$session_id' AND event_type = 'start' AND $__timeFilter(time) ORDER BY time DESC LIMIT 1",
-          "refId": "A",
-          "rawQuery": true
-        }
-      ],
-      "title": "Model",
-      "type": "stat"
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "purple" },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 16 },
-      "id": 3,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, platform FROM hermes_session WHERE session_id = '$session_id' AND event_type = 'start' AND $__timeFilter(time) ORDER BY time DESC LIMIT 1",
-          "refId": "A",
-          "rawQuery": true
-        }
-      ],
-      "title": "Platform",
-      "type": "stat"
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "fixed", "fixedColor": "orange" },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 10000 },
-              { "color": "red", "value": 50000 }
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": { "type": "auto" },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "time" },
+                "properties": [{ "id": "custom.width", "value": 240 }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "args" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "result" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              }
             ]
           },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 16 },
-      "id": 4,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT MAX(time) AS time, SUM(total_tokens) AS \"total_tokens\" FROM hermes_api_request WHERE session_id = '$session_id' AND event_type = 'api_end' AND $__timeFilter(time)",
-          "refId": "A",
-          "rawQuery": true
-        }
-      ],
-      "title": "Total Tokens",
-      "type": "stat"
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "mappings": [
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 16 },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+            "showHeader": true,
+            "sortBy": [{ "desc": false, "displayName": "time" }]
+          },
+          "targets": [
             {
-              "type": "value",
-              "options": {
-                "true": { "text": "Completed", "color": "green", "index": 0 },
-                "True": { "text": "Completed", "color": "green", "index": 1 },
-                "false": { "text": "Failed", "color": "red", "index": 2 },
-                "False": { "text": "Failed", "color": "red", "index": 3 }
-              }
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "rawSql": "SELECT * FROM hermes_tool_call WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true
             }
           ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 16 },
-      "id": 5,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, CAST(completed AS VARCHAR) AS \"completed\" FROM hermes_session WHERE session_id = '$session_id' AND event_type = 'end' AND $__timeFilter(time) ORDER BY time DESC LIMIT 1",
-          "refId": "A",
-          "rawQuery": true
+          "title": "Tool Call Event Detail",
+          "type": "table"
         }
-      ],
-      "title": "Session Status",
-      "type": "stat"
+      ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 },
       "id": 102,
       "title": "API Calls",
       "type": "row"
@@ -316,7 +235,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 22 },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 17 },
       "id": 6,
       "options": {
         "legend": {
@@ -330,7 +249,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE session_id = '$session_id' AND event_type = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -340,7 +259,7 @@
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 25 },
       "id": 103,
       "title": "Event Log",
       "type": "row"
@@ -364,7 +283,7 @@
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "event_type" },
+            "matcher": { "id": "byName", "options": "event" },
             "properties": [
               { "id": "displayName", "value": "Event" },
               { "id": "custom.width", "value": 120 }
@@ -400,7 +319,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 31 },
+      "gridPos": { "h": 10, "w": 8, "x": 0, "y": 26 },
       "id": 7,
       "options": {
         "cellHeight": "sm",
@@ -416,7 +335,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -443,7 +362,7 @@
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "event_type" },
+            "matcher": { "id": "byName", "options": "event" },
             "properties": [
               { "id": "displayName", "value": "Event" },
               { "id": "custom.width", "value": 120 }
@@ -451,7 +370,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 31 },
+      "gridPos": { "h": 10, "w": 8, "x": 8, "y": 26 },
       "id": 8,
       "options": {
         "cellHeight": "sm",
@@ -467,12 +386,104 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event_type FROM hermes_llm_turn WHERE session_id = '$session_id' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event FROM hermes_llm_turn WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
       ],
       "title": "LLM Turns",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "time" },
+            "properties": [
+              { "id": "displayName", "value": "Time" },
+              { "id": "custom.width", "value": 180 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "event" },
+            "properties": [
+              { "id": "displayName", "value": "Event" },
+              { "id": "custom.width", "value": 100 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "tool_name" },
+            "properties": [
+              { "id": "displayName", "value": "Tool" },
+              { "id": "custom.width", "value": 140 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "status" },
+            "properties": [
+              { "id": "displayName", "value": "Status" },
+              { "id": "custom.width", "value": 90 },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "ok":    { "text": "ok",    "color": "green", "index": 0 },
+                      "error": { "text": "error", "color": "red",   "index": 1 }
+                    }
+                  }
+                ]
+              },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "duration_ms" },
+            "properties": [
+              { "id": "displayName", "value": "Duration (ms)" },
+              { "id": "custom.width", "value": 110 },
+              { "id": "unit", "value": "ms" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "error_message" },
+            "properties": [
+              { "id": "displayName", "value": "Error" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 26 },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [{ "desc": false, "displayName": "Time" }]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Tool Calls",
       "type": "table"
     }
   ],
@@ -482,23 +493,13 @@
   "templating": {
     "list": [
       {
-        "current": {},
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influxdb-hermes-first"
-        },
-        "definition": "SELECT DISTINCT session_id FROM hermes_session WHERE time >= now() - interval '30 days' ORDER BY session_id DESC",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Session",
-        "multi": false,
-        "name": "session_id",
-        "options": [],
-        "query": "SELECT DISTINCT session_id FROM hermes_session WHERE time >= now() - interval '30 days' ORDER BY session_id DESC",
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
+        "current": { "text": "0", "value": "0" },
+        "hide": 2,
+        "label": "Event Time (ms)",
+        "name": "event_time",
+        "options": [{ "text": "0", "value": "0", "selected": true }],
+        "query": "0",
+        "type": "textbox"
       }
     ]
   },
