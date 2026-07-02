@@ -3,9 +3,6 @@ services:
     image: grafana/grafana:13.0.1
     container_name: puda-grafana
     restart: unless-stopped
-    networks:
-      - default
-      - influxdb-logger
     ports:
       - "3000:3000"
     environment:
@@ -24,8 +21,3 @@ services:
 
 volumes:
   grafana_data:
-
-networks:
-  influxdb-logger:
-    name: influxdb-logger_default
-    external: true
