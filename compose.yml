@@ -1,40 +1,11 @@
 services:
-  influxdb-init: 
-    image: alpine:3
-    command: sh -c "chown -R 1500:1500 /data"
-    volumes:
-      - influxdb_data:/data
-
-  influxdb:
-    image: influxdb:3.9.2-core
-    container_name: puda-influxdb
-    restart: unless-stopped
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-    ports:
-      - "8181:8181"
-    environment:
-      INFLUXDB3_NODE_IDENTIFIER_PREFIX: puda
-      INFLUXDB3_LOG_FILTER: info
-      INFLUXDB3_ADMIN_TOKEN_FILE: /run/secrets/admin-token
-    volumes:
-      - influxdb_data:/home/influxdb3/.influxdb
-      - ./admin-token.json:/run/secrets/admin-token:ro
-    depends_on:
-      influxdb-init:
-        condition: service_completed_successfully
-    healthcheck:
-      test: ["CMD", "curl", "-f", "-H", "Authorization: Bearer ${INFLUXDB_TOKEN:-apiv3_puda}", "http://localhost:8181/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-
   grafana:
     image: grafana/grafana:13.0.1
     container_name: puda-grafana
     restart: unless-stopped
+    networks:
+      - default
+      - influxdb-logger
     ports:
       - "3000:3000"
     environment:
@@ -43,33 +14,18 @@ services:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
       GF_PANELS_DISABLE_SANITIZE_HTML: "true"
-      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN:-apiv3_puda}
-      INFLUXDB_DATABASE: ${INFLUXDB_DATABASE:-machines}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_DATABASE: ${INFLUXDB_DATABASE}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./provisioning:/etc/grafana/provisioning
       - ./dashboards:/var/lib/grafana/dashboards
-    depends_on:
-      influxdb:
-        condition: service_healthy
-
-  watcher:
-    build: .
-    container_name: puda-watcher
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - ./watcher.py:/app/watcher.py:ro
-    environment:
-      INFLUXDB_URL: http://localhost:8181
-      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN:-apiv3_puda}
-      INFLUXDB_DATABASE: ${INFLUXDB_DATABASE:-machines}
-      LOG_LEVEL: ${WATCHER_LOG_LEVEL:-INFO}
-      NATS_SERVERS: ${NATS_SERVERS:-nats://localhost:4222,nats://localhost:4223,nats://localhost:4224}
-    depends_on:
-      influxdb:
-        condition: service_healthy
 
 volumes:
-  influxdb_data:
   grafana_data:
+
+networks:
+  influxdb-logger:
+    name: influxdb-logger_default
+    external: true
