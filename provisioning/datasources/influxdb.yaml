@@ -14,3 +14,15 @@ datasources:
       insecureGrpc: true
     secureJsonData:
       token: $INFLUXDB_TOKEN
+
+  - name: InfluxDB Hermes
+    type: influxdb
+    uid: influxdb-hermes-first
+    url: $INFLUXDB_URL
+    access: proxy
+    jsonData:
+      version: SQL
+      database: hermes-first
+      insecureGrpc: true
+    secureJsonData:
+      token: $INFLUXDB_TOKEN
