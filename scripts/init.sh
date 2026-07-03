@@ -6,7 +6,8 @@ cd "$(dirname "$0")/.."
 
 INFLUXDB_URL="${INFLUXDB_URL:-http://localhost:8181}"
 INFLUXDB_TOKEN="${INFLUXDB_TOKEN:-apiv3_puda}"
-INFLUXDB_DATABASE="${INFLUXDB_DATABASE:-machines}"
+INFLUXDB_MACHINES_DATABASE="${INFLUXDB_MACHINES_DATABASE:-machines}"
+INFLUXDB_HERMES_DATABASE="${INFLUXDB_HERMES_DATABASE:-hermes-logs}"
 
 GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
 GRAFANA_USER="${GF_SECURITY_ADMIN_USER:-admin}"
@@ -22,21 +23,23 @@ SUPERSEDED_UIDS=(
   hermes
 )
 
-echo "▶ Ensuring InfluxDB database '${INFLUXDB_DATABASE}' exists …"
-code=$(curl -s -o /dev/null -w "%{http_code}" \
-  -X POST "${INFLUXDB_URL}/api/v3/configure/database" \
-  -H "Authorization: Bearer ${INFLUXDB_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d "{\"db\":\"${INFLUXDB_DATABASE}\"}")
+for db in "${INFLUXDB_MACHINES_DATABASE}" "${INFLUXDB_HERMES_DATABASE}"; do
+  echo "▶ Ensuring InfluxDB database '${db}' exists …"
+  code=$(curl -s -o /dev/null -w "%{http_code}" \
+    -X POST "${INFLUXDB_URL}/api/v3/configure/database" \
+    -H "Authorization: Bearer ${INFLUXDB_TOKEN}" \
+    -H "Content-Type: application/json" \
+    -d "{\"db\":\"${db}\"}")
 
-case "$code" in
-  201) echo "  Created database '${INFLUXDB_DATABASE}'" ;;
-  409) echo "  Database '${INFLUXDB_DATABASE}' already exists" ;;
-  *)
-    echo "  Failed to create database (HTTP ${code})" >&2
-    exit 1
-    ;;
-esac
+  case "$code" in
+    201) echo "  Created database '${db}'" ;;
+    409) echo "  Database '${db}' already exists" ;;
+    *)
+      echo "  Failed to create database '${db}' (HTTP ${code})" >&2
+      exit 1
+      ;;
+  esac
+done
 
 echo "▶ Waiting for Grafana …"
 for _ in $(seq 1 30); do

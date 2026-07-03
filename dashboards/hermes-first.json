@@ -205,31 +205,31 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event AS \"Session\" FROM hermes_session WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"Session\" FROM hermes_session WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM hermes_llm_turn WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM hermes_llm_turn WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, model AS \"API Request\" FROM hermes_api_request WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, model AS \"API Request\" FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event || ': ' || tool_name AS \"Tool Call\" FROM hermes_tool_call WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event || ': ' || tool_name AS \"Tool Call\" FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event AS \"Subagent\" FROM hermes_subagent WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"Subagent\" FROM hermes_subagent WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
         },
@@ -278,7 +278,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-              "rawSql": "SELECT * FROM hermes_session WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -323,7 +323,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-              "rawSql": "SELECT * FROM hermes_llm_turn WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -368,7 +368,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-              "rawSql": "SELECT * FROM hermes_api_request WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -413,7 +413,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-              "rawSql": "SELECT * FROM hermes_tool_call WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -458,7 +458,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-              "rawSql": "SELECT * FROM hermes_subagent WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -563,7 +563,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'first' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -649,7 +649,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -909,7 +909,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
-          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"

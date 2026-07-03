@@ -7,10 +7,10 @@ datasources:
     url: $INFLUXDB_URL
     access: proxy
     isDefault: true
-    database: $INFLUXDB_DATABASE
+    database: $INFLUXDB_MACHINES_DATABASE
     jsonData:
       version: SQL
-      database: $INFLUXDB_DATABASE
+      database: $INFLUXDB_MACHINES_DATABASE
       insecureGrpc: true
     secureJsonData:
       token: $INFLUXDB_TOKEN
@@ -20,10 +20,10 @@ datasources:
     uid: influxdb-hermes-first
     url: $INFLUXDB_URL
     access: proxy
-    database: hermes-first
+    database: $INFLUXDB_HERMES_DATABASE
     jsonData:
       version: SQL
-      database: hermes-first
+      database: $INFLUXDB_HERMES_DATABASE
       insecureGrpc: true
     secureJsonData:
       token: $INFLUXDB_TOKEN
