@@ -184,6 +184,37 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Biologic Machine" },
+            "properties": [
+              { "id": "color", "value": { "mode": "palette-classic" } },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "queue_command":      { "text": "queue_command",      "color": "green",       "index": 0 },
+                      "queue_response":     { "text": "queue_response",     "color": "dark-green",  "index": 1 },
+                      "immediate_command":  { "text": "immediate_command",  "color": "purple",      "index": 2 },
+                      "immediate_response": { "text": "immediate_response", "color": "dark-purple", "index": 3 }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View biologic machine command detail (all tags/fields)",
+                    "url": "/d/first/first?viewPanel=15&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -237,6 +268,12 @@
           "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
           "rawSql": "SELECT time, REPLACE(topic, 'response.', '') || '_' || msg_type AS \"Machine\" FROM machine_commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
+          "rawQuery": true
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT time, REPLACE(topic, 'response.', '') || '_' || msg_type AS \"Biologic Machine\" FROM machine_commands WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "G",
           "rawQuery": true
         }
       ],
@@ -503,7 +540,7 @@
           "targets": [
             {
               "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
-              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM machine_commands WHERE machine_id IN ('first', 'biologic') AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -686,6 +723,13 @@
             ]
           },
           {
+            "matcher": { "id": "byName", "options": "machine_id" },
+            "properties": [
+              { "id": "displayName", "value": "Machine" },
+              { "id": "custom.width", "value": 110 }
+            ]
+          },
+          {
             "matcher": { "id": "byName", "options": "msg_type" },
             "properties": [
               { "id": "displayName", "value": "Type" },
@@ -816,13 +860,13 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
-          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id IN ('first', 'biologic') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Machine Command Log (first, latest 500)",
+      "title": "Machine Command Log (first + biologic, latest 500)",
       "type": "table"
     },
     {

@@ -67,6 +67,7 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
 | `GF_PANELS_DISABLE_SANITIZE_HTML` | `true` | Allows provisioned text panels to embed VIPSA camera/control iframes |
+| `GF_INSTALL_PLUGINS` | `marcusolsson-dynamictext-panel` | Installs the Business Text panel used for styled rolling chat/tool windows |
 
 ## Deploying to a new host
 
