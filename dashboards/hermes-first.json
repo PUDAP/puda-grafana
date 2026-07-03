@@ -62,6 +62,38 @@
         },
         "overrides": [
           {
+            "matcher": { "id": "byName", "options": "Session" },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View session detail (all tags/fields)",
+                    "url": "/d/hermes-first/hermes-first?viewPanel=11&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "LLM Turn" },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View LLM turn detail (all tags/fields)",
+                    "url": "/d/hermes-first/hermes-first?viewPanel=12&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "matcher": { "id": "byName", "options": "Tool Call" },
             "properties": [
               { "id": "color", "value": { "mode": "palette-classic" } },
@@ -80,7 +112,7 @@
                 "value": [
                   {
                     "title": "View tool call detail (args/result)",
-                    "url": "/d/hermes/hermes-agent?viewPanel=10&var-event_time=${__value.time}",
+                    "url": "/d/hermes-first/hermes-first?viewPanel=10&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -92,7 +124,34 @@
             "matcher": { "id": "byName", "options": "API Request" },
             "properties": [
               { "id": "color", "value": { "mode": "palette-classic" } },
-              { "id": "mappings", "value": [] }
+              { "id": "mappings", "value": [] },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View API request detail (all tags/fields)",
+                    "url": "/d/hermes-first/hermes-first?viewPanel=13&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Subagent" },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View subagent detail (all tags/fields)",
+                    "url": "/d/hermes-first/hermes-first?viewPanel=14&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -151,9 +210,133 @@
       "collapsed": true,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
       "id": 104,
-      "title": "Tool Call Detail (click a tool call point above)",
+      "title": "Event Detail (click a point in the Event Timeline above)",
       "type": "row",
       "panels": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": { "type": "auto" },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "time" },
+                "properties": [{ "id": "custom.width", "value": 240 }]
+              }
+            ]
+          },
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+          "id": 11,
+          "options": {
+            "cellHeight": "sm",
+            "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+            "showHeader": true,
+            "sortBy": [{ "desc": false, "displayName": "time" }]
+          },
+          "targets": [
+            {
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "rawSql": "SELECT * FROM hermes_session WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true
+            }
+          ],
+          "title": "Session Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": { "type": "auto" },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "time" },
+                "properties": [{ "id": "custom.width", "value": 240 }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "user_message" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "assistant_response" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              }
+            ]
+          },
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 },
+          "id": 12,
+          "options": {
+            "cellHeight": "sm",
+            "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+            "showHeader": true,
+            "sortBy": [{ "desc": false, "displayName": "time" }]
+          },
+          "targets": [
+            {
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "rawSql": "SELECT * FROM hermes_llm_turn WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true
+            }
+          ],
+          "title": "LLM Turn Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": { "type": "auto" },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "time" },
+                "properties": [{ "id": "custom.width", "value": 240 }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "request_payload" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "response_payload" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              }
+            ]
+          },
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
+          "id": 13,
+          "options": {
+            "cellHeight": "sm",
+            "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+            "showHeader": true,
+            "sortBy": [{ "desc": false, "displayName": "time" }]
+          },
+          "targets": [
+            {
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "rawSql": "SELECT * FROM hermes_api_request WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true
+            }
+          ],
+          "title": "API Request Event Detail (all tags/fields)",
+          "type": "table"
+        },
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
           "fieldConfig": {
@@ -179,7 +362,7 @@
               }
             ]
           },
-          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 16 },
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 40 },
           "id": 10,
           "options": {
             "cellHeight": "sm",
@@ -195,7 +378,51 @@
               "rawQuery": true
             }
           ],
-          "title": "Tool Call Event Detail",
+          "title": "Tool Call Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": { "type": "auto" },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": { "id": "byName", "options": "time" },
+                "properties": [{ "id": "custom.width", "value": 240 }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "child_goal" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              },
+              {
+                "matcher": { "id": "byName", "options": "child_summary" },
+                "properties": [{ "id": "custom.cellOptions", "value": { "type": "json-view" } }]
+              }
+            ]
+          },
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 48 },
+          "id": 14,
+          "options": {
+            "cellHeight": "sm",
+            "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+            "showHeader": true,
+            "sortBy": [{ "desc": false, "displayName": "time" }]
+          },
+          "targets": [
+            {
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "rawSql": "SELECT * FROM hermes_subagent WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true
+            }
+          ],
+          "title": "Subagent Event Detail (all tags/fields)",
           "type": "table"
         }
       ]
@@ -506,7 +733,7 @@
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Hermes Agent",
-  "uid": "hermes",
+  "title": "Hermes First",
+  "uid": "hermes-first",
   "version": 1
 }

@@ -19,6 +19,7 @@ SUPERSEDED_UIDS=(
   bears-machines
   ifim-machines
   vipsa-machines
+  hermes
 )
 
 echo "▶ Ensuring InfluxDB database '${INFLUXDB_DATABASE}' exists …"
