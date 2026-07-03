@@ -999,6 +999,7 @@
             "uid": "influxdb-puda"
           },
           "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('plsystem') ORDER BY time DESC LIMIT 500",
+          "format": "table",
           "refId": "A",
           "rawQuery": true
         }

@@ -243,7 +243,8 @@
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
               "rawSql": "SELECT * FROM hermes_session WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
-              "rawQuery": true
+              "rawQuery": true,
+              "format": "table"
             }
           ],
           "title": "Session Event Detail (all tags/fields)",
@@ -287,7 +288,8 @@
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
               "rawSql": "SELECT * FROM hermes_llm_turn WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
-              "rawQuery": true
+              "rawQuery": true,
+              "format": "table"
             }
           ],
           "title": "LLM Turn Event Detail (all tags/fields)",
@@ -331,7 +333,8 @@
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
               "rawSql": "SELECT * FROM hermes_api_request WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
-              "rawQuery": true
+              "rawQuery": true,
+              "format": "table"
             }
           ],
           "title": "API Request Event Detail (all tags/fields)",
@@ -375,7 +378,8 @@
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
               "rawSql": "SELECT * FROM hermes_tool_call WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
-              "rawQuery": true
+              "rawQuery": true,
+              "format": "table"
             }
           ],
           "title": "Tool Call Event Detail (all tags/fields)",
@@ -419,7 +423,8 @@
               "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
               "rawSql": "SELECT * FROM hermes_subagent WHERE time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
-              "rawQuery": true
+              "rawQuery": true,
+              "format": "table"
             }
           ],
           "title": "Subagent Event Detail (all tags/fields)",
@@ -564,7 +569,8 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
           "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
-          "rawQuery": true
+          "rawQuery": true,
+          "format": "table"
         }
       ],
       "title": "API Requests",
@@ -615,7 +621,8 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
           "rawSql": "SELECT time, event FROM hermes_llm_turn WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
-          "rawQuery": true
+          "rawQuery": true,
+          "format": "table"
         }
       ],
       "title": "LLM Turns",
@@ -707,7 +714,8 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
           "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
-          "rawQuery": true
+          "rawQuery": true,
+          "format": "table"
         }
       ],
       "title": "Tool Calls",
