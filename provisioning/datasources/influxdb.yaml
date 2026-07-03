@@ -1,9 +1,9 @@
 apiVersion: 1
 
 datasources:
-  - name: InfluxDB
+  - name: PUDA InfluxDB
     type: influxdb
-    uid: influxdb-puda
+    uid: puda-influxdb
     url: $INFLUXDB_URL
     access: proxy
     isDefault: true
@@ -17,7 +17,7 @@ datasources:
 
   - name: InfluxDB Hermes
     type: influxdb
-    uid: influxdb-hermes-first
+    uid: influxdb-hermes
     url: $INFLUXDB_URL
     access: proxy
     database: $INFLUXDB_HERMES_DATABASE

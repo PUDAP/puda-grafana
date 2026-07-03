@@ -37,7 +37,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -222,7 +222,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Keithley 2450\" FROM machine_status WHERE machine_id = 'keithley-2450' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
@@ -231,7 +231,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Keithley 707B\" FROM machine_status WHERE machine_id = 'keithley-707b' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
@@ -240,7 +240,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Keysight B2902B\" FROM machine_status WHERE machine_id = 'keysight-b2902b' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
@@ -249,7 +249,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Light\" FROM machine_status WHERE machine_id = 'light' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
@@ -258,7 +258,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Stage\" FROM machine_status WHERE machine_id = 'stage' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "E",
@@ -267,7 +267,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status AS \"Zaber\" FROM machine_status WHERE machine_id = 'zaber' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
@@ -280,7 +280,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -392,7 +392,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'keithley-2450' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -405,7 +405,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -517,7 +517,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'keithley-707b' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -530,7 +530,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -642,7 +642,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'keysight-b2902b' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -655,7 +655,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -767,7 +767,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'light' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -780,7 +780,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -892,7 +892,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'stage' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -905,7 +905,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1017,7 +1017,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'zaber' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
@@ -1102,7 +1102,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1175,7 +1175,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, cpu AS \"CPU\" FROM machine_status WHERE machine_id = 'zaber' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
@@ -1184,7 +1184,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, mem AS \"Memory\" FROM machine_status WHERE machine_id = 'zaber' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
@@ -1209,7 +1209,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1256,7 +1256,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber')",
           "refId": "A",
@@ -1269,7 +1269,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1316,7 +1316,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber')",
           "refId": "A",
@@ -1329,7 +1329,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1385,7 +1385,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber')",
           "refId": "A",
@@ -1398,7 +1398,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1445,7 +1445,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber')",
           "refId": "A",
@@ -1458,7 +1458,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1543,7 +1543,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'keithley-2450' THEN 1 END) AS \"Keithley 2450\", COUNT(CASE WHEN machine_id = 'keithley-707b' THEN 1 END) AS \"Keithley 707B\", COUNT(CASE WHEN machine_id = 'keysight-b2902b' THEN 1 END) AS \"Keysight B2902B\", COUNT(CASE WHEN machine_id = 'light' THEN 1 END) AS \"Light\", COUNT(CASE WHEN machine_id = 'stage' THEN 1 END) AS \"Stage\", COUNT(CASE WHEN machine_id = 'zaber' THEN 1 END) AS \"Zaber\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
@@ -1552,7 +1552,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
@@ -1577,7 +1577,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-puda"
+        "uid": "puda-influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1893,7 +1893,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-puda"
+            "uid": "puda-influxdb"
           },
           "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber') ORDER BY time DESC LIMIT 500",
           "format": "table",

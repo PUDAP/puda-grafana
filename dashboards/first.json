@@ -69,7 +69,7 @@
                 "value": [
                   {
                     "title": "View session detail (all tags/fields)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=11&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=11&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -85,7 +85,7 @@
                 "value": [
                   {
                     "title": "View LLM turn detail (all tags/fields)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=12&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=12&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -112,7 +112,7 @@
                 "value": [
                   {
                     "title": "View tool call detail (args/result)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=10&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=10&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -130,7 +130,7 @@
                 "value": [
                   {
                     "title": "View API request detail (all tags/fields)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=13&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=13&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -146,7 +146,7 @@
                 "value": [
                   {
                     "title": "View subagent detail (all tags/fields)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=14&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=14&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -177,7 +177,7 @@
                 "value": [
                   {
                     "title": "View machine command detail (all tags/fields)",
-                    "url": "/d/hermes-first/hermes-first?viewPanel=15&var-event_time=${__value.time}",
+                    "url": "/d/first/first?viewPanel=15&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -204,37 +204,37 @@
       },
       "targets": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event AS \"Session\" FROM hermes_session WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event AS \"LLM Turn\" FROM hermes_llm_turn WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, model AS \"API Request\" FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event || ': ' || tool_name AS \"Tool Call\" FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event AS \"Subagent\" FROM hermes_subagent WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
           "rawSql": "SELECT time, REPLACE(topic, 'response.', '') || '_' || msg_type AS \"Machine\" FROM machine_commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
@@ -251,7 +251,7 @@
       "type": "row",
       "panels": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -277,7 +277,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
               "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -288,7 +288,7 @@
           "type": "table"
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -322,7 +322,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
               "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -333,7 +333,7 @@
           "type": "table"
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -367,7 +367,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
               "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -378,7 +378,7 @@
           "type": "table"
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -412,7 +412,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
               "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -423,7 +423,7 @@
           "type": "table"
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -457,7 +457,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+              "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
               "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -468,7 +468,7 @@
           "type": "table"
         },
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -502,7 +502,7 @@
           },
           "targets": [
             {
-              "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+              "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
               "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
@@ -522,7 +522,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -562,7 +562,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'first' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
@@ -579,7 +579,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -648,7 +648,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
@@ -659,7 +659,7 @@
       "type": "table"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -815,7 +815,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-puda" },
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
           "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
@@ -826,7 +826,7 @@
       "type": "table"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -908,7 +908,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "influxdb", "uid": "influxdb-hermes-first" },
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
@@ -938,7 +938,7 @@
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Hermes First",
-  "uid": "hermes-first",
+  "title": "First",
+  "uid": "first",
   "version": 1
 }
