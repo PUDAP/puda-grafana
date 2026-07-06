@@ -30,19 +30,19 @@
         "x": 0,
         "y": 0
       },
-      "id": 100,
-      "title": "Machine Status",
+      "id": 150,
+      "title": "Machine status and event timeline",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "puda-influxdb"
+        "type": "datasource",
+        "uid": "-- Mixed --"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
             "fillOpacity": 80,
@@ -51,62 +51,431 @@
           },
           "mappings": [
             {
-              "type": "value",
+              "type": "regex",
               "options": {
-                "online": {
-                  "text": "Online",
-                  "color": "green",
+                "pattern": "^Session:.*$",
+                "result": {
+                  "text": "Session",
+                  "color": "#73BF69",
                   "index": 0
-                },
-                "offline": {
-                  "text": "Offline",
-                  "color": "red",
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn: turn_start.*$",
+                "result": {
+                  "text": "LLM_start",
+                  "color": "#FADE2A",
                   "index": 1
-                },
-                "idle": {
-                  "text": "Idle",
-                  "color": "gray",
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn: turn_end.*$",
+                "result": {
+                  "text": "LLM_end",
+                  "color": "#FF9830",
                   "index": 2
-                },
-                "running": {
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn:.*$",
+                "result": {
+                  "text": "LLM Turn",
+                  "color": "#FADE2A",
+                  "index": 3
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request: api_start.*$",
+                "result": {
+                  "text": "API_Request",
+                  "color": "#6ED0E0",
+                  "index": 4
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request: api_end.*$",
+                "result": {
+                  "text": "API_Response",
+                  "color": "#5794F2",
+                  "index": 5
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request:.*$",
+                "result": {
+                  "text": "API_Request",
+                  "color": "#6ED0E0",
+                  "index": 6
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): terminal.*",
+                "result": {
+                  "text": "Tool: terminal",
+                  "color": "#3274D9",
+                  "index": 7
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): read_file.*",
+                "result": {
+                  "text": "Tool: read file",
+                  "color": "#73BF69",
+                  "index": 8
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): search_files.*",
+                "result": {
+                  "text": "Tool: search file",
+                  "color": "#FF9830",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): process.*",
+                "result": {
+                  "text": "Tool: process",
+                  "color": "#FF66C4",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): skill_view.*",
+                "result": {
+                  "text": "Tool: skillview",
+                  "color": "#B877D9",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): skill(?:\\b|$).*",
+                "result": {
+                  "text": "Tool: skill",
+                  "color": "#B877D9",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): execute_code.*",
+                "result": {
+                  "text": "Tool: execute code",
+                  "color": "#F2495C",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): write_file.*",
+                "result": {
+                  "text": "Tool: write file",
+                  "color": "#56A64B",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): edit_file.*",
+                "result": {
+                  "text": "Tool: edit file",
+                  "color": "#E0B400",
+                  "index": 15
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): list_files.*",
+                "result": {
+                  "text": "Tool: list files",
+                  "color": "#5794F2",
+                  "index": 16
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): grep.*",
+                "result": {
+                  "text": "Tool: grep",
+                  "color": "#6ED0E0",
+                  "index": 17
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): tool.*",
+                "result": {
+                  "text": "Tool",
+                  "color": "#705DA0",
+                  "index": 18
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call:.*",
+                "result": {
+                  "text": "Tool Call",
+                  "color": "#705DA0",
+                  "index": 19
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: running$",
+                "result": {
                   "text": "Running",
                   "color": "blue",
-                  "index": 3
-                },
-                "succeeded": {
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: (success|succeeded)$",
+                "result": {
                   "text": "Succeeded",
                   "color": "green",
-                  "index": 4
-                },
-                "paused": {
-                  "text": "Paused",
-                  "color": "yellow",
-                  "index": 5
-                },
-                "stopped": {
-                  "text": "Stopped",
-                  "color": "orange",
-                  "index": 6
-                },
-                "failed": {
-                  "text": "Failed",
-                  "color": "red",
-                  "index": 7
-                },
-                "error": {
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: (error|failed)$",
+                "result": {
                   "text": "Error",
-                  "color": "orange",
-                  "index": 8
-                },
-                "sent": {
-                  "text": "Sent",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: online$",
+                "result": {
+                  "text": "First Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status: offline$",
+                "result": {
+                  "text": "First Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^First Status:.*$",
+                "result": {
+                  "text": "First Status",
+                  "color": "#8AB8FF",
+                  "index": 15
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: running$",
+                "result": {
+                  "text": "Running",
                   "color": "blue",
                   "index": 9
-                },
-                "success": {
-                  "text": "Success",
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
                   "color": "green",
                   "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: online$",
+                "result": {
+                  "text": "Biologic Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: offline$",
+                "result": {
+                  "text": "Biologic Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status:.*$",
+                "result": {
+                  "text": "Biologic Status",
+                  "color": "#8AB8FF",
+                  "index": 15
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status: running$",
+                "result": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status:.*$",
+                "result": {
+                  "text": "Opentrons Status",
+                  "color": "#8AB8FF",
+                  "index": 13
                 }
               }
             }
@@ -129,8 +498,15 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "first"
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open First dashboard",
+                    "url": "/d/first/first",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
               }
             ]
           },
@@ -141,8 +517,15 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "biologic"
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open Biologic dashboard",
+                    "url": "/d/biologic/biologic",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
               }
             ]
           },
@@ -153,41 +536,36 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "opentrons"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "elephant"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "elephant"
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open Opentrons dashboard",
+                    "url": "/d/opentrons/opentrons",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 16,
+        "h": 12,
+        "w": 24,
         "x": 0,
         "y": 1
       },
-      "id": 1,
+      "id": 151,
       "options": {
         "alignValue": "left",
         "legend": {
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "mergeValues": true,
-        "rowHeight": 0.85,
+        "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
           "mode": "single",
@@ -200,16 +578,16 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"first\" FROM machine_status WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'First Status: ' || status AS \"first\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'first' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "puda-influxdb"
+            "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, status AS \"biologic\" FROM machine_status WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"first\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
@@ -218,522 +596,46 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"opentrons\" FROM machine_status WHERE machine_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'Biologic Status: ' || status AS \"biologic\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'biologic' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "puda-influxdb"
+            "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, status AS \"elephant\" FROM machine_status WHERE machine_id = 'elephant' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"biologic\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
-        }
-      ],
-      "title": "Machine Status Timeline",
-      "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "puda-influxdb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "online": {
-                  "text": "Online",
-                  "color": "green",
-                  "index": 0
-                },
-                "offline": {
-                  "text": "Offline",
-                  "color": "red",
-                  "index": 1
-                },
-                "idle": {
-                  "text": "Idle",
-                  "color": "gray",
-                  "index": 2
-                },
-                "running": {
-                  "text": "Running",
-                  "color": "blue",
-                  "index": 3
-                },
-                "succeeded": {
-                  "text": "Succeeded",
-                  "color": "green",
-                  "index": 4
-                },
-                "paused": {
-                  "text": "Paused",
-                  "color": "yellow",
-                  "index": 5
-                },
-                "stopped": {
-                  "text": "Stopped",
-                  "color": "orange",
-                  "index": 6
-                },
-                "failed": {
-                  "text": "Failed",
-                  "color": "red",
-                  "index": 7
-                },
-                "error": {
-                  "text": "Error",
-                  "color": "orange",
-                  "index": 8
-                },
-                "sent": {
-                  "text": "Sent",
-                  "color": "blue",
-                  "index": 9
-                },
-                "success": {
-                  "text": "Success",
-                  "color": "green",
-                  "index": 10
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dateTimeAsIso"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 8,
-        "x": 16,
-        "y": 2
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "time",
-          "values": false,
-          "limit": 1
-        },
-        "textMode": "auto",
-        "text": {
-          "titleSize": 12,
-          "valueSize": 18
-        }
-      },
-      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'first' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
-          "refId": "A",
+          "rawSql": "SELECT time, 'Opentrons Status: ' || status AS \"opentrons\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'opentrons' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "refId": "E",
           "rawQuery": true
-        }
-      ],
-      "title": "first",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "puda-influxdb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "online": {
-                  "text": "Online",
-                  "color": "green",
-                  "index": 0
-                },
-                "offline": {
-                  "text": "Offline",
-                  "color": "red",
-                  "index": 1
-                },
-                "idle": {
-                  "text": "Idle",
-                  "color": "gray",
-                  "index": 2
-                },
-                "running": {
-                  "text": "Running",
-                  "color": "blue",
-                  "index": 3
-                },
-                "succeeded": {
-                  "text": "Succeeded",
-                  "color": "green",
-                  "index": 4
-                },
-                "paused": {
-                  "text": "Paused",
-                  "color": "yellow",
-                  "index": 5
-                },
-                "stopped": {
-                  "text": "Stopped",
-                  "color": "orange",
-                  "index": 6
-                },
-                "failed": {
-                  "text": "Failed",
-                  "color": "red",
-                  "index": 7
-                },
-                "error": {
-                  "text": "Error",
-                  "color": "orange",
-                  "index": 8
-                },
-                "sent": {
-                  "text": "Sent",
-                  "color": "blue",
-                  "index": 9
-                },
-                "success": {
-                  "text": "Success",
-                  "color": "green",
-                  "index": 10
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dateTimeAsIso"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 8,
-        "x": 16,
-        "y": 4
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "time",
-          "values": false,
-          "limit": 1
-        },
-        "textMode": "auto",
-        "text": {
-          "titleSize": 12,
-          "valueSize": 18
-        }
-      },
-      "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "puda-influxdb"
+            "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'biologic' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
-          "refId": "A",
+          "rawSql": "SELECT time, event AS \"opentrons\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "refId": "F",
           "rawQuery": true
         }
       ],
-      "title": "biologic",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "puda-influxdb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "online": {
-                  "text": "Online",
-                  "color": "green",
-                  "index": 0
-                },
-                "offline": {
-                  "text": "Offline",
-                  "color": "red",
-                  "index": 1
-                },
-                "idle": {
-                  "text": "Idle",
-                  "color": "gray",
-                  "index": 2
-                },
-                "running": {
-                  "text": "Running",
-                  "color": "blue",
-                  "index": 3
-                },
-                "succeeded": {
-                  "text": "Succeeded",
-                  "color": "green",
-                  "index": 4
-                },
-                "paused": {
-                  "text": "Paused",
-                  "color": "yellow",
-                  "index": 5
-                },
-                "stopped": {
-                  "text": "Stopped",
-                  "color": "orange",
-                  "index": 6
-                },
-                "failed": {
-                  "text": "Failed",
-                  "color": "red",
-                  "index": 7
-                },
-                "error": {
-                  "text": "Error",
-                  "color": "orange",
-                  "index": 8
-                },
-                "sent": {
-                  "text": "Sent",
-                  "color": "blue",
-                  "index": 9
-                },
-                "success": {
-                  "text": "Success",
-                  "color": "green",
-                  "index": 10
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dateTimeAsIso"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 8,
-        "x": 16,
-        "y": 6
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "time",
-          "values": false,
-          "limit": 1
-        },
-        "textMode": "auto",
-        "text": {
-          "titleSize": 12,
-          "valueSize": 18
-        }
-      },
-      "targets": [
+      "title": "Machine status and event timeline",
+      "type": "state-timeline",
+      "transformations": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'opentrons' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
-          "refId": "A",
-          "rawQuery": true
+          "id": "merge",
+          "options": {}
         }
-      ],
-      "title": "opentrons",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "puda-influxdb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "online": {
-                  "text": "Online",
-                  "color": "green",
-                  "index": 0
-                },
-                "offline": {
-                  "text": "Offline",
-                  "color": "red",
-                  "index": 1
-                },
-                "idle": {
-                  "text": "Idle",
-                  "color": "gray",
-                  "index": 2
-                },
-                "running": {
-                  "text": "Running",
-                  "color": "blue",
-                  "index": 3
-                },
-                "succeeded": {
-                  "text": "Succeeded",
-                  "color": "green",
-                  "index": 4
-                },
-                "paused": {
-                  "text": "Paused",
-                  "color": "yellow",
-                  "index": 5
-                },
-                "stopped": {
-                  "text": "Stopped",
-                  "color": "orange",
-                  "index": 6
-                },
-                "failed": {
-                  "text": "Failed",
-                  "color": "red",
-                  "index": 7
-                },
-                "error": {
-                  "text": "Error",
-                  "color": "orange",
-                  "index": 8
-                },
-                "sent": {
-                  "text": "Sent",
-                  "color": "blue",
-                  "index": 9
-                },
-                "success": {
-                  "text": "Success",
-                  "color": "green",
-                  "index": 10
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dateTimeAsIso"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 8,
-        "x": 16,
-        "y": 8
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "time",
-          "values": false,
-          "limit": 1
-        },
-        "textMode": "auto",
-        "text": {
-          "titleSize": 12,
-          "valueSize": 18
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'elephant' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
-          "refId": "A",
-          "rawQuery": true
-        }
-      ],
-      "title": "elephant",
-      "type": "stat"
+      ]
     },
     {
       "collapsed": false,
@@ -741,7 +643,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 13
       },
       "id": 140,
       "title": "Cameras",
@@ -752,7 +654,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 141,
       "options": {
@@ -768,7 +670,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 11
+        "y": 14
       },
       "id": 142,
       "options": {
@@ -784,7 +686,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 11
+        "y": 14
       },
       "id": 143,
       "options": {
@@ -800,7 +702,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 11
+        "y": 14
       },
       "id": 144,
       "options": {
@@ -817,246 +719,93 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 21
       },
-      "id": 110,
-      "title": "Health Metrics",
+      "id": 160,
+      "title": "Rolling Chat & Tool Windows",
       "type": "row"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "puda-influxdb"
+        "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisSoftMax": 100,
-            "axisSoftMin": 0,
-            "drawStyle": "line",
-            "fillOpacity": 12,
-            "lineWidth": 2,
-            "pointSize": 4,
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 80
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 22
       },
-      "id": 5,
+      "id": 161,
       "options": {
-        "legend": {
-          "calcs": [
-            "last",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">{{agent_id}}</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">{{agent_id}}</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">{{message}}</div>\n  </div>\n</div>",
+        "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
+        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px;max-height:156px;overflow:hidden}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "helpers": "",
+        "afterRender": "",
+        "everyRow": true,
+        "wrap": false
       },
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "puda-influxdb"
+            "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, cpu AS \"first CPU\" FROM machine_status WHERE machine_id = 'first' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 1800), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 1800), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
+          "format": "table",
           "refId": "A",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, mem AS \"first Memory\" FROM machine_status WHERE machine_id = 'first' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "B",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, cpu AS \"biologic CPU\" FROM machine_status WHERE machine_id = 'biologic' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "C",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, mem AS \"biologic Memory\" FROM machine_status WHERE machine_id = 'biologic' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "D",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, cpu AS \"elephant CPU\" FROM machine_status WHERE machine_id = 'elephant' AND cpu IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "E",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, mem AS \"elephant Memory\" FROM machine_status WHERE machine_id = 'elephant' AND mem IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "F",
           "rawQuery": true
         }
       ],
-      "title": "CPU and Memory %",
-      "type": "timeseries"
+      "title": "Rolling Chat Window",
+      "type": "marcusolsson-dynamictext-panel",
+      "pluginVersion": "6.3.0"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "puda-influxdb"
+        "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 65
-              },
-              {
-                "color": "orange",
-                "value": 75
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "celsius",
-          "custom": {
-            "drawStyle": "line",
-            "fillOpacity": 12,
-            "lineWidth": 2,
-            "pointSize": 4,
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 22
       },
-      "id": 7,
+      "id": 162,
       "options": {
-        "legend": {
-          "calcs": [
-            "last",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
+        "content": "<div class=\"puda-action-card\">\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>{{agent_id}}</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <div class=\"puda-action-reason\">{{error_message}}</div>\n  <pre class=\"puda-action-params\">{{args}}</pre>\n</div>",
+        "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
+        "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "helpers": "",
+        "afterRender": "",
+        "everyRow": true,
+        "wrap": false
       },
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "puda-influxdb"
+            "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, temp AS \"first\" FROM machine_status WHERE machine_id = 'first' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, COALESCE(error_message, 'Tool/action requested by the agent.') AS error_message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
+          "format": "table",
           "refId": "A",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, temp AS \"biologic\" FROM machine_status WHERE machine_id = 'biologic' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "B",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, temp AS \"elephant\" FROM machine_status WHERE machine_id = 'elephant' AND temp IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "C",
           "rawQuery": true
         }
       ],
-      "title": "Temperature \u00b0C",
-      "type": "timeseries"
+      "title": "Rolling Tool / Action Window",
+      "type": "marcusolsson-dynamictext-panel",
+      "pluginVersion": "6.3.0"
     },
     {
       "collapsed": false,
@@ -1064,7 +813,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 32
       },
       "id": 120,
       "title": "Command Activity",
@@ -1099,7 +848,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 28
+        "y": 33
       },
       "id": 30,
       "options": {
@@ -1159,7 +908,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 28
+        "y": 33
       },
       "id": 31,
       "options": {
@@ -1228,7 +977,7 @@
         "h": 4,
         "w": 6,
         "x": 12,
-        "y": 28
+        "y": 33
       },
       "id": 32,
       "options": {
@@ -1288,7 +1037,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 28
+        "y": 33
       },
       "id": 33,
       "options": {
@@ -1386,7 +1135,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 37
       },
       "id": 40,
       "options": {
@@ -1432,7 +1181,585 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 45
+      },
+      "id": 180,
+      "title": "Token Usage",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Tokens",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 35,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 181,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'first' THEN total_tokens ELSE 0 END) AS \"first\", SUM(CASE WHEN agent_id = 'biologic' THEN total_tokens ELSE 0 END) AS \"biologic\", SUM(CASE WHEN agent_id = 'opentrons' THEN total_tokens ELSE 0 END) AS \"opentrons\", SUM(CASE WHEN agent_id = 'elephant' THEN total_tokens ELSE 0 END) AS \"elephant\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('first', 'biologic', 'opentrons', 'elephant') GROUP BY 1 ORDER BY 1 ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Token Usage by Machine",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 54
+      },
+      "id": 170,
+      "title": "Event & Tool Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "minWidth": 50,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "agent_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Machine"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "source"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Source"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "event"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Message"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tool_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tool"
+              },
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Status"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "duration_ms"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Duration (ms)"
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "args"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Args"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 55
+      },
+      "id": 171,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
+          "format": "table",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Combined Event Log",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "minWidth": 50,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "agent_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Machine"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "source"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Source"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "event"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Message"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tool_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tool"
+              },
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Status"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "duration_ms"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Duration (ms)"
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "args"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Args"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 55
+      },
+      "id": 172,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "format": "table",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Combined Tool Call Log",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 65
       },
       "id": 130,
       "title": "Command Log",
@@ -1731,7 +2058,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 66
       },
       "id": 50,
       "options": {
@@ -1767,22 +2094,6 @@
       ],
       "title": "Command Log (latest 500)",
       "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 8,
-        "x": 16,
-        "y": 1
-      },
-      "id": 90,
-      "options": {
-        "content": "",
-        "mode": "markdown"
-      },
-      "title": "Last Heartbeat",
-      "type": "text"
     }
   ],
   "refresh": "5s",

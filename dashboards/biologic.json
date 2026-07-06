@@ -208,7 +208,7 @@
               "options": {
                 "pattern": "^tool_start: terminal\\b.*$",
                 "result": {
-                  "text": "Tool: terminal",
+                  "text": "tool_start: terminal",
                   "color": "#3274D9",
                   "index": 40
                 }
@@ -219,7 +219,7 @@
               "options": {
                 "pattern": "^tool_end: terminal\\b.*$",
                 "result": {
-                  "text": "Tool: terminal",
+                  "text": "tool_end: terminal",
                   "color": "#3274D9",
                   "index": 41
                 }
@@ -230,7 +230,7 @@
               "options": {
                 "pattern": "^tool_start: read_file\\b.*$",
                 "result": {
-                  "text": "Tool: read file",
+                  "text": "tool_start: read_file",
                   "color": "#73BF69",
                   "index": 42
                 }
@@ -241,7 +241,7 @@
               "options": {
                 "pattern": "^tool_end: read_file\\b.*$",
                 "result": {
-                  "text": "Tool: read file",
+                  "text": "tool_end: read_file",
                   "color": "#73BF69",
                   "index": 43
                 }
@@ -252,7 +252,7 @@
               "options": {
                 "pattern": "^tool_start: search_files\\b.*$",
                 "result": {
-                  "text": "Tool: search file",
+                  "text": "tool_start: search_files",
                   "color": "#FF9830",
                   "index": 44
                 }
@@ -263,7 +263,7 @@
               "options": {
                 "pattern": "^tool_end: search_files\\b.*$",
                 "result": {
-                  "text": "Tool: search file",
+                  "text": "tool_end: search_files",
                   "color": "#FF9830",
                   "index": 45
                 }
@@ -274,7 +274,7 @@
               "options": {
                 "pattern": "^tool_start: skill_view\\b.*$",
                 "result": {
-                  "text": "Tool: skillview",
+                  "text": "tool_start: skill_view",
                   "color": "#B877D9",
                   "index": 46
                 }
@@ -285,7 +285,7 @@
               "options": {
                 "pattern": "^tool_end: skill_view\\b.*$",
                 "result": {
-                  "text": "Tool: skillview",
+                  "text": "tool_end: skill_view",
                   "color": "#B877D9",
                   "index": 47
                 }
@@ -296,7 +296,7 @@
               "options": {
                 "pattern": "^tool_start: execute_code\\b.*$",
                 "result": {
-                  "text": "Tool: execute code",
+                  "text": "tool_start: execute_code",
                   "color": "#F2495C",
                   "index": 48
                 }
@@ -307,7 +307,7 @@
               "options": {
                 "pattern": "^tool_end: execute_code\\b.*$",
                 "result": {
-                  "text": "Tool: execute code",
+                  "text": "tool_end: execute_code",
                   "color": "#F2495C",
                   "index": 49
                 }
@@ -318,7 +318,7 @@
               "options": {
                 "pattern": "^tool_start: write_file\\b.*$",
                 "result": {
-                  "text": "Tool: write file",
+                  "text": "tool_start: write_file",
                   "color": "#56A64B",
                   "index": 50
                 }
@@ -329,7 +329,7 @@
               "options": {
                 "pattern": "^tool_end: write_file\\b.*$",
                 "result": {
-                  "text": "Tool: write file",
+                  "text": "tool_end: write_file",
                   "color": "#56A64B",
                   "index": 51
                 }
@@ -340,7 +340,7 @@
               "options": {
                 "pattern": "^tool_start: edit_file\\b.*$",
                 "result": {
-                  "text": "Tool: edit file",
+                  "text": "tool_start: edit_file",
                   "color": "#E0B400",
                   "index": 52
                 }
@@ -351,7 +351,7 @@
               "options": {
                 "pattern": "^tool_end: edit_file\\b.*$",
                 "result": {
-                  "text": "Tool: edit file",
+                  "text": "tool_end: edit_file",
                   "color": "#E0B400",
                   "index": 53
                 }
@@ -362,7 +362,7 @@
               "options": {
                 "pattern": "^tool_start: list_files\\b.*$",
                 "result": {
-                  "text": "Tool: list files",
+                  "text": "tool_start: list_files",
                   "color": "#5794F2",
                   "index": 54
                 }
@@ -373,7 +373,7 @@
               "options": {
                 "pattern": "^tool_end: list_files\\b.*$",
                 "result": {
-                  "text": "Tool: list files",
+                  "text": "tool_end: list_files",
                   "color": "#5794F2",
                   "index": 55
                 }
@@ -384,7 +384,7 @@
               "options": {
                 "pattern": "^tool_start: grep\\b.*$",
                 "result": {
-                  "text": "Tool: grep",
+                  "text": "tool_start: grep",
                   "color": "#6ED0E0",
                   "index": 56
                 }
@@ -395,7 +395,7 @@
               "options": {
                 "pattern": "^tool_end: grep\\b.*$",
                 "result": {
-                  "text": "Tool: grep",
+                  "text": "tool_end: grep",
                   "color": "#6ED0E0",
                   "index": 57
                 }
@@ -406,7 +406,7 @@
               "options": {
                 "pattern": "^tool_start: tool\\b.*$",
                 "result": {
-                  "text": "Tool",
+                  "text": "tool_start: tool",
                   "color": "#705DA0",
                   "index": 58
                 }
@@ -417,7 +417,7 @@
               "options": {
                 "pattern": "^tool_end: tool\\b.*$",
                 "result": {
-                  "text": "Tool",
+                  "text": "tool_end: tool",
                   "color": "#705DA0",
                   "index": 59
                 }
@@ -428,7 +428,7 @@
               "options": {
                 "pattern": "^tool_start:.*$",
                 "result": {
-                  "text": "Tool Call",
+                  "text": "tool_start",
                   "color": "#B877D9",
                   "index": 60
                 }
@@ -439,7 +439,7 @@
               "options": {
                 "pattern": "^tool_end:.*$",
                 "result": {
-                  "text": "Tool Call",
+                  "text": "tool_end",
                   "color": "#705DA0",
                   "index": 61
                 }
@@ -468,7 +468,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/opentrons/opentrons?viewPanel=20&var-event_time=${__value.time}",
+                    "url": "/d/biologic/biologic?viewPanel=20&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -494,7 +494,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/opentrons/opentrons?viewPanel=11&var-event_time=${__value.time}",
+                    "url": "/d/biologic/biologic?viewPanel=11&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -544,7 +544,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/opentrons/opentrons?viewPanel=12&var-event_time=${__value.time}",
+                    "url": "/d/biologic/biologic?viewPanel=12&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -594,7 +594,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/opentrons/opentrons?viewPanel=13&var-event_time=${__value.time}",
+                    "url": "/d/biologic/biologic?viewPanel=13&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -616,7 +616,7 @@
                     "options": {
                       "pattern": "^tool_start: terminal\\b.*$",
                       "result": {
-                        "text": "Tool: terminal",
+                        "text": "tool_start: terminal",
                         "color": "#3274D9",
                         "index": 0
                       }
@@ -627,7 +627,7 @@
                     "options": {
                       "pattern": "^tool_end: terminal\\b.*$",
                       "result": {
-                        "text": "Tool: terminal",
+                        "text": "tool_end: terminal",
                         "color": "#3274D9",
                         "index": 1
                       }
@@ -638,7 +638,7 @@
                     "options": {
                       "pattern": "^tool_start: read_file\\b.*$",
                       "result": {
-                        "text": "Tool: read file",
+                        "text": "tool_start: read_file",
                         "color": "#73BF69",
                         "index": 2
                       }
@@ -649,7 +649,7 @@
                     "options": {
                       "pattern": "^tool_end: read_file\\b.*$",
                       "result": {
-                        "text": "Tool: read file",
+                        "text": "tool_end: read_file",
                         "color": "#73BF69",
                         "index": 3
                       }
@@ -660,7 +660,7 @@
                     "options": {
                       "pattern": "^tool_start: search_files\\b.*$",
                       "result": {
-                        "text": "Tool: search file",
+                        "text": "tool_start: search_files",
                         "color": "#FF9830",
                         "index": 4
                       }
@@ -671,7 +671,7 @@
                     "options": {
                       "pattern": "^tool_end: search_files\\b.*$",
                       "result": {
-                        "text": "Tool: search file",
+                        "text": "tool_end: search_files",
                         "color": "#FF9830",
                         "index": 5
                       }
@@ -680,55 +680,11 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^tool_start: process\\b.*$",
-                      "result": {
-                        "text": "Tool: process",
-                        "color": "#FF66C4",
-                        "index": 6
-                      }
-                    }
-                  },
-                  {
-                    "type": "regex",
-                    "options": {
-                      "pattern": "^tool_end: process\\b.*$",
-                      "result": {
-                        "text": "Tool: process",
-                        "color": "#FF66C4",
-                        "index": 7
-                      }
-                    }
-                  },
-                  {
-                    "type": "regex",
-                    "options": {
-                      "pattern": "^tool_start: skill\\b.*$",
-                      "result": {
-                        "text": "Tool: skill",
-                        "color": "#B877D9",
-                        "index": 8
-                      }
-                    }
-                  },
-                  {
-                    "type": "regex",
-                    "options": {
-                      "pattern": "^tool_end: skill\\b.*$",
-                      "result": {
-                        "text": "Tool: skill",
-                        "color": "#B877D9",
-                        "index": 9
-                      }
-                    }
-                  },
-                  {
-                    "type": "regex",
-                    "options": {
                       "pattern": "^tool_start: skill_view\\b.*$",
                       "result": {
-                        "text": "Tool: skillview",
+                        "text": "tool_start: skill_view",
                         "color": "#B877D9",
-                        "index": 10
+                        "index": 6
                       }
                     }
                   },
@@ -737,9 +693,9 @@
                     "options": {
                       "pattern": "^tool_end: skill_view\\b.*$",
                       "result": {
-                        "text": "Tool: skillview",
+                        "text": "tool_end: skill_view",
                         "color": "#B877D9",
-                        "index": 11
+                        "index": 7
                       }
                     }
                   },
@@ -748,9 +704,9 @@
                     "options": {
                       "pattern": "^tool_start: execute_code\\b.*$",
                       "result": {
-                        "text": "Tool: execute code",
+                        "text": "tool_start: execute_code",
                         "color": "#F2495C",
-                        "index": 12
+                        "index": 8
                       }
                     }
                   },
@@ -759,9 +715,9 @@
                     "options": {
                       "pattern": "^tool_end: execute_code\\b.*$",
                       "result": {
-                        "text": "Tool: execute code",
+                        "text": "tool_end: execute_code",
                         "color": "#F2495C",
-                        "index": 13
+                        "index": 9
                       }
                     }
                   },
@@ -770,9 +726,9 @@
                     "options": {
                       "pattern": "^tool_start: write_file\\b.*$",
                       "result": {
-                        "text": "Tool: write file",
+                        "text": "tool_start: write_file",
                         "color": "#56A64B",
-                        "index": 14
+                        "index": 10
                       }
                     }
                   },
@@ -781,9 +737,9 @@
                     "options": {
                       "pattern": "^tool_end: write_file\\b.*$",
                       "result": {
-                        "text": "Tool: write file",
+                        "text": "tool_end: write_file",
                         "color": "#56A64B",
-                        "index": 15
+                        "index": 11
                       }
                     }
                   },
@@ -792,9 +748,9 @@
                     "options": {
                       "pattern": "^tool_start: edit_file\\b.*$",
                       "result": {
-                        "text": "Tool: edit file",
+                        "text": "tool_start: edit_file",
                         "color": "#E0B400",
-                        "index": 16
+                        "index": 12
                       }
                     }
                   },
@@ -803,9 +759,9 @@
                     "options": {
                       "pattern": "^tool_end: edit_file\\b.*$",
                       "result": {
-                        "text": "Tool: edit file",
+                        "text": "tool_end: edit_file",
                         "color": "#E0B400",
-                        "index": 17
+                        "index": 13
                       }
                     }
                   },
@@ -814,9 +770,9 @@
                     "options": {
                       "pattern": "^tool_start: list_files\\b.*$",
                       "result": {
-                        "text": "Tool: list files",
+                        "text": "tool_start: list_files",
                         "color": "#5794F2",
-                        "index": 18
+                        "index": 14
                       }
                     }
                   },
@@ -825,9 +781,9 @@
                     "options": {
                       "pattern": "^tool_end: list_files\\b.*$",
                       "result": {
-                        "text": "Tool: list files",
+                        "text": "tool_end: list_files",
                         "color": "#5794F2",
-                        "index": 19
+                        "index": 15
                       }
                     }
                   },
@@ -836,9 +792,9 @@
                     "options": {
                       "pattern": "^tool_start: grep\\b.*$",
                       "result": {
-                        "text": "Tool: grep",
+                        "text": "tool_start: grep",
                         "color": "#6ED0E0",
-                        "index": 20
+                        "index": 16
                       }
                     }
                   },
@@ -847,9 +803,9 @@
                     "options": {
                       "pattern": "^tool_end: grep\\b.*$",
                       "result": {
-                        "text": "Tool: grep",
+                        "text": "tool_end: grep",
                         "color": "#6ED0E0",
-                        "index": 21
+                        "index": 17
                       }
                     }
                   },
@@ -858,9 +814,9 @@
                     "options": {
                       "pattern": "^tool_start: tool\\b.*$",
                       "result": {
-                        "text": "Tool",
+                        "text": "tool_start: tool",
                         "color": "#705DA0",
-                        "index": 22
+                        "index": 18
                       }
                     }
                   },
@@ -869,9 +825,9 @@
                     "options": {
                       "pattern": "^tool_end: tool\\b.*$",
                       "result": {
-                        "text": "Tool",
+                        "text": "tool_end: tool",
                         "color": "#705DA0",
-                        "index": 23
+                        "index": 19
                       }
                     }
                   },
@@ -880,9 +836,9 @@
                     "options": {
                       "pattern": "^tool_start:.*$",
                       "result": {
-                        "text": "Tool Call",
-                        "color": "#A352CC",
-                        "index": 24
+                        "text": "tool_start",
+                        "color": "#B877D9",
+                        "index": 20
                       }
                     }
                   },
@@ -891,9 +847,9 @@
                     "options": {
                       "pattern": "^tool_end:.*$",
                       "result": {
-                        "text": "Tool Call",
+                        "text": "tool_end",
                         "color": "#705DA0",
-                        "index": 25
+                        "index": 21
                       }
                     }
                   },
@@ -904,7 +860,7 @@
                       "result": {
                         "text": "Tool Call",
                         "color": "#705DA0",
-                        "index": 26
+                        "index": 22
                       }
                     }
                   }
@@ -915,7 +871,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/opentrons/opentrons?viewPanel=10&var-event_time=${__value.time}",
+                    "url": "/d/biologic/biologic?viewPanel=10&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -954,7 +910,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Machine Status\" FROM machine_status WHERE machine_id = 'opentrons' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"Machine Status\" FROM machine_status WHERE machine_id = 'biologic' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -963,7 +919,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, 'Session: ' || event AS \"Session\" FROM (SELECT time, event FROM hermes_session WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'Session: ' || event AS \"Session\" FROM (SELECT time, event FROM hermes_session WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
@@ -972,7 +928,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM (SELECT time, event FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM (SELECT time, event FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
@@ -981,7 +937,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"API Request\" FROM (SELECT time, event FROM hermes_api_request WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"API Request\" FROM (SELECT time, event FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
@@ -990,7 +946,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
         }
@@ -1016,7 +972,7 @@
       "id": 21,
       "options": {
         "mode": "html",
-        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n</div>"
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n</div>"
       },
       "pluginVersion": "13.0.0",
       "title": "",
@@ -1030,6 +986,371 @@
         "w": 24,
         "x": 0,
         "y": 14
+      },
+      "id": 106,
+      "title": "View 2 Timeline",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Session:.*$",
+                "result": {
+                  "text": "Session",
+                  "color": "#73BF69",
+                  "index": 0
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn: turn_start.*$",
+                "result": {
+                  "text": "LLM_start",
+                  "color": "#FADE2A",
+                  "index": 1
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn: turn_end.*$",
+                "result": {
+                  "text": "LLM_end",
+                  "color": "#FF9830",
+                  "index": 2
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^LLM Turn:.*$",
+                "result": {
+                  "text": "LLM Turn",
+                  "color": "#FADE2A",
+                  "index": 3
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request: api_start.*$",
+                "result": {
+                  "text": "API_Request",
+                  "color": "#6ED0E0",
+                  "index": 4
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request: api_end.*$",
+                "result": {
+                  "text": "API_Response",
+                  "color": "#5794F2",
+                  "index": 5
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^API Request:.*$",
+                "result": {
+                  "text": "API_Request",
+                  "color": "#6ED0E0",
+                  "index": 6
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): terminal.*",
+                "result": {
+                  "text": "Tool: terminal",
+                  "color": "#3274D9",
+                  "index": 7
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): read_file.*",
+                "result": {
+                  "text": "Tool: read_file",
+                  "color": "#73BF69",
+                  "index": 8
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): search_files.*",
+                "result": {
+                  "text": "Tool: search_files",
+                  "color": "#FF9830",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): skill_view.*",
+                "result": {
+                  "text": "Tool: skill_view",
+                  "color": "#B877D9",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): execute_code.*",
+                "result": {
+                  "text": "Tool: execute_code",
+                  "color": "#F2495C",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): write_file.*",
+                "result": {
+                  "text": "Tool: write_file",
+                  "color": "#56A64B",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): edit_file.*",
+                "result": {
+                  "text": "Tool: edit_file",
+                  "color": "#E0B400",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): list_files.*",
+                "result": {
+                  "text": "Tool: list_files",
+                  "color": "#5794F2",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): grep.*",
+                "result": {
+                  "text": "Tool: grep",
+                  "color": "#6ED0E0",
+                  "index": 15
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call: tool_(start|end): tool.*",
+                "result": {
+                  "text": "Tool",
+                  "color": "#705DA0",
+                  "index": 16
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Tool Call:.*",
+                "result": {
+                  "text": "Tool Call",
+                  "color": "#705DA0",
+                  "index": 17
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: running$",
+                "result": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Biologic Status:.*$",
+                "result": {
+                  "text": "Biologic Status",
+                  "color": "#8AB8FF",
+                  "index": 13
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "biologic"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View event detail (all tags/fields)",
+                    "url": "/d/biologic/biologic?viewPanel=104&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 19,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, 'Biologic Status: ' || status AS \"biologic\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'biologic' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"biologic\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "refId": "B",
+          "rawQuery": true
+        }
+      ],
+      "title": "View 2 Timeline",
+      "type": "state-timeline",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
       },
       "id": 107,
       "title": "Rolling Chat & Tool Windows",
@@ -1048,11 +1369,11 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 20
       },
       "id": 17,
       "options": {
-        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">O</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Opentrons</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">{{message}}</div>\n  </div>\n</div>",
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">B</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Biologic</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">{{message}}</div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
         "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px;max-height:156px;overflow:hidden}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
@@ -1066,7 +1387,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 1800), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 1800), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
+          "rawSql": "SELECT time, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 1800), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 1800), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1089,11 +1410,11 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 20
       },
       "id": 18,
       "options": {
-        "content": "<div class=\"puda-action-card\">\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>opentrons</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <div class=\"puda-action-reason\">{{error_message}}</div>\n  <pre class=\"puda-action-params\">{{args}}</pre>\n</div>",
+        "content": "<div class=\"puda-action-card\">\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>biologic</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <div class=\"puda-action-reason\">{{error_message}}</div>\n  <pre class=\"puda-action-params\">{{args}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
         "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
@@ -1107,7 +1428,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, COALESCE(error_message, 'Tool/action requested by the agent.') AS error_message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
+          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, COALESCE(error_message, 'Tool/action requested by the agent.') AS error_message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1123,7 +1444,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 30
       },
       "id": 104,
       "title": "Event Detail (click a point in the Event Timeline above)",
@@ -1190,7 +1511,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1288,7 +1609,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1386,7 +1707,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1484,7 +1805,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1582,7 +1903,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1680,7 +2001,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1778,7 +2099,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_status WHERE machine_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM machine_status WHERE machine_id = 'biologic' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1795,7 +2116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 31
       },
       "id": 102,
       "title": "API Calls",
@@ -1849,7 +2170,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 32
       },
       "id": 6,
       "options": {
@@ -1872,7 +2193,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'opentrons' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'biologic' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -1886,7 +2207,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 40
       },
       "id": 103,
       "title": "Event Log",
@@ -2010,7 +2331,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 41
       },
       "id": 7,
       "options": {
@@ -2037,7 +2358,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2366,7 +2687,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 51
       },
       "id": 8,
       "options": {
@@ -2394,13 +2715,13 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Machine Command Log (opentrons, latest 500)",
+      "title": "Machine Command Log (biologic, latest 500)",
       "type": "table"
     },
     {
@@ -2547,7 +2868,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 41
       },
       "id": 9,
       "options": {
@@ -2574,7 +2895,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2619,7 +2940,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Opentrons",
-  "uid": "opentrons",
+  "title": "Biologic",
+  "uid": "biologic",
   "version": 1
 }
