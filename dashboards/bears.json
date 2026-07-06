@@ -31,7 +31,7 @@
         "y": 0
       },
       "id": 150,
-      "title": "Machine status and event timeline",
+      "title": "Machine Status and Event Timeline",
       "type": "row"
     },
     {
@@ -50,6 +50,21 @@
             "spanNulls": false
           },
           "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            },
             {
               "type": "regex",
               "options": {
@@ -471,6 +486,28 @@
             {
               "type": "regex",
               "options": {
+                "pattern": "^Opentrons Status: online$",
+                "result": {
+                  "text": "Opentrons Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Opentrons Status: offline$",
+                "result": {
+                  "text": "Opentrons Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
                 "pattern": "^Opentrons Status:.*$",
                 "result": {
                   "text": "Opentrons Status",
@@ -628,7 +665,7 @@
           "rawQuery": true
         }
       ],
-      "title": "Machine status and event timeline",
+      "title": "Machine Status and Event Timeline",
       "type": "state-timeline",
       "transformations": [
         {
@@ -731,7 +768,9 @@
         "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": []
+        },
         "overrides": []
       },
       "gridPos": {
@@ -742,11 +781,11 @@
       },
       "id": 161,
       "options": {
-        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">{{agent_id}}</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">{{agent_id}}</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">{{message}}</div>\n  </div>\n</div>",
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">{{agent_id}}</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">{{agent_id}}</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
-        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px;max-height:156px;overflow:hidden}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
-        "afterRender": "",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -756,7 +795,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 1800), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 1800), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -772,7 +811,9 @@
         "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": []
+        },
         "overrides": []
       },
       "gridPos": {
@@ -785,7 +826,7 @@
       "options": {
         "content": "<div class=\"puda-action-card\">\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>{{agent_id}}</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <div class=\"puda-action-reason\">{{error_message}}</div>\n  <pre class=\"puda-action-params\">{{args}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
-        "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
         "afterRender": "",
         "everyRow": true,
@@ -1092,7 +1133,8 @@
             "barAlignment": 0
           },
           "unit": "short",
-          "min": 0
+          "min": 0,
+          "mappings": []
         },
         "overrides": [
           {

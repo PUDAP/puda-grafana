@@ -31,7 +31,7 @@
         "y": 0
       },
       "id": 105,
-      "title": "Summary Timeline",
+      "title": "Machine Status and Event Timeline",
       "type": "row"
     },
     {
@@ -82,6 +82,16 @@
                   "text": "Failed",
                   "color": "red",
                   "index": 5
+                },
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
                 }
               }
             },
@@ -200,6 +210,16 @@
                   "text": "API_Response",
                   "color": "#5794F2",
                   "index": 33
+                },
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
                 }
               }
             },
@@ -995,7 +1015,7 @@
           "rawQuery": true
         }
       ],
-      "title": "Summary Timeline",
+      "title": "Machine Status and Event Timeline",
       "type": "state-timeline"
     },
     {
@@ -1004,7 +1024,9 @@
         "uid": "-- Mixed --"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": []
+        },
         "overrides": []
       },
       "gridPos": {
@@ -1041,7 +1063,9 @@
         "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": []
+        },
         "overrides": []
       },
       "gridPos": {
@@ -1052,11 +1076,11 @@
       },
       "id": 17,
       "options": {
-        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">O</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Opentrons</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">{{message}}</div>\n  </div>\n</div>",
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">O</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Opentrons</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
-        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px;max-height:156px;overflow:hidden}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
-        "afterRender": "",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -1066,7 +1090,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 1800), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 1800), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
+          "rawSql": "SELECT time, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1082,7 +1106,9 @@
         "uid": "influxdb-hermes"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": []
+        },
         "overrides": []
       },
       "gridPos": {
@@ -1841,7 +1867,8 @@
               "mode": "off"
             }
           },
-          "unit": "short"
+          "unit": "short",
+          "mappings": []
         },
         "overrides": []
       },
@@ -1905,7 +1932,8 @@
               "type": "auto"
             },
             "inspect": false
-          }
+          },
+          "mappings": []
         },
         "overrides": [
           {
@@ -2416,7 +2444,8 @@
               "type": "auto"
             },
             "inspect": false
-          }
+          },
+          "mappings": []
         },
         "overrides": [
           {

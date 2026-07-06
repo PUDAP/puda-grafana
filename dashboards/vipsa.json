@@ -1145,7 +1145,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "mappings": []
         },
         "overrides": []
       },
@@ -1479,7 +1480,8 @@
             "barAlignment": 0
           },
           "unit": "short",
-          "min": 0
+          "min": 0,
+          "mappings": []
         },
         "overrides": [
           {
