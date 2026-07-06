@@ -464,6 +464,61 @@
                   "index": 61
                 }
               }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^immediate response: command.*$",
+                "result": {
+                  "text": "immediate response: command",
+                  "color": "#F2495C",
+                  "index": 62
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^immediate response: response.*$",
+                "result": {
+                  "text": "immediate response: response",
+                  "color": "#FF66C4",
+                  "index": 63
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue command.*$",
+                "result": {
+                  "text": "queue command",
+                  "color": "#BDBDBD",
+                  "index": 64
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue response: command.*$",
+                "result": {
+                  "text": "queue response: command",
+                  "color": "#F2F2F2",
+                  "index": 65
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue response: response.*$",
+                "result": {
+                  "text": "queue response: response",
+                  "color": "#8A8A8A",
+                  "index": 66
+                }
+              }
             }
           ],
           "thresholds": {
@@ -942,6 +997,85 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "puda"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^immediate response: command.*$",
+                      "result": {
+                        "text": "immediate response: command",
+                        "color": "#F2495C",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^immediate response: response.*$",
+                      "result": {
+                        "text": "immediate response: response",
+                        "color": "#FF66C4",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue command.*$",
+                      "result": {
+                        "text": "queue command",
+                        "color": "#BDBDBD",
+                        "index": 2
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue response: command.*$",
+                      "result": {
+                        "text": "queue response: command",
+                        "color": "#F2F2F2",
+                        "index": 3
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue response: response.*$",
+                      "result": {
+                        "text": "queue response: response",
+                        "color": "#8A8A8A",
+                        "index": 4
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/opentrons/opentrons?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1013,9 +1147,41 @@
           "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"puda\" FROM machine_commands WHERE machine_id = 'opentrons' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "G",
+          "rawQuery": true
         }
       ],
       "title": "Machine Status and Event Timeline",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "time",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "time": 0,
+              "Machine Status": 1,
+              "Session": 2,
+              "LLM Turn": 3,
+              "API Request": 4,
+              "Tool Call": 5,
+              "puda": 6
+            }
+          }
+        }
+      ],
       "type": "state-timeline"
     },
     {
@@ -1038,7 +1204,7 @@
       "id": 21,
       "options": {
         "mode": "html",
-        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n</div>"
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>puda: immediate response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>puda: immediate response: response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#BDBDBD;display:inline-block;\"></i>puda: queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2F2F2;display:inline-block;\"></i>puda: queue response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8A8A8A;display:inline-block;\"></i>puda: queue response: response</span>\n</div>"
       },
       "pluginVersion": "13.0.0",
       "title": "",
@@ -1119,11 +1285,11 @@
       },
       "id": 18,
       "options": {
-        "content": "<div class=\"puda-action-card\">\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>opentrons</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <div class=\"puda-action-reason\">{{error_message}}</div>\n  <pre class=\"puda-action-params\">{{args}}</pre>\n</div>",
+        "content": "<div class=\"puda-action-card puda-tool-{{tool_name}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>opentrons</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
-        "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}",
         "helpers": "",
-        "afterRender": "",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-action-card\").forEach((card) => {\n    const body = card.querySelector(\".puda-action-body\");\n    const button = card.querySelector(\".puda-tool-show-more\");\n    if (!body || !button) return;\n    const overflowing = body.scrollHeight > body.clientHeight + 2;\n    card.classList.toggle(\"puda-tool-overflowing\", overflowing);\n    button.onclick = () => {\n      card.classList.toggle(\"puda-tool-expanded\");\n      button.textContent = card.classList.contains(\"puda-tool-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -1133,7 +1299,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, COALESCE(error_message, 'Tool/action requested by the agent.') AS error_message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
+          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1706,7 +1872,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'opentrons' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'opentrons' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'response.queue' THEN 'queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2638,6 +2804,24 @@
           }
         ],
         "query": "0",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "Puda Event",
+        "name": "puda_event",
+        "options": [
+          {
+            "text": "",
+            "value": "",
+            "selected": true
+          }
+        ],
+        "query": "",
         "type": "textbox"
       }
     ]
