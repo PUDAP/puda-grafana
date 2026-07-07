@@ -1,0 +1,2838 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Hermes AI agent session timeline \u2014 tool calls, LLM turns, API requests",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 105,
+      "title": "Machine Status and Event Timeline",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "running": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 0
+                },
+                "succeeded": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 1
+                },
+                "success": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 2
+                },
+                "idle": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 3
+                },
+                "error": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 4
+                },
+                "failed": {
+                  "text": "Failed",
+                  "color": "red",
+                  "index": 5
+                },
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Machine Status: running.*$",
+                "result": {
+                  "text": "Machine Status: running",
+                  "color": "#8AB8FF",
+                  "index": 0
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Machine Status: idle.*$",
+                "result": {
+                  "text": "Machine Status: idle",
+                  "color": "#8AB8FF",
+                  "index": 1
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Machine Status: (success|succeeded).*$",
+                "result": {
+                  "text": "Machine Status: succeeded",
+                  "color": "#8AB8FF",
+                  "index": 2
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Machine Status: (error|failed).*$",
+                "result": {
+                  "text": "Machine Status: error",
+                  "color": "#8AB8FF",
+                  "index": 3
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Machine Status:.*$",
+                "result": {
+                  "text": "Machine Status",
+                  "color": "#8AB8FF",
+                  "index": 4
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Session: start.*$",
+                "result": {
+                  "text": "Session: start",
+                  "color": "#73BF69",
+                  "index": 5
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Session: end.*$",
+                "result": {
+                  "text": "Session: end",
+                  "color": "#73BF69",
+                  "index": 6
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^Session:.*$",
+                "result": {
+                  "text": "Session",
+                  "color": "#73BF69",
+                  "index": 7
+                }
+              }
+            },
+            {
+              "type": "value",
+              "options": {
+                "turn_start": {
+                  "text": "LLM_start",
+                  "color": "#FADE2A",
+                  "index": 30
+                },
+                "turn_end": {
+                  "text": "LLM_end",
+                  "color": "#FF9830",
+                  "index": 31
+                }
+              }
+            },
+            {
+              "type": "value",
+              "options": {
+                "api_start": {
+                  "text": "API_Request",
+                  "color": "#6ED0E0",
+                  "index": 32
+                },
+                "api_end": {
+                  "text": "API_Response",
+                  "color": "#5794F2",
+                  "index": 33
+                },
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: terminal\\b.*$",
+                "result": {
+                  "text": "Tool: terminal",
+                  "color": "#3274D9",
+                  "index": 40
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: terminal\\b.*$",
+                "result": {
+                  "text": "Tool: terminal",
+                  "color": "#3274D9",
+                  "index": 41
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: read_file\\b.*$",
+                "result": {
+                  "text": "Tool: read file",
+                  "color": "#73BF69",
+                  "index": 42
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: read_file\\b.*$",
+                "result": {
+                  "text": "Tool: read file",
+                  "color": "#73BF69",
+                  "index": 43
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: search_files\\b.*$",
+                "result": {
+                  "text": "Tool: search file",
+                  "color": "#FF9830",
+                  "index": 44
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: search_files\\b.*$",
+                "result": {
+                  "text": "Tool: search file",
+                  "color": "#FF9830",
+                  "index": 45
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: skill_view\\b.*$",
+                "result": {
+                  "text": "Tool: skillview",
+                  "color": "#B877D9",
+                  "index": 46
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: skill_view\\b.*$",
+                "result": {
+                  "text": "Tool: skillview",
+                  "color": "#B877D9",
+                  "index": 47
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: execute_code\\b.*$",
+                "result": {
+                  "text": "Tool: execute code",
+                  "color": "#F2495C",
+                  "index": 48
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: execute_code\\b.*$",
+                "result": {
+                  "text": "Tool: execute code",
+                  "color": "#F2495C",
+                  "index": 49
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: write_file\\b.*$",
+                "result": {
+                  "text": "Tool: write file",
+                  "color": "#56A64B",
+                  "index": 50
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: write_file\\b.*$",
+                "result": {
+                  "text": "Tool: write file",
+                  "color": "#56A64B",
+                  "index": 51
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: edit_file\\b.*$",
+                "result": {
+                  "text": "Tool: edit file",
+                  "color": "#E0B400",
+                  "index": 52
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: edit_file\\b.*$",
+                "result": {
+                  "text": "Tool: edit file",
+                  "color": "#E0B400",
+                  "index": 53
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: list_files\\b.*$",
+                "result": {
+                  "text": "Tool: list files",
+                  "color": "#5794F2",
+                  "index": 54
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: list_files\\b.*$",
+                "result": {
+                  "text": "Tool: list files",
+                  "color": "#5794F2",
+                  "index": 55
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: grep\\b.*$",
+                "result": {
+                  "text": "Tool: grep",
+                  "color": "#6ED0E0",
+                  "index": 56
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: grep\\b.*$",
+                "result": {
+                  "text": "Tool: grep",
+                  "color": "#6ED0E0",
+                  "index": 57
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start: tool\\b.*$",
+                "result": {
+                  "text": "Tool",
+                  "color": "#705DA0",
+                  "index": 58
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end: tool\\b.*$",
+                "result": {
+                  "text": "Tool",
+                  "color": "#705DA0",
+                  "index": 59
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_start:.*$",
+                "result": {
+                  "text": "Tool Call",
+                  "color": "#B877D9",
+                  "index": 60
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^tool_end:.*$",
+                "result": {
+                  "text": "Tool Call",
+                  "color": "#705DA0",
+                  "index": 61
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^immediate response: command.*$",
+                "result": {
+                  "text": "immediate response: command",
+                  "color": "#F2495C",
+                  "index": 62
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^immediate response: response.*$",
+                "result": {
+                  "text": "immediate response: response",
+                  "color": "#FF66C4",
+                  "index": 63
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue command.*$",
+                "result": {
+                  "text": "queue command",
+                  "color": "#BDBDBD",
+                  "index": 64
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue response: command.*$",
+                "result": {
+                  "text": "queue response: command",
+                  "color": "#F2F2F2",
+                  "index": 65
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^queue response: response.*$",
+                "result": {
+                  "text": "queue response: response",
+                  "color": "#8A8A8A",
+                  "index": 66
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Machine Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Session"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#73BF69"
+                }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=11&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LLM Turn"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "turn_start": {
+                        "text": "LLM_start",
+                        "color": "#FADE2A",
+                        "index": 0
+                      },
+                      "turn_end": {
+                        "text": "LLM_end",
+                        "color": "#FF9830",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^.*$",
+                      "result": {
+                        "text": "LLM Turn",
+                        "color": "#FADE2A",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=12&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "API Request"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "api_start": {
+                        "text": "API_Request",
+                        "color": "#6ED0E0",
+                        "index": 0
+                      },
+                      "api_end": {
+                        "text": "API_Response",
+                        "color": "#5794F2",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^.*$",
+                      "result": {
+                        "text": "API_Request",
+                        "color": "#6ED0E0",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=13&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tool Call"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: terminal\\b.*$",
+                      "result": {
+                        "text": "Tool: terminal",
+                        "color": "#3274D9",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: terminal\\b.*$",
+                      "result": {
+                        "text": "Tool: terminal",
+                        "color": "#3274D9",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: read_file\\b.*$",
+                      "result": {
+                        "text": "Tool: read file",
+                        "color": "#73BF69",
+                        "index": 2
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: read_file\\b.*$",
+                      "result": {
+                        "text": "Tool: read file",
+                        "color": "#73BF69",
+                        "index": 3
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: search_files\\b.*$",
+                      "result": {
+                        "text": "Tool: search file",
+                        "color": "#FF9830",
+                        "index": 4
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: search_files\\b.*$",
+                      "result": {
+                        "text": "Tool: search file",
+                        "color": "#FF9830",
+                        "index": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: process\\b.*$",
+                      "result": {
+                        "text": "Tool: process",
+                        "color": "#FF66C4",
+                        "index": 6
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: process\\b.*$",
+                      "result": {
+                        "text": "Tool: process",
+                        "color": "#FF66C4",
+                        "index": 7
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: skill\\b.*$",
+                      "result": {
+                        "text": "Tool: skill",
+                        "color": "#B877D9",
+                        "index": 8
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: skill\\b.*$",
+                      "result": {
+                        "text": "Tool: skill",
+                        "color": "#B877D9",
+                        "index": 9
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: skill_view\\b.*$",
+                      "result": {
+                        "text": "Tool: skillview",
+                        "color": "#B877D9",
+                        "index": 10
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: skill_view\\b.*$",
+                      "result": {
+                        "text": "Tool: skillview",
+                        "color": "#B877D9",
+                        "index": 11
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: execute_code\\b.*$",
+                      "result": {
+                        "text": "Tool: execute code",
+                        "color": "#F2495C",
+                        "index": 12
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: execute_code\\b.*$",
+                      "result": {
+                        "text": "Tool: execute code",
+                        "color": "#F2495C",
+                        "index": 13
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: write_file\\b.*$",
+                      "result": {
+                        "text": "Tool: write file",
+                        "color": "#56A64B",
+                        "index": 14
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: write_file\\b.*$",
+                      "result": {
+                        "text": "Tool: write file",
+                        "color": "#56A64B",
+                        "index": 15
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: edit_file\\b.*$",
+                      "result": {
+                        "text": "Tool: edit file",
+                        "color": "#E0B400",
+                        "index": 16
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: edit_file\\b.*$",
+                      "result": {
+                        "text": "Tool: edit file",
+                        "color": "#E0B400",
+                        "index": 17
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: list_files\\b.*$",
+                      "result": {
+                        "text": "Tool: list files",
+                        "color": "#5794F2",
+                        "index": 18
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: list_files\\b.*$",
+                      "result": {
+                        "text": "Tool: list files",
+                        "color": "#5794F2",
+                        "index": 19
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: grep\\b.*$",
+                      "result": {
+                        "text": "Tool: grep",
+                        "color": "#6ED0E0",
+                        "index": 20
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: grep\\b.*$",
+                      "result": {
+                        "text": "Tool: grep",
+                        "color": "#6ED0E0",
+                        "index": 21
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start: tool\\b.*$",
+                      "result": {
+                        "text": "Tool",
+                        "color": "#705DA0",
+                        "index": 22
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end: tool\\b.*$",
+                      "result": {
+                        "text": "Tool",
+                        "color": "#705DA0",
+                        "index": 23
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_start:.*$",
+                      "result": {
+                        "text": "Tool Call",
+                        "color": "#A352CC",
+                        "index": 24
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^tool_end:.*$",
+                      "result": {
+                        "text": "Tool Call",
+                        "color": "#705DA0",
+                        "index": 25
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^.*$",
+                      "result": {
+                        "text": "Tool Call",
+                        "color": "#705DA0",
+                        "index": 26
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=10&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "puda"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^immediate response: command.*$",
+                      "result": {
+                        "text": "immediate response: command",
+                        "color": "#F2495C",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^immediate response: response.*$",
+                      "result": {
+                        "text": "immediate response: response",
+                        "color": "#FF66C4",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue command.*$",
+                      "result": {
+                        "text": "queue command",
+                        "color": "#BDBDBD",
+                        "index": 2
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue response: command.*$",
+                      "result": {
+                        "text": "queue response: command",
+                        "color": "#F2F2F2",
+                        "index": 3
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^queue response: response.*$",
+                      "result": {
+                        "text": "queue response: response",
+                        "color": "#8A8A8A",
+                        "index": 4
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/joule_heater/joule_heater?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 16,
+      "options": {
+        "alignValue": "left",
+        "colWidth": 0.05,
+        "legend": {
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.85,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"Machine Status\" FROM machine_status WHERE machine_id = 'joule-heater' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, 'Session: ' || event AS \"Session\" FROM (SELECT time, event FROM hermes_session WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "refId": "B",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM (SELECT time, event FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "refId": "C",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"API Request\" FROM (SELECT time, event FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "refId": "D",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "refId": "E",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"puda\" FROM machine_commands WHERE machine_id = 'joule-heater' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "G",
+          "rawQuery": true
+        }
+      ],
+      "title": "Machine Status and Event Timeline",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "time",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "time": 0,
+              "Machine Status": 1,
+              "Session": 2,
+              "LLM Turn": 3,
+              "API Request": 4,
+              "Tool Call": 5,
+              "puda": 6
+            }
+          }
+        }
+      ],
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 21,
+      "options": {
+        "mode": "html",
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>puda: immediate response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>puda: immediate response: response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#BDBDBD;display:inline-block;\"></i>puda: queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2F2F2;display:inline-block;\"></i>puda: queue response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8A8A8A;display:inline-block;\"></i>puda: queue response: response</span>\n</div>"
+      },
+      "pluginVersion": "13.0.0",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 107,
+      "title": "Rolling Chat & Tool Windows",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 17,
+      "options": {
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">J</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Joule Heater</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
+        "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
+        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "helpers": "",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
+        "everyRow": true,
+        "wrap": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
+          "format": "table",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Rolling Chat Window",
+      "type": "marcusolsson-dynamictext-panel",
+      "pluginVersion": "6.3.0"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 18,
+      "options": {
+        "content": "<div class=\"puda-action-card puda-tool-{{tool_name}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>joule_heater</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
+        "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
+        "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}",
+        "helpers": "",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-action-card\").forEach((card) => {\n    const body = card.querySelector(\".puda-action-body\");\n    const button = card.querySelector(\".puda-tool-show-more\");\n    if (!body || !button) return;\n    const overflowing = body.scrollHeight > body.clientHeight + 2;\n    card.classList.toggle(\"puda-tool-overflowing\", overflowing);\n    button.onclick = () => {\n      card.classList.toggle(\"puda-tool-expanded\");\n      button.textContent = card.classList.contains(\"puda-tool-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
+        "everyRow": true,
+        "wrap": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
+          "format": "table",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Rolling Tool / Action Window",
+      "type": "marcusolsson-dynamictext-panel",
+      "pluginVersion": "6.3.0"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 104,
+      "title": "Event Detail (click a point in the Event Timeline above)",
+      "type": "row",
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 14
+          },
+          "id": 11,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "Session Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user_message"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "assistant_response"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 12,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "LLM Turn Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "request_payload"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "response_payload"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 30
+          },
+          "id": 13,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "API Request Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "args"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "result"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 38
+          },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "Tool Call Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "child_goal"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "child_summary"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 46
+          },
+          "id": 14,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "Subagent Event Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "params_json"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data_json"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 54
+          },
+          "id": 15,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "puda-influxdb"
+              },
+              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic IN ('response.queue', 'queue') THEN 'queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END = '$puda_event') ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "Machine Command Detail (all tags/fields)",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 240
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "params_json"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "data_json"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "json-view"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 58
+          },
+          "id": 20,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "puda-influxdb"
+              },
+              "rawSql": "SELECT * FROM machine_status WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "refId": "A",
+              "rawQuery": true,
+              "format": "table"
+            }
+          ],
+          "title": "Machine Status Detail (all tags/fields)",
+          "type": "table"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 102,
+      "title": "API Calls",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 50,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short",
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'joule-heater' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Token Usage per API Call",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 103,
+      "title": "Event Log",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "event"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "model"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Model"
+              },
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "provider"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Provider"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total_tokens"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tokens"
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "finish_reason"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Finish Reason"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "API Requests",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "minWidth": 50,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "msg_type"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Type"
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "command": {
+                        "text": "CMD",
+                        "color": "blue",
+                        "index": 0
+                      },
+                      "response": {
+                        "text": "RESP",
+                        "color": "purple",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "queue_type"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Queue/Immediate"
+              },
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "queue": {
+                        "text": "queue",
+                        "color": "blue",
+                        "index": 0
+                      },
+                      "immediate": {
+                        "text": "immediate",
+                        "color": "orange",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "command"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Command"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Status"
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "sent": {
+                        "text": "Sent",
+                        "color": "blue",
+                        "index": 0
+                      },
+                      "success": {
+                        "text": "Success",
+                        "color": "green",
+                        "index": 1
+                      },
+                      "error": {
+                        "text": "Error",
+                        "color": "red",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "step"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Step"
+              },
+              {
+                "id": "custom.width",
+                "value": 60
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "username"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "User"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "run_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Run ID"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Message / Error"
+              },
+              {
+                "id": "custom.width",
+                "value": 260
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "params"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Params"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "response"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Response Data"
+              },
+              {
+                "id": "custom.width",
+                "value": 320
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "format": "table",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Machine Command Log (joule-heater, latest 500)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-hermes"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "event"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tool_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tool"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Status"
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "ok": {
+                        "text": "ok",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "error": {
+                        "text": "error",
+                        "color": "red",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "duration_ms"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Duration (ms)"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_message"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Error"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "Tool Calls",
+      "type": "table"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [
+    "puda",
+    "hermes",
+    "agent"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "hide": 2,
+        "label": "Event Time (ms)",
+        "name": "event_time",
+        "options": [
+          {
+            "text": "0",
+            "value": "0",
+            "selected": true
+          }
+        ],
+        "query": "0",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "Puda Event",
+        "name": "puda_event",
+        "options": [
+          {
+            "text": "",
+            "value": "",
+            "selected": true
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Joule Heater",
+  "uid": "joule_heater",
+  "version": 1
+}

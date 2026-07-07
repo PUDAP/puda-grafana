@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Bears environment machine status and command logs",
+  "description": "VIPSA environment machine status and command logs",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -636,6 +636,83 @@
                   "index": 15
                 }
               }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: running$",
+                "result": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: online$",
+                "result": {
+                  "text": "VIPSA Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status: offline$",
+                "result": {
+                  "text": "VIPSA Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^VIPSA Status:.*$",
+                "result": {
+                  "text": "VIPSA Status",
+                  "color": "#8AB8FF",
+                  "index": 15
+                }
+              }
             }
           ],
           "thresholds": {
@@ -652,72 +729,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "first"
+              "options": "vipsa"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "title": "Open First dashboard",
-                    "url": "/d/first/first",
-                    "targetBlank": false,
-                    "oneClick": true
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "biologic"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Open Biologic dashboard",
-                    "url": "/d/biologic/biologic",
-                    "targetBlank": false,
-                    "oneClick": true
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "opentrons"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Open Opentrons dashboard",
-                    "url": "/d/opentrons/opentrons",
-                    "targetBlank": false,
-                    "oneClick": true
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "joule-heater"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Open Joule Heater dashboard",
-                    "url": "/d/joule_heater/joule_heater",
+                    "title": "${__value.raw} | View VIPSA event details",
+                    "url": "/d/vipsa-v2/vipsa?viewPanel=201&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -755,7 +775,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'First Status: ' || status AS \"first\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'first' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"Light\" FROM machine_status WHERE machine_id = 'light' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -764,7 +784,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"first\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"Light\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'light' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'light' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'light' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
@@ -773,26 +793,26 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'PUDA: queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"first\" FROM machine_commands WHERE machine_id = 'first' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "G",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "puda-influxdb"
-          },
-          "rawSql": "SELECT time, 'Biologic Status: ' || status AS \"biologic\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'biologic' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Light\" FROM machine_commands WHERE machine_id = 'light' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
         {
           "datasource": {
             "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"Stage\" FROM machine_status WHERE machine_id = 'stage' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "D",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"biologic\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
-          "refId": "D",
+          "rawSql": "SELECT time, event AS \"Stage\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'stage' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'stage' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'stage' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "refId": "E",
           "rawQuery": true
         },
         {
@@ -800,16 +820,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Opentrons Status: ' || status AS \"opentrons\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'opentrons' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
-          "refId": "E",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb-hermes"
-          },
-          "rawSql": "SELECT time, event AS \"opentrons\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Stage\" FROM machine_commands WHERE machine_id = 'stage' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
         },
@@ -818,7 +829,16 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'PUDA: queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"opentrons\" FROM machine_commands WHERE machine_id = 'opentrons' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"Zaber\" FROM machine_status WHERE machine_id = 'zaber' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "G",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"Zaber\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'zaber' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'zaber' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'zaber' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
           "refId": "H",
           "rawQuery": true
         },
@@ -827,17 +847,8 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Joule Heater Status: ' || status AS \"joule-heater\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'joule-heater' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Zaber\" FROM machine_commands WHERE machine_id = 'zaber' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "I",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb-hermes"
-          },
-          "rawSql": "SELECT time, event AS \"joule-heater\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
-          "refId": "J",
           "rawQuery": true
         },
         {
@@ -845,8 +856,26 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"joule-heater\" FROM machine_commands WHERE machine_id = 'joule-heater' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'VIPSA Status: ' || status AS \"vipsa\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'vipsa' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "refId": "J",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"vipsa\" FROM (SELECT time, event FROM (SELECT time, 'Session: ' || event AS event FROM hermes_session WHERE agent_id = 'vipsa' AND $__timeFilter(time) UNION ALL SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'vipsa' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'vipsa' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 400) ORDER BY time ASC",
           "refId": "K",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"vipsa\" FROM machine_commands WHERE machine_id = 'vipsa' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "L",
           "rawQuery": true
         }
       ],
@@ -860,79 +889,80 @@
       ]
     },
     {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 152,
+      "options": {
+        "content": "<div style=\"box-sizing:border-box;min-height:100%;display:flex;align-items:center;align-content:center;gap:10px 16px;flex-wrap:wrap;font-family:Inter,Arial,sans-serif;font-size:12px;line-height:18px;color:#d8dee9;padding:10px 12px 12px;overflow:visible;\"><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#73BF69;display:inline-block;flex:0 0 auto;\"></i>Session</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#FADE2A;display:inline-block;flex:0 0 auto;\"></i>LLM turn</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#6ED0E0;display:inline-block;flex:0 0 auto;\"></i>API request</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#705DA0;display:inline-block;flex:0 0 auto;\"></i>Tool call</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#F2495C;display:inline-block;flex:0 0 auto;\"></i>PUDA command</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#8A8A8A;display:inline-block;flex:0 0 auto;\"></i>PUDA response</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:#8AB8FF;display:inline-block;flex:0 0 auto;\"></i>Status</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:green;display:inline-block;flex:0 0 auto;\"></i>Online/success</span><span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:12px;height:12px;border-radius:3px;background:red;display:inline-block;flex:0 0 auto;\"></i>Offline/error</span></div>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 16
       },
       "id": 140,
-      "title": "Cameras",
+      "title": "Cameras and Controls",
       "type": "row"
     },
     {
       "gridPos": {
         "h": 7,
-        "w": 6,
+        "w": 8,
         "x": 0,
-        "y": 14
+        "y": 17
       },
       "id": 141,
-      "options": {
-        "content": "<iframe src=\"http://bears:8889/first\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
-        "mode": "html"
-      },
-      "pluginVersion": "13.0.1",
-      "title": "first Camera",
-      "type": "text"
-    },
-    {
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 6,
-        "y": 14
-      },
-      "id": 142,
-      "options": {
-        "content": "<iframe src=\"http://opentron:8889/cam0/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
-        "mode": "html"
-      },
-      "pluginVersion": "13.0.1",
-      "title": "Opentrons Camera",
-      "type": "text"
-    },
-    {
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 12,
-        "y": 14
-      },
-      "id": 143,
       "options": {
         "content": "<iframe src=\"http://vipsapc:8889/camera1\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "VISPA Camera",
+      "title": "Camera 1",
       "type": "text"
     },
     {
       "gridPos": {
         "h": 7,
-        "w": 6,
-        "x": 18,
-        "y": 14
+        "w": 8,
+        "x": 8,
+        "y": 17
       },
-      "id": 144,
+      "id": 142,
       "options": {
-        "content": "<iframe src=\"http://bears:8889/elephant-side/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"http://vipsapc:8889/camera2\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "Joule Heater Camera",
+      "title": "Camera 2",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 17
+      },
+      "id": 143,
+      "options": {
+        "content": "<div style=\"height:100%;display:flex;align-items:center;justify-content:center;\"><a href=\"http://vipsapc:8765/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:6px;background:#3274d9;color:#fff;text-decoration:none;font-weight:600;\">Open Manual Jog Panel</a></div>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Manual Jog",
       "type": "text"
     },
     {
@@ -941,7 +971,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 160,
       "title": "Rolling Chat & Tool Windows",
@@ -962,13 +992,13 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 22
+        "y": 25
       },
       "id": 161,
       "options": {
         "content": "<div class=\"puda-chat-card puda-agent-{{agent_id}}\">\n  <div class=\"puda-avatar\">{{agent_id}}</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">{{agent_id}}</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
-        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-chat-card.puda-agent-first .puda-avatar{background:#DFFF69}.puda-chat-card.puda-agent-first .puda-speaker{color:#DFFF69}.puda-chat-card.puda-agent-first .puda-bubble{border-color:#DFFF69}.puda-chat-card.puda-agent-first .puda-pill{border-color:rgba(223,255,105,.7);color:#DFFF69}.puda-chat-card.puda-agent-biologic .puda-avatar{background:#73BF69}.puda-chat-card.puda-agent-biologic .puda-speaker{color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-bubble{border-color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-pill{border-color:rgba(115,191,105,.7);color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-avatar{background:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-speaker{color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-bubble{border-color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-pill{border-color:rgba(87,148,242,.75);color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-avatar{background:#FF9830}.puda-chat-card.puda-agent-elephant .puda-speaker{color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-bubble{border-color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-pill{border-color:rgba(255,152,48,.75);color:#FF9830}.puda-chat-card.puda-agent-biologic .puda-show-more{border-color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-show-more{border-color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-show-more{border-color:#FF9830}.puda-chat-card.puda-agent-first .puda-show-more{border-color:#DFFF69}.puda-chat-card.puda-agent-joule-heater .puda-avatar{background:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-speaker{color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-bubble{border-color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-pill{border-color:rgba(110,208,224,.75);color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-show-more{border-color:#6ED0E0}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-chat-card.puda-agent-first .puda-avatar{background:#DFFF69}.puda-chat-card.puda-agent-first .puda-speaker{color:#DFFF69}.puda-chat-card.puda-agent-first .puda-bubble{border-color:#DFFF69}.puda-chat-card.puda-agent-first .puda-pill{border-color:rgba(223,255,105,.7);color:#DFFF69}.puda-chat-card.puda-agent-biologic .puda-avatar{background:#73BF69}.puda-chat-card.puda-agent-biologic .puda-speaker{color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-bubble{border-color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-pill{border-color:rgba(115,191,105,.7);color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-avatar{background:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-speaker{color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-bubble{border-color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-pill{border-color:rgba(87,148,242,.75);color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-avatar{background:#FF9830}.puda-chat-card.puda-agent-elephant .puda-speaker{color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-bubble{border-color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-pill{border-color:rgba(255,152,48,.75);color:#FF9830}.puda-chat-card.puda-agent-biologic .puda-show-more{border-color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-show-more{border-color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-show-more{border-color:#FF9830}.puda-chat-card.puda-agent-first .puda-show-more{border-color:#DFFF69}.puda-chat-card.puda-agent-joule-heater .puda-avatar{background:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-speaker{color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-bubble{border-color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-pill{border-color:rgba(110,208,224,.75);color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-show-more{border-color:#6ED0E0}.puda-chat-card.puda-agent-vipsa .puda-avatar{background:#B877D9}.puda-chat-card.puda-agent-vipsa .puda-speaker{color:#B877D9}.puda-chat-card.puda-agent-vipsa .puda-bubble{border-color:#B877D9}.puda-chat-card.puda-agent-vipsa .puda-pill{border-color:rgba(184,119,217,.75);color:#B877D9}.puda-chat-card.puda-agent-vipsa .puda-show-more{border-color:#B877D9}",
         "helpers": "",
         "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
@@ -980,7 +1010,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1005,13 +1035,13 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 22
+        "y": 25
       },
       "id": 162,
       "options": {
         "content": "<div class=\"puda-action-card puda-tool-{{tool_name}} puda-agent-{{agent_id}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span class=\"puda-machine-pill\">{{agent_id}}</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
-        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}.puda-action-card.puda-agent-first .puda-machine-pill{border-color:#DFFF69;color:#DFFF69;background:rgba(223,255,105,.08)}.puda-action-card.puda-agent-biologic .puda-machine-pill{border-color:#73BF69;color:#73BF69;background:rgba(115,191,105,.08)}.puda-action-card.puda-agent-opentrons .puda-machine-pill{border-color:#5794F2;color:#5794F2;background:rgba(87,148,242,.08)}.puda-action-card.puda-agent-elephant .puda-machine-pill{border-color:#FF9830;color:#FF9830;background:rgba(255,152,48,.08)}.puda-action-card.puda-agent-joule-heater .puda-machine-pill{border-color:#6ED0E0;color:#6ED0E0;background:rgba(110,208,224,.08)}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}.puda-action-card.puda-agent-first .puda-machine-pill{border-color:#DFFF69;color:#DFFF69;background:rgba(223,255,105,.08)}.puda-action-card.puda-agent-biologic .puda-machine-pill{border-color:#73BF69;color:#73BF69;background:rgba(115,191,105,.08)}.puda-action-card.puda-agent-opentrons .puda-machine-pill{border-color:#5794F2;color:#5794F2;background:rgba(87,148,242,.08)}.puda-action-card.puda-agent-elephant .puda-machine-pill{border-color:#FF9830;color:#FF9830;background:rgba(255,152,48,.08)}.puda-action-card.puda-agent-joule-heater .puda-machine-pill{border-color:#6ED0E0;color:#6ED0E0;background:rgba(110,208,224,.08)}.puda-action-card.puda-agent-vipsa .puda-machine-pill{border-color:#B877D9;color:#B877D9;background:rgba(184,119,217,.08)}",
         "helpers": "",
         "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-action-card\").forEach((card) => {\n    const body = card.querySelector(\".puda-action-body\");\n    const button = card.querySelector(\".puda-tool-show-more\");\n    if (!body || !button) return;\n    const overflowing = body.scrollHeight > body.clientHeight + 2;\n    card.classList.toggle(\"puda-tool-overflowing\", overflowing);\n    button.onclick = () => {\n      card.classList.toggle(\"puda-tool-expanded\");\n      button.textContent = card.classList.contains(\"puda-tool-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
@@ -1023,7 +1053,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id = 'vipsa' AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1039,7 +1069,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 35
       },
       "id": 120,
       "title": "Command Activity",
@@ -1074,7 +1104,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 33
+        "y": 36
       },
       "id": 30,
       "options": {
@@ -1097,7 +1127,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1134,7 +1164,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 33
+        "y": 36
       },
       "id": 31,
       "options": {
@@ -1157,7 +1187,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1203,7 +1233,7 @@
         "h": 4,
         "w": 6,
         "x": 12,
-        "y": 33
+        "y": 36
       },
       "id": 32,
       "options": {
@@ -1226,7 +1256,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1263,7 +1293,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 33
+        "y": 36
       },
       "id": 33,
       "options": {
@@ -1286,7 +1316,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1362,7 +1392,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 40
       },
       "id": 40,
       "options": {
@@ -1385,7 +1415,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\", COUNT(CASE WHEN machine_id = 'elephant' THEN 1 END) AS \"elephant\", COUNT(CASE WHEN machine_id = 'joule-heater' THEN 1 END) AS \"joule-heater\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"vipsa\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1394,12 +1424,12 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
       ],
-      "title": "Commands per Minute by Machine",
+      "title": "Commands per Minute - VIPSA",
       "type": "timeseries"
     },
     {
@@ -1408,7 +1438,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 48
       },
       "id": 180,
       "title": "Token Usage",
@@ -1475,7 +1505,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 49
       },
       "id": 181,
       "options": {
@@ -1498,12 +1528,12 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'first' THEN total_tokens ELSE 0 END) AS \"first\", SUM(CASE WHEN agent_id = 'biologic' THEN total_tokens ELSE 0 END) AS \"biologic\", SUM(CASE WHEN agent_id = 'opentrons' THEN total_tokens ELSE 0 END) AS \"opentrons\", SUM(CASE WHEN agent_id = 'elephant' THEN total_tokens ELSE 0 END) AS \"elephant\", SUM(CASE WHEN agent_id = 'joule-heater' THEN total_tokens ELSE 0 END) AS \"joule-heater\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(total_tokens) AS \"vipsa\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Token Usage by Machine",
+      "title": "Token Usage - VIPSA",
       "type": "timeseries"
     },
     {
@@ -1512,7 +1542,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 57
       },
       "id": 170,
       "title": "Event & Tool Logs",
@@ -1713,7 +1743,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 55
+        "y": 58
       },
       "id": 171,
       "options": {
@@ -1740,13 +1770,13 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id = 'vipsa' AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id = 'vipsa' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Combined Event Log",
+      "title": "VIPSA Event Log",
       "type": "table"
     },
     {
@@ -1944,7 +1974,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 55
+        "y": 58
       },
       "id": 172,
       "options": {
@@ -1971,13 +2001,13 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id = 'vipsa' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Combined Tool Call Log",
+      "title": "VIPSA Tool Call Log",
       "type": "table"
     },
     {
@@ -1986,7 +2016,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 68
       },
       "id": 130,
       "title": "Command Log",
@@ -2285,7 +2315,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 69
       },
       "id": 50,
       "options": {
@@ -2313,14 +2343,187 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id = 'vipsa' ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Command Log (latest 500)",
+      "title": "VIPSA Command Log (latest 500)",
       "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 85
+      },
+      "id": 200,
+      "title": "VIPSA Event Detail (click a VIPSA timeline event)",
+      "type": "row",
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsLocal"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "source"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "event"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 180
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "message"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "auto",
+                      "wrapText": true
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "details"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "auto",
+                      "wrapText": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 86
+          },
+          "id": 201,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Time"
+              }
+            ]
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influxdb-hermes"
+              },
+              "rawSql": "SELECT time, 'Session' AS source, event, agent_id, COALESCE(model, '') AS message, COALESCE(reason, '') AS details FROM hermes_session WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'LLM Turn' AS source, event, agent_id, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 700), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 700), ''), '') AS message, COALESCE(model, '') AS details FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'API Request' AS source, event, agent_id, COALESCE(model, '') AS message, COALESCE(CAST(total_tokens AS VARCHAR), '') AS details FROM hermes_api_request WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'Tool Call' AS source, event, agent_id, COALESCE(tool_name, '') AS message, COALESCE(status, '') || ' ' || COALESCE(substr(CAST(error_message AS VARCHAR), 1, 400), '') AS details FROM hermes_tool_call WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "format": "table",
+              "refId": "Hermes",
+              "rawQuery": true
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "puda-influxdb"
+              },
+              "rawSql": "SELECT time, 'PUDA Command' AS source, COALESCE(msg_type, '') AS event, machine_id AS agent_id, COALESCE(cmd_name, '') AS message, COALESCE(substr(response_message, 1, 700), '') AS details FROM machine_commands WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "format": "table",
+              "refId": "PUDA",
+              "rawQuery": true
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "puda-influxdb"
+              },
+              "rawSql": "SELECT time, 'Machine Status' AS source, COALESCE(status, '') AS event, machine_id AS agent_id, COALESCE(status, '') AS message, '' AS details FROM machine_status WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "format": "table",
+              "refId": "Status",
+              "rawQuery": true
+            }
+          ],
+          "title": "VIPSA Event Details Around Clicked Time",
+          "type": "table"
+        }
+      ]
     }
   ],
   "refresh": "5s",
@@ -2329,10 +2532,47 @@
     "puda",
     "machines",
     "commands",
-    "bears"
+    "vipsa"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "hide": 2,
+        "label": "Event Time (ms)",
+        "name": "event_time",
+        "options": [
+          {
+            "text": "0",
+            "value": "0",
+            "selected": true
+          }
+        ],
+        "query": "0",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "PUDA Event",
+        "name": "puda_event",
+        "options": [
+          {
+            "text": "",
+            "value": "",
+            "selected": true
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -2340,7 +2580,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Bears",
-  "uid": "bears",
+  "title": "VIPSA",
+  "uid": "vipsa-v2",
   "version": 1
 }
