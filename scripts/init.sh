@@ -6,7 +6,7 @@ cd "$(dirname "$0")/.."
 
 INFLUXDB_URL="${INFLUXDB_URL:-http://localhost:8181}"
 INFLUXDB_TOKEN="${INFLUXDB_TOKEN:-apiv3_puda}"
-INFLUXDB_MACHINES_DATABASE="${INFLUXDB_MACHINES_DATABASE:-machines}"
+INFLUXDB_PUDA_DATABASE="${INFLUXDB_PUDA_DATABASE:-machines}"
 INFLUXDB_HERMES_DATABASE="${INFLUXDB_HERMES_DATABASE:-hermes-logs}"
 
 GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
@@ -23,7 +23,7 @@ SUPERSEDED_UIDS=(
   hermes
 )
 
-for db in "${INFLUXDB_MACHINES_DATABASE}" "${INFLUXDB_HERMES_DATABASE}"; do
+for db in "${INFLUXDB_PUDA_DATABASE}" "${INFLUXDB_HERMES_DATABASE}"; do
   echo "▶ Ensuring InfluxDB database '${db}' exists …"
   code=$(curl -s -o /dev/null -w "%{http_code}" \
     -X POST "${INFLUXDB_URL}/api/v3/configure/database" \
