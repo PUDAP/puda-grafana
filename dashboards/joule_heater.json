@@ -468,9 +468,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^immediate response: command.*$",
+                "pattern": "^immediate command.*$",
                 "result": {
-                  "text": "immediate response: command",
+                  "text": "immediate command",
                   "color": "#F2495C",
                   "index": 62
                 }
@@ -479,9 +479,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^immediate response: response.*$",
+                "pattern": "^immediate response.*$",
                 "result": {
-                  "text": "immediate response: response",
+                  "text": "immediate response",
                   "color": "#FF66C4",
                   "index": 63
                 }
@@ -493,7 +493,7 @@
                 "pattern": "^queue command.*$",
                 "result": {
                   "text": "queue command",
-                  "color": "#BDBDBD",
+                  "color": "#FF9830",
                   "index": 64
                 }
               }
@@ -501,22 +501,11 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^queue response: command.*$",
+                "pattern": "^queue response.*$",
                 "result": {
-                  "text": "queue response: command",
-                  "color": "#F2F2F2",
+                  "text": "queue response",
+                  "color": "#5794F2",
                   "index": 65
-                }
-              }
-            },
-            {
-              "type": "regex",
-              "options": {
-                "pattern": "^queue response: response.*$",
-                "result": {
-                  "text": "queue response: response",
-                  "color": "#8A8A8A",
-                  "index": 66
                 }
               }
             }
@@ -1010,9 +999,9 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^immediate response: command.*$",
+                      "pattern": "^immediate command.*$",
                       "result": {
-                        "text": "immediate response: command",
+                        "text": "immediate command",
                         "color": "#F2495C",
                         "index": 0
                       }
@@ -1021,9 +1010,9 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^immediate response: response.*$",
+                      "pattern": "^immediate response.*$",
                       "result": {
-                        "text": "immediate response: response",
+                        "text": "immediate response",
                         "color": "#FF66C4",
                         "index": 1
                       }
@@ -1035,7 +1024,7 @@
                       "pattern": "^queue command.*$",
                       "result": {
                         "text": "queue command",
-                        "color": "#BDBDBD",
+                        "color": "#FF9830",
                         "index": 2
                       }
                     }
@@ -1043,22 +1032,11 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^queue response: command.*$",
+                      "pattern": "^queue response.*$",
                       "result": {
-                        "text": "queue response: command",
-                        "color": "#F2F2F2",
+                        "text": "queue response",
+                        "color": "#5794F2",
                         "index": 3
-                      }
-                    }
-                  },
-                  {
-                    "type": "regex",
-                    "options": {
-                      "pattern": "^queue response: response.*$",
-                      "result": {
-                        "text": "queue response: response",
-                        "color": "#8A8A8A",
-                        "index": 4
                       }
                     }
                   }
@@ -1108,7 +1086,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Machine Status\" FROM machine_status WHERE machine_id = 'joule-heater' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Machine Status\" FROM telemetry WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1153,7 +1131,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"puda\" FROM machine_commands WHERE machine_id = 'joule-heater' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'joule-heater' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         }
@@ -1204,7 +1182,7 @@
       "id": 21,
       "options": {
         "mode": "html",
-        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>puda: immediate response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>puda: immediate response: response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#BDBDBD;display:inline-block;\"></i>puda: queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2F2F2;display:inline-block;\"></i>puda: queue response: command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8A8A8A;display:inline-block;\"></i>puda: queue response: response</span>\n</div>"
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>immediate command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>immediate response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>queue response</span>\n</div>"
       },
       "pluginVersion": "13.0.0",
       "title": "",
@@ -1872,7 +1850,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic IN ('response.queue', 'queue') THEN 'queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END = '$puda_event') ORDER BY time ASC",
+              "rawSql": "SELECT * FROM commands WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1970,7 +1948,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_status WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, data FROM telemetry WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2346,7 +2324,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 130
+                "value": 170
               },
               {
                 "id": "mappings",
@@ -2354,15 +2332,25 @@
                   {
                     "type": "value",
                     "options": {
-                      "queue": {
-                        "text": "queue",
+                      "queue command": {
+                        "text": "queue command",
                         "color": "blue",
                         "index": 0
                       },
-                      "immediate": {
-                        "text": "immediate",
-                        "color": "orange",
+                      "queue response": {
+                        "text": "queue response",
+                        "color": "purple",
                         "index": 1
+                      },
+                      "immediate command": {
+                        "text": "immediate command",
+                        "color": "orange",
+                        "index": 2
+                      },
+                      "immediate response": {
+                        "text": "immediate response",
+                        "color": "green",
+                        "index": 3
                       }
                     }
                   }
@@ -2588,7 +2576,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(response_code, '') AS response_code, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true

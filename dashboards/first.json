@@ -468,7 +468,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^immediate response: command.*$",
+                "pattern": "^immediate command.*$",
                 "result": {
                   "text": "immediate command",
                   "color": "#F2495C",
@@ -479,7 +479,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^immediate response: response.*$",
+                "pattern": "^immediate response.*$",
                 "result": {
                   "text": "immediate response",
                   "color": "#FF66C4",
@@ -1018,7 +1018,7 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^immediate response: command.*$",
+                      "pattern": "^immediate command.*$",
                 "result": {
                   "text": "immediate command",
                         "color": "#F2495C",
@@ -1029,7 +1029,7 @@
                   {
                     "type": "regex",
                     "options": {
-                      "pattern": "^immediate response: response.*$",
+                      "pattern": "^immediate response.*$",
                 "result": {
                   "text": "immediate response",
                         "color": "#FF66C4",
@@ -1105,7 +1105,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"First Status\" FROM machine_status WHERE machine_id = 'first' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"First Status\" FROM telemetry WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1114,7 +1114,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Biologic Status\" FROM machine_status WHERE machine_id = 'biologic' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Biologic Status\" FROM telemetry WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
         },
@@ -1159,7 +1159,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'queue response' WHEN topic = 'queue' THEN 'queue command' WHEN topic = 'response.immediate' THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"puda\" FROM machine_commands WHERE machine_id = 'first' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'first' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         }
@@ -1879,7 +1879,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_commands WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'response.queue' THEN 'queue response' WHEN topic = 'queue' THEN 'queue command' WHEN topic = 'response.immediate' THEN 'immediate response: ' || msg_type ELSE REPLACE(topic, 'response.', '') || ' ' || msg_type END = '$puda_event') ORDER BY time ASC",
+              "rawSql": "SELECT * FROM commands WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1977,7 +1977,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM machine_status WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, data FROM telemetry WHERE machine_id = 'first' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2353,7 +2353,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 130
+                "value": 170
               },
               {
                 "id": "mappings",
@@ -2361,15 +2361,25 @@
                   {
                     "type": "value",
                     "options": {
-                      "queue": {
-                        "text": "queue",
+                      "queue command": {
+                        "text": "queue command",
                         "color": "blue",
                         "index": 0
                       },
-                      "immediate": {
-                        "text": "immediate",
-                        "color": "orange",
+                      "queue response": {
+                        "text": "queue response",
+                        "color": "purple",
                         "index": 1
+                      },
+                      "immediate command": {
+                        "text": "immediate command",
+                        "color": "orange",
+                        "index": 2
+                      },
+                      "immediate response": {
+                        "text": "immediate response",
+                        "color": "green",
+                        "index": 3
                       }
                     }
                   }
@@ -2595,7 +2605,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, REPLACE(topic, 'response.', '') AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(response_code, '') AS response_code, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true

@@ -288,7 +288,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^PUDA: immediate response: command.*$",
+                "pattern": "^PUDA: immediate command.*$",
                 "result": {
                   "text": "PUDA immediate command",
                   "color": "#F2495C",
@@ -299,7 +299,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^PUDA: immediate response: response.*$",
+                "pattern": "^PUDA: immediate response.*$",
                 "result": {
                   "text": "PUDA immediate response",
                   "color": "#FF66C4",
@@ -310,7 +310,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^PUDA: queue response: command.*$",
+                "pattern": "^PUDA: queue command.*$",
                 "result": {
                   "text": "PUDA queue command",
                   "color": "#F2F2F2",
@@ -321,7 +321,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^PUDA: queue response: response.*$",
+                "pattern": "^PUDA: queue response.*$",
                 "result": {
                   "text": "PUDA queue response",
                   "color": "#8A8A8A",
@@ -775,7 +775,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Light\" FROM machine_status WHERE machine_id = 'light' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Light\" FROM telemetry WHERE machine_id = 'light' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -793,7 +793,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Light\" FROM machine_commands WHERE machine_id = 'light' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"Light\" FROM commands WHERE machine_id = 'light' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
@@ -802,7 +802,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Stage\" FROM machine_status WHERE machine_id = 'stage' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Stage\" FROM telemetry WHERE machine_id = 'stage' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
@@ -820,7 +820,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Stage\" FROM machine_commands WHERE machine_id = 'stage' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"Stage\" FROM commands WHERE machine_id = 'stage' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
         },
@@ -829,7 +829,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Zaber\" FROM machine_status WHERE machine_id = 'zaber' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Zaber\" FROM telemetry WHERE machine_id = 'zaber' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         },
@@ -847,7 +847,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"Zaber\" FROM machine_commands WHERE machine_id = 'zaber' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"Zaber\" FROM commands WHERE machine_id = 'zaber' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "I",
           "rawQuery": true
         },
@@ -856,7 +856,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'VIPSA Status: ' || status AS \"vipsa\" FROM (SELECT time, status FROM machine_status WHERE machine_id = 'vipsa' AND status IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'VIPSA Status: online' AS \"vipsa\" FROM (SELECT time FROM telemetry WHERE machine_id = 'vipsa' AND $__timeFilter(time) ORDER BY time DESC LIMIT 150) ORDER BY time ASC",
           "refId": "J",
           "rawQuery": true
         },
@@ -874,7 +874,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"vipsa\" FROM machine_commands WHERE machine_id = 'vipsa' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"vipsa\" FROM commands WHERE machine_id = 'vipsa' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "L",
           "rawQuery": true
         }
@@ -1127,7 +1127,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa'",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1187,7 +1187,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1256,7 +1256,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1316,7 +1316,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa'",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa'",
           "refId": "A",
           "rawQuery": true
         }
@@ -1415,7 +1415,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"vipsa\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"vipsa\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1424,7 +1424,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id = 'vipsa' GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -2135,6 +2135,59 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "queue_type"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Queue/Immediate"
+              },
+              {
+                "id": "custom.width",
+                "value": 170
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "queue command": {
+                        "text": "queue command",
+                        "color": "blue",
+                        "index": 0
+                      },
+                      "queue response": {
+                        "text": "queue response",
+                        "color": "purple",
+                        "index": 1
+                      },
+                      "immediate command": {
+                        "text": "immediate command",
+                        "color": "orange",
+                        "index": 2
+                      },
+                      "immediate response": {
+                        "text": "immediate response",
+                        "color": "green",
+                        "index": 3
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "command"
             },
             "properties": [
@@ -2343,7 +2396,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id = 'vipsa' ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(response_code, '') AS response_code, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id = 'vipsa' ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2504,7 +2557,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, 'PUDA Command' AS source, COALESCE(msg_type, '') AS event, machine_id AS agent_id, COALESCE(cmd_name, '') AS message, COALESCE(substr(response_message, 1, 700), '') AS details FROM machine_commands WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "rawSql": "SELECT time, 'PUDA Command' AS source, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS event, machine_id AS agent_id, COALESCE(cmd_name, '') AS message, COALESCE(substr(response_message, 1, 700), '') AS details FROM commands WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
               "format": "table",
               "refId": "PUDA",
               "rawQuery": true
@@ -2514,7 +2567,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, 'Machine Status' AS source, COALESCE(status, '') AS event, machine_id AS agent_id, COALESCE(status, '') AS message, '' AS details FROM machine_status WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "rawSql": "SELECT time, 'Machine Status' AS source, 'online' AS event, machine_id AS agent_id, COALESCE(data, '') AS message, COALESCE(subject, '') AS details FROM telemetry WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
               "format": "table",
               "refId": "Status",
               "rawQuery": true
