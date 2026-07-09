@@ -62,7 +62,7 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 |---|---|---|
 | `INFLUXDB_URL` | `http://bearsnas:8181` | URL of the `puda-logger` InfluxDB instance |
 | `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; passed to Grafana as an environment variable) |
-| `INFLUXDB_MACHINES_DATABASE` | `machines` | InfluxDB database name for machine telemetry/command logs |
+| `INFLUXDB_PUDA_DATABASE` | `machines` | InfluxDB database name for machine telemetry/command logs |
 | `INFLUXDB_HERMES_DATABASE` | `hermes-logs` | InfluxDB database name for Hermes agent session logs |
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |

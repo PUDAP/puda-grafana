@@ -7,10 +7,10 @@ datasources:
     url: $INFLUXDB_URL
     access: proxy
     isDefault: true
-    database: $INFLUXDB_MACHINES_DATABASE
+    database: $INFLUXDB_PUDA_DATABASE
     jsonData:
       version: SQL
-      database: $INFLUXDB_MACHINES_DATABASE
+      database: $INFLUXDB_PUDA_DATABASE
       insecureGrpc: true
     secureJsonData:
       token: $INFLUXDB_TOKEN
