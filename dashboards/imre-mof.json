@@ -532,7 +532,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -551,7 +551,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -570,7 +570,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -596,7 +596,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=11&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=11&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -646,7 +646,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=12&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=12&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -696,7 +696,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=13&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=13&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -1017,7 +1017,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=10&var-event_time=${__value.time}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=10&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -1085,7 +1085,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/imre-mof/imre-mof?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
+                    "url": "/d/puda-imre-mof/imre-mof?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -2879,6 +2879,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "imre-mof",
-  "uid": "imre-mof",
+  "uid": "puda-imre-mof",
   "version": 1
 }
