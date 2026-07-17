@@ -1,0 +1,13 @@
+logLevel: info
+rtsp: true
+rtspAddress: :8554
+hls: true
+hlsAddress: :8888
+hlsAllowOrigins: ['*']
+webrtc: false
+
+pathDefaults:
+  sourceOnDemand: false
+
+paths:
+  pescador:

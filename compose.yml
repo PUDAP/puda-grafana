@@ -1,4 +1,74 @@
 services:
+  pescador-media-relay:
+    image: bluenviron/mediamtx:latest
+    container_name: pescador-media-relay
+    restart: unless-stopped
+    ports:
+      - "8891:8888"
+    volumes:
+      - ./provisioning/mediamtx/pescador.yml:/mediamtx.yml:ro
+
+  pescador-transcoder:
+    image: jrottenberg/ffmpeg:7-alpine
+    container_name: pescador-transcoder
+    restart: unless-stopped
+    depends_on:
+      - pescador-media-relay
+    command:
+      - -nostdin
+      - -rtsp_transport
+      - tcp
+      - -i
+      - rtsp://100.120.39.93:8554/livestream
+      - -an
+      - -c:v
+      - libx264
+      - -pix_fmt
+      - yuv420p
+      - -profile:v
+      - main
+      - -level:v
+      - "3.1"
+      - -preset
+      - veryfast
+      - -tune
+      - zerolatency
+      - -g
+      - "30"
+      - -bf
+      - "0"
+      - -f
+      - rtsp
+      - -rtsp_transport
+      - tcp
+      - rtsp://pescador-media-relay:8554/pescador
+
+  imre-mof-telemetry:
+    image: telegraf:1.39.1-alpine
+    container_name: imre-mof-telemetry
+    restart: unless-stopped
+    environment:
+      NATS_IMRE_MOF_URL: ${NATS_IMRE_MOF_URL:-nats://172.31.8.193:4222}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_PUDA_DATABASE: ${INFLUXDB_PUDA_DATABASE}
+      INFLUXDB_ORGANIZATION: ${INFLUXDB_ORGANIZATION:-bears}
+    volumes:
+      - ./provisioning/telegraf/imre-mof.conf:/etc/telegraf/telegraf.conf:ro
+
+  imre-pescardo-telemetry:
+    image: telegraf:1.39.1-alpine
+    container_name: imre-pescardo-telemetry
+    restart: unless-stopped
+    environment:
+      NATS_IMRE_PESCARDO_URL: ${NATS_IMRE_PESCARDO_URL:-nats://100.99.243.61:4222}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_PUDA_DATABASE: ${INFLUXDB_PUDA_DATABASE}
+      INFLUXDB_ORGANIZATION: ${INFLUXDB_ORGANIZATION:-bears}
+    volumes:
+      - ./provisioning/telegraf/imre-pescardo.conf:/etc/telegraf/telegraf.conf:ro
+
   grafana:
     image: grafana/grafana:13.0.1
     container_name: puda-grafana

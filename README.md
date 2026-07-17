@@ -2,7 +2,9 @@
 
 Real-time monitoring for PUDA lab machines (Biologic, FIRST, Opentrons).
 Health and command data is streamed via NATS, ingested and stored in InfluxDB 3 by the separate
-[`puda-logger`](../puda-logger) service, and visualised here in Grafana.
+[`puda-logger`](../puda-logger) service, and visualised here in Grafana. The IMRE Pescardo health
+stream is ingested by the dedicated `imre-pescardo-telemetry` service in this stack because it is
+hosted on a separate NATS server.
 
 ## Architecture
 
@@ -64,6 +66,9 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; passed to Grafana as an environment variable) |
 | `INFLUXDB_PUDA_DATABASE` | `machines` | InfluxDB database name for machine telemetry/command logs |
 | `INFLUXDB_HERMES_DATABASE` | `hermes-logs` | InfluxDB database name for Hermes agent session logs |
+| `INFLUXDB_ORGANIZATION` | `bears` | Organization value used when writing IMRE Pescardo telemetry |
+| `NATS_IMRE_MOF_URL` | `nats://172.31.8.193:4222` | NATS server carrying IMRE MOF, Dobot, and Capper health telemetry |
+| `NATS_IMRE_PESCARDO_URL` | `nats://100.99.243.61:4222` | NATS server carrying `puda.pescador-pipqubot.tlm.health` |
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
 | `GF_PANELS_DISABLE_SANITIZE_HTML` | `true` | Allows provisioned text panels to embed VIPSA camera/control iframes |
