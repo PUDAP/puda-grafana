@@ -912,7 +912,7 @@
       },
       "id": 143,
       "options": {
-        "content": "<iframe src=\"http://vipsapc:8889/camera1\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"http://bears:8889/vipsa-microscope/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
@@ -2342,5 +2342,5 @@
   "timezone": "browser",
   "title": "Bears",
   "uid": "bears",
-  "version": 1
+  "version": 48
 }
