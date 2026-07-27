@@ -880,7 +880,7 @@
       },
       "id": 141,
       "options": {
-        "content": "<iframe src=\"http://bears:8889/first\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-bears.puda.co/first\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
@@ -896,7 +896,7 @@
       },
       "id": 142,
       "options": {
-        "content": "<iframe src=\"http://opentron:8889/cam0/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-opentron.puda.co/cam0\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
@@ -912,7 +912,7 @@
       },
       "id": 143,
       "options": {
-        "content": "<iframe src=\"http://bears:8889/vipsa-microscope/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-bears.puda.co/vipsa-microscope\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
@@ -928,7 +928,7 @@
       },
       "id": 144,
       "options": {
-        "content": "<iframe src=\"http://joule-heater-win:8889/cam/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-joule-heater.puda.co/cam\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
