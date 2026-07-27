@@ -56,18 +56,19 @@ InfluxDB itself is not part of this repo — it's ingested and hosted by the sep
 
 ## Configuration
 
-Copy `.env.example` to `.env` and adjust as needed. All variables have defaults matching the PUDA lab setup.
+Copy `.env.example` to `.env` and adjust as needed. All variables have defaults matching the PUDA lab setup. `.env` is loaded into the `grafana` container via `env_file`, so its values are available both for InfluxDB provisioning and for `${...}` expansion inside `grafana.ini`.
 
 | Variable | Default | Description |
 |---|---|---|
 | `INFLUXDB_URL` | `http://bearsnas:8181` | URL of the `puda-logger` InfluxDB instance |
-| `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; passed to Grafana as an environment variable) |
+| `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; used by the InfluxDB datasource) |
 | `INFLUXDB_PUDA_DATABASE` | `machines` | InfluxDB database name for machine telemetry/command logs |
 | `INFLUXDB_HERMES_DATABASE` | `hermes-logs` | InfluxDB database name for Hermes agent session logs |
-| `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username |
-| `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password |
-| `GF_PANELS_DISABLE_SANITIZE_HTML` | `true` | Allows provisioned text panels to embed VIPSA camera/control iframes |
+| `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username (expanded into `grafana.ini`) |
+| `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password (expanded into `grafana.ini`) |
 | `GF_INSTALL_PLUGINS` | `marcusolsson-dynamictext-panel` | Installs the Business Text panel used for styled rolling chat/tool windows |
+
+Grafana's own settings (anonymous viewer access, disabled HTML sanitization for iframe panels, disabled self-signup, disabled embedding) live in `grafana.ini`, which is bind-mounted to `/etc/grafana/grafana.ini`. `GF_INSTALL_PLUGINS` is not a `grafana.ini` setting — it's read by the Grafana image's entrypoint script to install plugins before Grafana starts, so it stays an environment variable, sourced from `.env`.
 
 ## Deploying to a new host
 

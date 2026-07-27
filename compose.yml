@@ -5,21 +5,13 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    environment:
-      GF_SECURITY_ADMIN_USER: ${GF_SECURITY_ADMIN_USER:-admin}
-      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD:-admin}
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
-      GF_PANELS_DISABLE_SANITIZE_HTML: "true"
-      GF_INSTALL_PLUGINS: marcusolsson-dynamictext-panel
-      INFLUXDB_URL: ${INFLUXDB_URL}
-      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
-      INFLUXDB_PUDA_DATABASE: ${INFLUXDB_PUDA_DATABASE}
-      INFLUXDB_HERMES_DATABASE: ${INFLUXDB_HERMES_DATABASE}
+    env_file:
+      - .env
     extra_hosts:
       - "bearsnas:100.87.23.102"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
       - ./provisioning:/etc/grafana/provisioning
       - ./dashboards:/var/lib/grafana/dashboards
     networks:
