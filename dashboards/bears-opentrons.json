@@ -2763,9 +2763,7 @@
   "refresh": "10s",
   "schemaVersion": 39,
   "tags": [
-    "puda",
-    "hermes",
-    "agent"
+    "bears"
   ],
   "templating": {
     "list": [

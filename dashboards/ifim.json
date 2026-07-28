@@ -979,9 +979,6 @@
   "refresh": "5s",
   "schemaVersion": 39,
   "tags": [
-    "puda",
-    "machines",
-    "commands",
     "ifim"
   ],
   "templating": {

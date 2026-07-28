@@ -2575,10 +2575,7 @@
   "refresh": "5s",
   "schemaVersion": 39,
   "tags": [
-    "puda",
-    "machines",
-    "commands",
-    "vipsa"
+    "ntu"
   ],
   "templating": {
     "list": [
