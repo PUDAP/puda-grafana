@@ -1086,7 +1086,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'online' AS \"Machine Status\" FROM telemetry WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"Machine Status\" FROM telemetry WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1131,7 +1131,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'joule-heater' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'joule-heating' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         }
@@ -1850,7 +1850,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM commands WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
+              "rawSql": "SELECT * FROM commands WHERE machine_id = 'joule-heating' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1948,7 +1948,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, data FROM telemetry WHERE machine_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, data FROM telemetry WHERE machine_id = 'joule-heating' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2480,23 +2480,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "message"
+              "options": "completed_at"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Message / Error"
+                "value": "Completed At"
               },
               {
                 "id": "custom.width",
-                "value": 260
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto",
-                  "wrapText": true
-                }
+                "value": 200
               }
             ]
           },
@@ -2576,7 +2569,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(response_code, '') AS response_code, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true

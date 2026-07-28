@@ -164,7 +164,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"plsystem\" FROM machine_status WHERE machine_id = 'plsystem' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'online' AS \"plsystem\" FROM telemetry WHERE machine_id = 'plsystem' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -289,7 +289,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status FROM machine_status WHERE machine_id = 'plsystem' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
+          "rawSql": "SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'plsystem' AND time >= now() - interval '5 minutes' ORDER BY time DESC LIMIT 1",
           "refId": "A",
           "rawQuery": true
         }
@@ -361,7 +361,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
           "refId": "A",
           "rawQuery": true
         }
@@ -421,7 +421,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
           "refId": "A",
           "rawQuery": true
         }
@@ -490,7 +490,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM machine_commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
           "refId": "A",
           "rawQuery": true
         }
@@ -550,7 +550,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('plsystem')",
           "refId": "A",
           "rawQuery": true
         }
@@ -649,7 +649,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'plsystem' THEN 1 END) AS \"plsystem\" FROM machine_commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('plsystem') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'plsystem' THEN 1 END) AS \"plsystem\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('plsystem') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -658,7 +658,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM machine_commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('plsystem') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('plsystem') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -903,65 +903,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "message"
+              "options": "completed_at"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Message / Error"
+                "value": "Completed At"
               },
               {
                 "id": "custom.width",
-                "value": 260
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto",
-                  "wrapText": true
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "params"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Params"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto",
-                  "wrapText": true
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "response"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Response Data"
-              },
-              {
-                "id": "custom.width",
-                "value": 320
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto",
-                  "wrapText": true
-                }
+                "value": 200
               }
             ]
           }
@@ -999,7 +950,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(substr(params_json, 1, 300), '') AS params, COALESCE(substr(data_json, 1, 1000), '') AS response FROM machine_commands WHERE $__timeFilter(time) AND machine_id IN ('plsystem') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id IN ('plsystem') ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true

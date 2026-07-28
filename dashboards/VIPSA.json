@@ -2300,23 +2300,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "message"
+              "options": "completed_at"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Message / Error"
+                "value": "Completed At"
               },
               {
                 "id": "custom.width",
-                "value": 260
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto",
-                  "wrapText": true
-                }
+                "value": 200
               }
             ]
           },
@@ -2396,7 +2389,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(substr(response_message, 1, 300), '') AS message, COALESCE(response_code, '') AS response_code, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id = 'vipsa' ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id = 'vipsa' ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2547,7 +2540,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT time, 'Session' AS source, event, agent_id, COALESCE(model, '') AS message, COALESCE(reason, '') AS details FROM hermes_session WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'LLM Turn' AS source, event, agent_id, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 700), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 700), ''), '') AS message, COALESCE(model, '') AS details FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'API Request' AS source, event, agent_id, COALESCE(model, '') AS message, COALESCE(CAST(total_tokens AS VARCHAR), '') AS details FROM hermes_api_request WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'Tool Call' AS source, event, agent_id, COALESCE(tool_name, '') AS message, COALESCE(status, '') || ' ' || COALESCE(substr(CAST(error_message AS VARCHAR), 1, 400), '') AS details FROM hermes_tool_call WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "rawSql": "SELECT time, 'Session' AS source, event, agent_id, '' AS message, COALESCE(reason, '') AS details FROM hermes_session WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'LLM Turn' AS source, event, agent_id, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 700), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 700), ''), '') AS message, COALESCE(model, '') AS details FROM hermes_llm_turn WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'API Request' AS source, event, agent_id, COALESCE(model, '') AS message, COALESCE(CAST(total_tokens AS VARCHAR), '') AS details FROM hermes_api_request WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) UNION ALL SELECT time, 'Tool Call' AS source, event, agent_id, COALESCE(tool_name, '') AS message, COALESCE(status, '') || ' ' || COALESCE(substr(CAST(error_message AS VARCHAR), 1, 400), '') AS details FROM hermes_tool_call WHERE agent_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
               "format": "table",
               "refId": "Hermes",
               "rawQuery": true
@@ -2557,7 +2550,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, 'PUDA Command' AS source, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS event, machine_id AS agent_id, COALESCE(cmd_name, '') AS message, COALESCE(substr(response_message, 1, 700), '') AS details FROM commands WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "rawSql": "SELECT time, 'PUDA Command' AS source, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS event, machine_id AS agent_id, COALESCE(cmd_name, '') AS message, COALESCE(CAST(completed_at AS VARCHAR), '') AS details FROM commands WHERE machine_id = 'vipsa' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
               "format": "table",
               "refId": "PUDA",
               "rawQuery": true
