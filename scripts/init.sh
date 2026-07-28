@@ -21,6 +21,11 @@ SUPERSEDED_UIDS=(
   ifim-machines
   vipsa-machines
   hermes
+  first
+  opentrons
+  joule_heater
+  vipsa-v2
+  puda-imre-mof
 )
 
 for db in "${INFLUXDB_PUDA_DATABASE}" "${INFLUXDB_HERMES_DATABASE}"; do

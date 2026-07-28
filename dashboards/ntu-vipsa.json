@@ -737,7 +737,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | View VIPSA event details",
-                    "url": "/d/vipsa-v2/vipsa?viewPanel=201&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
+                    "url": "/d/ntu-vipsa/ntu-vipsa?viewPanel=201&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -2626,7 +2626,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "VIPSA",
-  "uid": "vipsa-v2",
+  "title": "NTU-VIPSA",
+  "uid": "ntu-vipsa",
   "version": 4
 }

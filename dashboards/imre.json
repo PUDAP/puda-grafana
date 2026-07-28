@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Bears environment machine status and command logs",
+  "description": "IMRE environment machine status, Hermes activity, and command logs",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -332,7 +332,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: running$",
+                "pattern": "^IMRE MOF Status: running$",
                 "result": {
                   "text": "Running",
                   "color": "blue",
@@ -343,7 +343,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: (success|succeeded)$",
+                "pattern": "^IMRE MOF Status: (success|succeeded)$",
                 "result": {
                   "text": "Succeeded",
                   "color": "green",
@@ -354,7 +354,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: idle$",
+                "pattern": "^IMRE MOF Status: idle$",
                 "result": {
                   "text": "Idle",
                   "color": "super-light-blue",
@@ -365,7 +365,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: (error|failed)$",
+                "pattern": "^IMRE MOF Status: (error|failed)$",
                 "result": {
                   "text": "Error",
                   "color": "red",
@@ -376,9 +376,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: online$",
+                "pattern": "^IMRE MOF Status: online$",
                 "result": {
-                  "text": "First Status: online",
+                  "text": "IMRE MOF Status: online",
                   "color": "green",
                   "index": 13
                 }
@@ -387,9 +387,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status: offline$",
+                "pattern": "^IMRE MOF Status: offline$",
                 "result": {
-                  "text": "First Status: offline",
+                  "text": "IMRE MOF Status: offline",
                   "color": "red",
                   "index": 14
                 }
@@ -398,9 +398,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^First Status:.*$",
+                "pattern": "^IMRE MOF Status:.*$",
                 "result": {
-                  "text": "First Status",
+                  "text": "IMRE MOF Status",
                   "color": "#8AB8FF",
                   "index": 15
                 }
@@ -409,7 +409,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: running$",
+                "pattern": "^Dobot Status: running$",
                 "result": {
                   "text": "Running",
                   "color": "blue",
@@ -420,7 +420,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: (success|succeeded)$",
+                "pattern": "^Dobot Status: (success|succeeded)$",
                 "result": {
                   "text": "Succeeded",
                   "color": "green",
@@ -431,7 +431,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: idle$",
+                "pattern": "^Dobot Status: idle$",
                 "result": {
                   "text": "Idle",
                   "color": "super-light-blue",
@@ -442,7 +442,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: (error|failed)$",
+                "pattern": "^Dobot Status: (error|failed)$",
                 "result": {
                   "text": "Error",
                   "color": "red",
@@ -453,9 +453,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: online$",
+                "pattern": "^Dobot Status: online$",
                 "result": {
-                  "text": "Biologic Status: online",
+                  "text": "Dobot Status: online",
                   "color": "green",
                   "index": 13
                 }
@@ -464,9 +464,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status: offline$",
+                "pattern": "^Dobot Status: offline$",
                 "result": {
-                  "text": "Biologic Status: offline",
+                  "text": "Dobot Status: offline",
                   "color": "red",
                   "index": 14
                 }
@@ -475,9 +475,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Biologic Status:.*$",
+                "pattern": "^Dobot Status:.*$",
                 "result": {
-                  "text": "Biologic Status",
+                  "text": "Dobot Status",
                   "color": "#8AB8FF",
                   "index": 15
                 }
@@ -486,7 +486,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: running$",
+                "pattern": "^Capper Status: running$",
                 "result": {
                   "text": "Running",
                   "color": "blue",
@@ -497,7 +497,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: (success|succeeded)$",
+                "pattern": "^Capper Status: (success|succeeded)$",
                 "result": {
                   "text": "Succeeded",
                   "color": "green",
@@ -508,7 +508,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: idle$",
+                "pattern": "^Capper Status: idle$",
                 "result": {
                   "text": "Idle",
                   "color": "super-light-blue",
@@ -519,7 +519,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: (error|failed)$",
+                "pattern": "^Capper Status: (error|failed)$",
                 "result": {
                   "text": "Error",
                   "color": "red",
@@ -530,9 +530,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: online$",
+                "pattern": "^Capper Status: online$",
                 "result": {
-                  "text": "Opentrons Status: online",
+                  "text": "Capper Status: online",
                   "color": "green",
                   "index": 13
                 }
@@ -541,9 +541,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status: offline$",
+                "pattern": "^Capper Status: offline$",
                 "result": {
-                  "text": "Opentrons Status: offline",
+                  "text": "Capper Status: offline",
                   "color": "red",
                   "index": 14
                 }
@@ -552,9 +552,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Opentrons Status:.*$",
+                "pattern": "^Capper Status:.*$",
                 "result": {
-                  "text": "Opentrons Status",
+                  "text": "Capper Status",
                   "color": "#8AB8FF",
                   "index": 13
                 }
@@ -563,7 +563,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: running$",
+                "pattern": "^Pescador Status: running$",
                 "result": {
                   "text": "Running",
                   "color": "blue",
@@ -574,7 +574,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: (success|succeeded)$",
+                "pattern": "^Pescador Status: (success|succeeded)$",
                 "result": {
                   "text": "Succeeded",
                   "color": "green",
@@ -585,7 +585,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: idle$",
+                "pattern": "^Pescador Status: idle$",
                 "result": {
                   "text": "Idle",
                   "color": "super-light-blue",
@@ -596,7 +596,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: (error|failed)$",
+                "pattern": "^Pescador Status: (error|failed)$",
                 "result": {
                   "text": "Error",
                   "color": "red",
@@ -607,9 +607,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: online$",
+                "pattern": "^Pescador Status: online$",
                 "result": {
-                  "text": "Joule Heater Status: online",
+                  "text": "Pescador Status: online",
                   "color": "green",
                   "index": 13
                 }
@@ -618,9 +618,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status: offline$",
+                "pattern": "^Pescador Status: offline$",
                 "result": {
-                  "text": "Joule Heater Status: offline",
+                  "text": "Pescador Status: offline",
                   "color": "red",
                   "index": 14
                 }
@@ -629,9 +629,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Joule Heater Status:.*$",
+                "pattern": "^Pescador Status:.*$",
                 "result": {
-                  "text": "Joule Heater Status",
+                  "text": "Pescador Status",
                   "color": "#8AB8FF",
                   "index": 15
                 }
@@ -652,15 +652,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "first"
+              "options": "imre-mof"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "title": "Open First dashboard",
-                    "url": "/d/bears-first/bears-first",
+                    "title": "Open IMRE MOF dashboard",
+                    "url": "/d/imre-mof/imre-mof",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -671,15 +671,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "biologic"
+              "options": "dobot"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "title": "Open Biologic dashboard",
-                    "url": "/d/biologic/biologic",
+                    "title": "Open IMRE MOF dashboard",
+                    "url": "/d/imre-mof/imre-mof",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -690,15 +690,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "opentrons"
+              "options": "capper"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "title": "Open Opentrons dashboard",
-                    "url": "/d/bears-opentrons/bears-opentrons",
+                    "title": "Open IMRE MOF dashboard",
+                    "url": "/d/imre-mof/imre-mof",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -709,15 +709,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "joule-heater"
+              "options": "pescador-pipqubot"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "title": "Open Joule Heater dashboard",
-                    "url": "/d/bears-joule_heater/bears-joule_heater",
+                    "title": "Open IMRE Pescador dashboard",
+                    "url": "/d/imre-pescador/imre-pescador",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -755,7 +755,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'First Status: online' AS \"first\" FROM telemetry WHERE machine_id = 'first' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'IMRE MOF Status: ' || status AS \"imre-mof\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'imre-mof' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'imre-mof' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -764,7 +764,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"first\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'first' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'first' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"imre-mof\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'imre-mof' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'imre-mof' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'imre-mof' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
@@ -773,8 +773,8 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'PUDA: queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"first\" FROM commands WHERE machine_id = 'first' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "G",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"imre-mof\" FROM commands WHERE machine_id = 'imre-mof' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "C",
           "rawQuery": true
         },
         {
@@ -782,16 +782,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Biologic Status: online' AS \"biologic\" FROM telemetry WHERE machine_id = 'biologic' AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "C",
-          "rawQuery": true
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb-hermes"
-          },
-          "rawSql": "SELECT time, event AS \"biologic\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'biologic' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'biologic' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'Dobot Status: ' || status AS \"dobot\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
@@ -800,16 +791,16 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Opentrons Status: online' AS \"opentrons\" FROM telemetry WHERE machine_id = 'opentrons' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"dobot\" FROM commands WHERE machine_id = 'dobot' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
         },
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-hermes"
+            "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, event AS \"opentrons\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'opentrons' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'opentrons' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'Capper Status: ' || status AS \"capper\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'capper' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'capper' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
         },
@@ -818,8 +809,8 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'response.queue' THEN 'PUDA: queue response: ' || msg_type WHEN topic = 'response.immediate' THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"opentrons\" FROM commands WHERE machine_id = 'opentrons' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "H",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"capper\" FROM commands WHERE machine_id = 'capper' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "G",
           "rawQuery": true
         },
         {
@@ -827,8 +818,8 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Joule Heater Status: online' AS \"joule-heater\" FROM telemetry WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "I",
+          "rawSql": "SELECT time, 'Pescador Status: ' || status AS \"pescador-pipqubot\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'pescador-pipqubot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pescador-pipqubot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "H",
           "rawQuery": true
         },
         {
@@ -836,8 +827,8 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"joule-heater\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
-          "refId": "J",
+          "rawSql": "SELECT time, event AS \"pescador-pipqubot\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'imre-pescador' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'imre-pescador' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'imre-pescador' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "refId": "I",
           "rawQuery": true
         },
         {
@@ -845,8 +836,8 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"joule-heater\" FROM commands WHERE machine_id = 'joule-heating' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
-          "refId": "K",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"pescador-pipqubot\" FROM commands WHERE machine_id = 'pescador-pipqubot' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "J",
           "rawQuery": true
         }
       ],
@@ -874,65 +865,49 @@
     {
       "gridPos": {
         "h": 7,
-        "w": 6,
+        "w": 8,
         "x": 0,
         "y": 14
       },
       "id": 141,
       "options": {
-        "content": "<iframe src=\"https://cam-first.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-imre-mof.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "first Camera",
+      "title": "IMRE MOF Camera",
       "type": "text"
     },
     {
       "gridPos": {
         "h": 7,
-        "w": 6,
-        "x": 6,
-        "y": 14
-      },
-      "id": 142,
-      "options": {
-        "content": "<iframe src=\"https://cam-opentron.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
-        "mode": "html"
-      },
-      "pluginVersion": "13.0.1",
-      "title": "Opentrons Camera",
-      "type": "text"
-    },
-    {
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 12,
-        "y": 14
-      },
-      "id": 143,
-      "options": {
-        "content": "<iframe src=\"https://cam-bears.puda.co/vipsa-microscope\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
-        "mode": "html"
-      },
-      "pluginVersion": "13.0.1",
-      "title": "VIPSA Camera",
-      "type": "text"
-    },
-    {
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 18,
+        "w": 8,
+        "x": 8,
         "y": 14
       },
       "id": 144,
       "options": {
-        "content": "<iframe src=\"https://cam-joule-heater.puda.co/cam\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-pescador.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "Joule Heater Camera",
+      "title": "Pescador Camera",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "id": 145,
+      "options": {
+        "content": "<iframe src=\"https://cam-imre-mof.puda.co/ipcam\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "IP Camera",
       "type": "text"
     },
     {
@@ -968,7 +943,7 @@
       "options": {
         "content": "<div class=\"puda-chat-card puda-agent-{{agent_id}}\">\n  <div class=\"puda-avatar\">{{agent_id}}</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">{{agent_id}}</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
-        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-chat-card.puda-agent-first .puda-avatar{background:#DFFF69}.puda-chat-card.puda-agent-first .puda-speaker{color:#DFFF69}.puda-chat-card.puda-agent-first .puda-bubble{border-color:#DFFF69}.puda-chat-card.puda-agent-first .puda-pill{border-color:rgba(223,255,105,.7);color:#DFFF69}.puda-chat-card.puda-agent-biologic .puda-avatar{background:#73BF69}.puda-chat-card.puda-agent-biologic .puda-speaker{color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-bubble{border-color:#73BF69}.puda-chat-card.puda-agent-biologic .puda-pill{border-color:rgba(115,191,105,.7);color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-avatar{background:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-speaker{color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-bubble{border-color:#5794F2}.puda-chat-card.puda-agent-opentrons .puda-pill{border-color:rgba(87,148,242,.75);color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-avatar{background:#FF9830}.puda-chat-card.puda-agent-elephant .puda-speaker{color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-bubble{border-color:#FF9830}.puda-chat-card.puda-agent-elephant .puda-pill{border-color:rgba(255,152,48,.75);color:#FF9830}.puda-chat-card.puda-agent-biologic .puda-show-more{border-color:#73BF69}.puda-chat-card.puda-agent-opentrons .puda-show-more{border-color:#5794F2}.puda-chat-card.puda-agent-elephant .puda-show-more{border-color:#FF9830}.puda-chat-card.puda-agent-first .puda-show-more{border-color:#DFFF69}.puda-chat-card.puda-agent-joule-heater .puda-avatar{background:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-speaker{color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-bubble{border-color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-pill{border-color:rgba(110,208,224,.75);color:#6ED0E0}.puda-chat-card.puda-agent-joule-heater .puda-show-more{border-color:#6ED0E0}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-chat-card.puda-agent-imre-mof .puda-avatar{background:#DFFF69}.puda-chat-card.puda-agent-imre-mof .puda-speaker{color:#DFFF69}.puda-chat-card.puda-agent-imre-mof .puda-bubble{border-color:#DFFF69}.puda-chat-card.puda-agent-imre-mof .puda-pill{border-color:rgba(223,255,105,.7);color:#DFFF69}.puda-chat-card.puda-agent-dobot .puda-avatar{background:#73BF69}.puda-chat-card.puda-agent-dobot .puda-speaker{color:#73BF69}.puda-chat-card.puda-agent-dobot .puda-bubble{border-color:#73BF69}.puda-chat-card.puda-agent-dobot .puda-pill{border-color:rgba(115,191,105,.7);color:#73BF69}.puda-chat-card.puda-agent-capper .puda-avatar{background:#5794F2}.puda-chat-card.puda-agent-capper .puda-speaker{color:#5794F2}.puda-chat-card.puda-agent-capper .puda-bubble{border-color:#5794F2}.puda-chat-card.puda-agent-capper .puda-pill{border-color:rgba(87,148,242,.75);color:#5794F2}.puda-chat-card.puda-agent-imre-pescador .puda-avatar{background:#FF9830}.puda-chat-card.puda-agent-imre-pescador .puda-speaker{color:#FF9830}.puda-chat-card.puda-agent-imre-pescador .puda-bubble{border-color:#FF9830}.puda-chat-card.puda-agent-imre-pescador .puda-pill{border-color:rgba(255,152,48,.75);color:#FF9830}.puda-chat-card.puda-agent-dobot .puda-show-more{border-color:#73BF69}.puda-chat-card.puda-agent-capper .puda-show-more{border-color:#5794F2}.puda-chat-card.puda-agent-imre-pescador .puda-show-more{border-color:#FF9830}.puda-chat-card.puda-agent-imre-mof .puda-show-more{border-color:#DFFF69}.puda-chat-card.puda-agent-pescador-pipqubot .puda-avatar{background:#6ED0E0}.puda-chat-card.puda-agent-pescador-pipqubot .puda-speaker{color:#6ED0E0}.puda-chat-card.puda-agent-pescador-pipqubot .puda-bubble{border-color:#6ED0E0}.puda-chat-card.puda-agent-pescador-pipqubot .puda-pill{border-color:rgba(110,208,224,.75);color:#6ED0E0}.puda-chat-card.puda-agent-pescador-pipqubot .puda-show-more{border-color:#6ED0E0}",
         "helpers": "",
         "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
@@ -980,7 +955,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1011,7 +986,7 @@
       "options": {
         "content": "<div class=\"puda-action-card puda-tool-{{tool_name}} puda-agent-{{agent_id}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span class=\"puda-machine-pill\">{{agent_id}}</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
-        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}.puda-action-card.puda-agent-first .puda-machine-pill{border-color:#DFFF69;color:#DFFF69;background:rgba(223,255,105,.08)}.puda-action-card.puda-agent-biologic .puda-machine-pill{border-color:#73BF69;color:#73BF69;background:rgba(115,191,105,.08)}.puda-action-card.puda-agent-opentrons .puda-machine-pill{border-color:#5794F2;color:#5794F2;background:rgba(87,148,242,.08)}.puda-action-card.puda-agent-elephant .puda-machine-pill{border-color:#FF9830;color:#FF9830;background:rgba(255,152,48,.08)}.puda-action-card.puda-agent-joule-heater .puda-machine-pill{border-color:#6ED0E0;color:#6ED0E0;background:rgba(110,208,224,.08)}",
+        "styles": "[data-panelid=\"161\"] .panel-container,[data-panelid=\"162\"] .panel-container{border:1px solid #fff!important;box-shadow:inset 0 0 0 1px #fff!important;border-radius:6px!important}.puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid #fff;border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}.puda-action-card.puda-agent-imre-mof .puda-machine-pill{border-color:#DFFF69;color:#DFFF69;background:rgba(223,255,105,.08)}.puda-action-card.puda-agent-dobot .puda-machine-pill{border-color:#73BF69;color:#73BF69;background:rgba(115,191,105,.08)}.puda-action-card.puda-agent-capper .puda-machine-pill{border-color:#5794F2;color:#5794F2;background:rgba(87,148,242,.08)}.puda-action-card.puda-agent-imre-pescador .puda-machine-pill{border-color:#FF9830;color:#FF9830;background:rgba(255,152,48,.08)}.puda-action-card.puda-agent-pescador-pipqubot .puda-machine-pill{border-color:#6ED0E0;color:#6ED0E0;background:rgba(110,208,224,.08)}",
         "helpers": "",
         "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-action-card\").forEach((card) => {\n    const body = card.querySelector(\".puda-action-body\");\n    const button = card.querySelector(\".puda-tool-show-more\");\n    if (!body || !button) return;\n    const overflowing = body.scrollHeight > body.clientHeight + 2;\n    card.classList.toggle(\"puda-tool-overflowing\", overflowing);\n    button.onclick = () => {\n      card.classList.toggle(\"puda-tool-expanded\");\n      button.textContent = card.classList.contains(\"puda-tool-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
         "everyRow": true,
@@ -1023,7 +998,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1097,7 +1072,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1157,7 +1132,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1226,7 +1201,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1286,7 +1261,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1385,7 +1360,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\", COUNT(CASE WHEN machine_id = 'elephant' THEN 1 END) AS \"elephant\", COUNT(CASE WHEN machine_id = 'joule-heating' THEN 1 END) AS \"joule-heater\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'imre-mof' THEN 1 END) AS \"imre-mof\", COUNT(CASE WHEN machine_id = 'dobot' THEN 1 END) AS \"dobot\", COUNT(CASE WHEN machine_id = 'capper' THEN 1 END) AS \"capper\", COUNT(CASE WHEN machine_id = 'pescador-pipqubot' THEN 1 END) AS \"pescador-pipqubot\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1394,7 +1369,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -1498,7 +1473,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'first' THEN total_tokens ELSE 0 END) AS \"first\", SUM(CASE WHEN agent_id = 'biologic' THEN total_tokens ELSE 0 END) AS \"biologic\", SUM(CASE WHEN agent_id = 'opentrons' THEN total_tokens ELSE 0 END) AS \"opentrons\", SUM(CASE WHEN agent_id = 'elephant' THEN total_tokens ELSE 0 END) AS \"elephant\", SUM(CASE WHEN agent_id = 'joule-heater' THEN total_tokens ELSE 0 END) AS \"joule-heater\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'imre-mof' THEN total_tokens ELSE 0 END) AS \"imre-mof\", SUM(CASE WHEN agent_id = 'imre-pescador' THEN total_tokens ELSE 0 END) AS \"imre-pescador\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('imre-mof', 'imre-pescador') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -1740,7 +1715,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1971,7 +1946,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('imre-mof', 'imre-pescador') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2229,6 +2204,48 @@
                 "value": 200
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "params"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Params"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "response"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Response Data"
+              },
+              {
+                "id": "custom.width",
+                "value": 320
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -2264,7 +2281,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2280,7 +2297,7 @@
     "puda",
     "machines",
     "commands",
-    "bears"
+    "imre"
   ],
   "templating": {
     "list": []
@@ -2291,7 +2308,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Bears",
-  "uid": "bears",
-  "version": 48
+  "title": "IMRE",
+  "uid": "imre",
+  "version": 1
 }

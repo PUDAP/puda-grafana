@@ -98,9 +98,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Machine Status: running.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): running.*$",
                 "result": {
-                  "text": "Machine Status: running",
+                  "text": "Status: running",
                   "color": "#8AB8FF",
                   "index": 0
                 }
@@ -109,9 +109,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Machine Status: idle.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): idle.*$",
                 "result": {
-                  "text": "Machine Status: idle",
+                  "text": "Status: idle",
                   "color": "#8AB8FF",
                   "index": 1
                 }
@@ -120,9 +120,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Machine Status: (success|succeeded).*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): (success|succeeded).*$",
                 "result": {
-                  "text": "Machine Status: succeeded",
+                  "text": "Status: succeeded",
                   "color": "#8AB8FF",
                   "index": 2
                 }
@@ -131,9 +131,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Machine Status: (error|failed).*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): (error|failed).*$",
                 "result": {
-                  "text": "Machine Status: error",
+                  "text": "Status: error",
                   "color": "#8AB8FF",
                   "index": 3
                 }
@@ -142,9 +142,9 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^Machine Status:.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status):.*$",
                 "result": {
-                  "text": "Machine Status",
+                  "text": "Status",
                   "color": "#8AB8FF",
                   "index": 4
                 }
@@ -524,7 +524,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Machine Status"
+              "options": "PUDA IMRE MOF Status"
             },
             "properties": [
               {
@@ -532,7 +532,45 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=20&var-event_time=${__value.time}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dobot Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Capper Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -558,7 +596,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=11&var-event_time=${__value.time}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=11&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -608,7 +646,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=12&var-event_time=${__value.time}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=12&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -658,7 +696,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=13&var-event_time=${__value.time}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=13&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -979,7 +1017,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=10&var-event_time=${__value.time}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=10&var-event_time=${__value.time}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -1000,8 +1038,8 @@
                     "type": "regex",
                     "options": {
                       "pattern": "^immediate command.*$",
-                      "result": {
-                        "text": "immediate command",
+                "result": {
+                  "text": "immediate command",
                         "color": "#F2495C",
                         "index": 0
                       }
@@ -1011,8 +1049,8 @@
                     "type": "regex",
                     "options": {
                       "pattern": "^immediate response.*$",
-                      "result": {
-                        "text": "immediate response",
+                "result": {
+                  "text": "immediate response",
                         "color": "#FF66C4",
                         "index": 1
                       }
@@ -1047,7 +1085,7 @@
                 "value": [
                   {
                     "title": "${__value.raw} | Click in to view full details",
-                    "url": "/d/joule_heater/joule_heater?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=15&var-event_time=${__value.time}&var-puda_event=${__value.raw}",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -1064,6 +1102,7 @@
         "y": 1
       },
       "id": 16,
+      "description": "Machine health for IMRE-MOF, dobot, and capper from nats://172.31.8.193:4222, ingested into the telemetry measurement.",
       "options": {
         "alignValue": "left",
         "colWidth": 0.05,
@@ -1086,8 +1125,26 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'online' AS \"Machine Status\" FROM telemetry WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"PUDA IMRE MOF Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'imre-mof' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'imre-mof' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "A",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"Dobot Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "F",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"Capper Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'capper' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'capper' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "H",
           "rawQuery": true
         },
         {
@@ -1095,7 +1152,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, 'Session: ' || event AS \"Session\" FROM (SELECT time, event FROM hermes_session WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, 'Session: ' || event AS \"Session\" FROM (SELECT time, event FROM hermes_session WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "B",
           "rawQuery": true
         },
@@ -1104,7 +1161,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM (SELECT time, event FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"LLM Turn\" FROM (SELECT time, event FROM hermes_llm_turn WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "C",
           "rawQuery": true
         },
@@ -1113,7 +1170,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event AS \"API Request\" FROM (SELECT time, event FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event AS \"API Request\" FROM (SELECT time, event FROM hermes_api_request WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
@@ -1122,7 +1179,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
+          "rawSql": "SELECT time, event || ': ' || COALESCE(tool_name, 'tool') AS \"Tool Call\" FROM (SELECT time, event, tool_name FROM hermes_tool_call WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 100) ORDER BY time ASC",
           "refId": "E",
           "rawQuery": true
         },
@@ -1131,7 +1188,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'joule-heating' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id = 'imre-mof' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         }
@@ -1150,12 +1207,14 @@
           "options": {
             "indexByName": {
               "time": 0,
-              "Machine Status": 1,
-              "Session": 2,
-              "LLM Turn": 3,
-              "API Request": 4,
-              "Tool Call": 5,
-              "puda": 6
+              "PUDA IMRE MOF Status": 1,
+              "Dobot Status": 2,
+              "Capper Status": 3,
+              "Session": 4,
+              "LLM Turn": 5,
+              "API Request": 6,
+              "Tool Call": 7,
+              "puda": 8
             }
           }
         }
@@ -1174,7 +1233,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 1,
+        "h": 2,
         "w": 24,
         "x": 0,
         "y": 13
@@ -1182,7 +1241,7 @@
       "id": 21,
       "options": {
         "mode": "html",
-        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Machine Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>immediate command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>immediate response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>queue response</span>\n</div>"
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>PUDA IMRE MOF Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Dobot Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Capper Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>immediate command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>immediate response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>queue response</span>\n</div>"
       },
       "pluginVersion": "13.0.0",
       "title": "",
@@ -1195,7 +1254,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 15
       },
       "id": 107,
       "title": "Rolling Chat & Tool Windows",
@@ -1216,11 +1275,11 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 16
       },
       "id": 17,
       "options": {
-        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">J</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Joule Heater</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">P</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">PUDA IMRE MOF</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
         "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
         "helpers": "",
@@ -1234,7 +1293,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
+          "rawSql": "SELECT time, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1259,11 +1318,11 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 16
       },
       "id": 18,
       "options": {
-        "content": "<div class=\"puda-action-card puda-tool-{{tool_name}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>joule_heater</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
+        "content": "<div class=\"puda-action-card puda-tool-{{tool_name}}\">\n  <button class=\"puda-tool-show-more\" type=\"button\">Show more</button>\n  <div class=\"puda-action-head\">\n    <span class=\"puda-action-name\">{{tool_name}}</span>\n    <span class=\"puda-action-status\">{{status}}</span>\n  </div>\n  <div class=\"puda-action-pills\">\n    <span>IMRE-MOF</span><span>{{event}}</span><span>{{duration_ms}} ms</span>\n  </div>\n  <pre class=\"puda-action-params puda-action-body\">{{message}}</pre>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No tool/action calls in the selected time range.</div>",
         "styles": ".puda-action-card{font-family:Inter,Arial,sans-serif;background:#151515;color:#f7f7f7;border:2px solid #3aaef5;border-radius:20px;padding:16px;margin:0 0 14px 0;box-shadow:0 0 20px rgba(58,174,245,.08)}.puda-action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.puda-action-name{font-weight:900;font-size:15px}.puda-action-status{font-size:12px;font-weight:800;color:#dfff69}.puda-action-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.puda-action-pills span{border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}.puda-action-reason{font-size:14px;line-height:1.45;margin-bottom:10px;color:#f2f2f2}.puda-action-params{margin:0;color:#f2f2f2;background:transparent;border:0;padding:0;white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:72px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-action-card{position:relative}.puda-action-body{max-height:72px;overflow:hidden;padding-right:92px}.puda-action-card.puda-tool-expanded .puda-action-body{max-height:none;overflow:visible}.puda-tool-show-more{position:absolute;top:12px;right:12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:#050505;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-action-card.puda-tool-expanded .puda-tool-show-more{background:#3aaef5;color:#050505}.puda-action-card:not(.puda-tool-overflowing) .puda-tool-show-more{display:none}.puda-action-card.puda-tool-terminal{border-color:#3274D9;box-shadow:0 0 20px rgba(50,116,217,.12)}.puda-action-card.puda-tool-read_file{border-color:#73BF69;box-shadow:0 0 20px rgba(115,191,105,.12)}.puda-action-card.puda-tool-search_files{border-color:#FF9830;box-shadow:0 0 20px rgba(255,152,48,.12)}.puda-action-card.puda-tool-process{border-color:#FF66C4;box-shadow:0 0 20px rgba(255,102,196,.12)}.puda-action-card.puda-tool-skill{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-skill_view{border-color:#B877D9;box-shadow:0 0 20px rgba(184,119,217,.12)}.puda-action-card.puda-tool-execute_code{border-color:#F2495C;box-shadow:0 0 20px rgba(242,73,92,.12)}.puda-action-card.puda-tool-write_file{border-color:#56A64B;box-shadow:0 0 20px rgba(86,166,75,.12)}.puda-action-card.puda-tool-edit_file{border-color:#E0B400;box-shadow:0 0 20px rgba(224,180,0,.12)}.puda-action-card.puda-tool-list_files{border-color:#5794F2;box-shadow:0 0 20px rgba(87,148,242,.12)}.puda-action-card.puda-tool-grep{border-color:#6ED0E0;box-shadow:0 0 20px rgba(110,208,224,.12)}.puda-action-card.puda-tool-terminal .puda-tool-show-more{border-color:#3274D9}.puda-action-card.puda-tool-read_file .puda-tool-show-more{border-color:#73BF69}.puda-action-card.puda-tool-search_files .puda-tool-show-more{border-color:#FF9830}.puda-action-card.puda-tool-process .puda-tool-show-more{border-color:#FF66C4}.puda-action-card.puda-tool-skill .puda-tool-show-more,.puda-action-card.puda-tool-skill_view .puda-tool-show-more{border-color:#B877D9}.puda-action-card.puda-tool-execute_code .puda-tool-show-more{border-color:#F2495C}.puda-action-card.puda-tool-write_file .puda-tool-show-more{border-color:#56A64B}.puda-action-card.puda-tool-edit_file .puda-tool-show-more{border-color:#E0B400}.puda-action-card.puda-tool-list_files .puda-tool-show-more{border-color:#5794F2}.puda-action-card.puda-tool-grep .puda-tool-show-more{border-color:#6ED0E0}",
         "helpers": "",
@@ -1277,7 +1336,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
+          "rawSql": "SELECT time, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 16",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1293,7 +1352,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 26
       },
       "id": 104,
       "title": "Event Detail (click a point in the Event Timeline above)",
@@ -1360,7 +1419,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_session WHERE agent_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1458,7 +1517,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_llm_turn WHERE agent_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1556,7 +1615,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_api_request WHERE agent_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1654,7 +1713,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_tool_call WHERE agent_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1752,7 +1811,7 @@
                 "type": "influxdb",
                 "uid": "influxdb-hermes"
               },
-              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'joule-heater' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT * FROM hermes_subagent WHERE agent_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1850,7 +1909,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM commands WHERE machine_id = 'joule-heating' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
+              "rawSql": "SELECT * FROM commands WHERE machine_id = 'imre-mof' AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1948,7 +2007,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, machine_id, host, subject, data FROM telemetry WHERE machine_id = 'joule-heating' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, data FROM telemetry WHERE machine_id = 'imre-mof' AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -1965,7 +2024,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
       "id": 102,
       "title": "API Calls",
@@ -2020,7 +2079,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 28
       },
       "id": 6,
       "options": {
@@ -2043,7 +2102,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'joule-heater' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'imre-mof' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -2057,7 +2116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 36
       },
       "id": 103,
       "title": "Event Log",
@@ -2182,7 +2241,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 37
       },
       "id": 7,
       "options": {
@@ -2209,7 +2268,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2541,7 +2600,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 47
       },
       "id": 8,
       "options": {
@@ -2569,13 +2628,13 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Machine Command Log (joule-heater, latest 500)",
+      "title": "Machine Command Log (IMRE-MOF, latest 500)",
       "type": "table"
     },
     {
@@ -2723,7 +2782,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 37
       },
       "id": 9,
       "options": {
@@ -2750,7 +2809,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, tool_name, status, duration_ms, error_message FROM hermes_tool_call WHERE agent_id = 'imre-mof' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2813,7 +2872,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Joule Heater",
-  "uid": "joule_heater",
+  "title": "IMRE-MOF",
+  "uid": "imre-mof",
   "version": 1
 }
