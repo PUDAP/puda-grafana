@@ -1,0 +1,1574 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "description": "Provisioned MVP monitoring for the ALD edge, OPC UA acquisition health, six-tube process signals, alarms, Loader cabinet, and boat.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 100,
+      "title": "Edge / OPC UA Health",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Presence of existing telemetry records for the selected ALD edge machine.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.85,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, CASE WHEN time >= now() - INTERVAL '30 seconds' THEN 'online' ELSE 'stale' END AS \"Heartbeat freshness\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Edge Heartbeat Freshness",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Latest typed OPC UA connection flag.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "true": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Connected"
+                },
+                "false": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Disconnected"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, CASE WHEN time >= now() - INTERVAL '30 seconds' THEN opcua_connected ELSE false END AS \"OPC connected and fresh\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "OPC UA Health",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, configured_points AS \"Configured\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Configured Points",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, resolved_points AS \"Resolved\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Resolved Points",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, cached_points AS \"Cached\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Cached Points",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, sqlite_queue_depth AS \"SQLite queue\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "SQLite Queue Depth",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, sqlite_dropped_items AS \"SQLite drops\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "SQLite Drops",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Latest SQLite writer state; stale telemetry is treated as failed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "false": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "FAILED / STALE"
+                },
+                "true": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "HEALTHY"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, CASE WHEN time >= now() - INTERVAL '30 seconds' THEN sqlite_writer_ok ELSE false END AS \"SQLite writer healthy and fresh\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "SQLite Writer Health",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, outbox_pending AS \"Outbox pending\" FROM telemetry WHERE machine_id IN (${machine_id:singlequote}) ORDER BY time DESC LIMIT 1",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Outbox Depth",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 110,
+      "title": "Six-Tube Process / Recipe",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Bounded latest-point view across the selected members of the six-tube ALD system.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "WITH ranked AS (SELECT time, machine_id, tube, category, point_key, value_numeric, value_int, value_bool, value_text, ROW_NUMBER() OVER (PARTITION BY machine_id, point_key ORDER BY time DESC) AS rn FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND category IN (${category:singlequote}) AND point_key IN (${point_key:singlequote}) AND time >= now() - INTERVAL '24 hours') SELECT time, machine_id, tube, category, point_key, value_numeric, value_int, value_bool, value_text FROM ranked WHERE rn = 1 ORDER BY time DESC LIMIT 300",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Latest Point Values (24h, max 300)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Recipe name, process state, and step values rendered from the typed value columns.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.85,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT time, machine_id, tube, point_key, value_text AS \"Recipe / Step\" FROM (SELECT time, machine_id, tube, point_key, COALESCE(value_text, CAST(value_int AS VARCHAR), CAST(value_bool AS VARCHAR)) AS value_text FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND (LOWER(point_key) LIKE '%recipe%' OR LOWER(point_key) LIKE '%step%') AND $__timeFilter(time) ORDER BY time DESC LIMIT 1000) recent ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Recent Recipe / Step Events (max 1000)",
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 120,
+      "title": "Process Signals",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Raw OPC values; engineering units remain intentionally unset until verified.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Temperature actual (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND (LOWER(point_key) LIKE '%.rinternal.temp%' OR LOWER(point_key) LIKE '%.rexternal.temp%' OR LOWER(point_key) LIKE '%acttemperature%') AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Temperature target (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND (LOWER(point_key) LIKE '%.rtarget.temp%' OR LOWER(point_key) LIKE '%settemperature%') AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "B",
+          "format": "table"
+        }
+      ],
+      "title": "Temperature Actual vs Target (1m mean, raw units)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Raw mass-flow-controller process and set values; units are unresolved.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"MFC PV (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%mfc%' AND LOWER(point_key) LIKE '%.pv%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"MFC SV (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%mfc%' AND LOWER(point_key) LIKE '%.sv%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "B",
+          "format": "table"
+        }
+      ],
+      "title": "MFC PV / SV (1m mean, raw units)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Raw pressure values; units are unresolved.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Pressure actual (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%actpressure%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Pressure target (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%setpressure%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "B",
+          "format": "table"
+        }
+      ],
+      "title": "Pressure Actual / Target (1m mean, raw units)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Raw pump, valve, and leak values; units are unresolved.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Pump speed (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%pump%' AND LOWER(point_key) LIKE '%actspeed%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Butterfly valve (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%mks%' AND LOWER(point_key) LIKE '%actpos%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "B",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, tube, point_key, AVG(value_numeric) AS \"Leak rate (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND LOWER(point_key) LIKE '%leak%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, tube, point_key ORDER BY time ASC",
+          "refId": "C",
+          "format": "table"
+        }
+      ],
+      "title": "Pump Speed / Butterfly Valve / Leak Rate (1m mean, raw units)",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 130,
+      "title": "Alarms",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Bounded alarm history from ald_alarm; use the active flag to focus on current alarms.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 15,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "WITH ranked AS (SELECT time, machine_id, tube, category, point_key, active, severity, description, ROW_NUMBER() OVER (PARTITION BY machine_id, point_key ORDER BY time DESC) AS rn FROM ald_alarm WHERE machine_id IN (${machine_id:singlequote})) SELECT time, machine_id, tube, category, point_key, active, severity, description FROM ranked WHERE rn = 1 AND active = true ORDER BY time DESC LIMIT 200",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Active Alarms (current, max 200)",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 140,
+      "title": "Loader / Boat",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Raw Loader cabinet telemetry; units are unresolved.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 54
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, point_key, AVG(value_numeric) AS \"Loader temperature (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND scope = 'loader' AND LOWER(point_key) LIKE '%temperature%' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, point_key ORDER BY time ASC",
+          "refId": "A",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, point_key, AVG(value_numeric) AS \"Loader power (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND scope = 'loader' AND category = 'energy' AND (LOWER(point_key) LIKE '%.rpa' OR LOWER(point_key) LIKE '%.rpb' OR LOWER(point_key) LIKE '%.rpc' OR LOWER(point_key) LIKE '%.rpt') AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, point_key ORDER BY time ASC",
+          "refId": "B",
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time) AS time, machine_id, point_key, AVG(value_numeric) AS \"Loader energy (raw)\" FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND scope = 'loader' AND category = 'energy' AND LOWER(point_key) LIKE '%.renergyfw' AND $__timeFilter(time) GROUP BY date_bin(INTERVAL '1 minute', time), machine_id, point_key ORDER BY time ASC",
+          "refId": "C",
+          "format": "table"
+        }
+      ],
+      "title": "Loader Temperature / Power / Energy (1m mean, raw units)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "Bounded latest typed values for boat position, state, and related points.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 54
+      },
+      "id": 17,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawQuery": true,
+          "rawSql": "WITH ranked AS (SELECT time, machine_id, category, point_key, value_numeric, value_int, value_bool, value_text, ROW_NUMBER() OVER (PARTITION BY machine_id, point_key ORDER BY time DESC) AS rn FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND scope = 'loader' AND category = 'boat' AND time >= now() - INTERVAL '24 hours') SELECT time, machine_id, category, point_key, value_numeric, value_int, value_bool, value_text FROM ranked WHERE rn = 1 ORDER BY time DESC LIMIT 200",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "title": "Boat Latest Values (24h, max 200)",
+      "type": "table"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": [
+    "puda",
+    "ald",
+    "opc-ua",
+    "process-monitoring"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "puda-influxdb"
+        },
+        "definition": "SELECT machine_id FROM (SELECT machine_id, MAX(time) AS time FROM ald_point WHERE $__timeFilter(time) GROUP BY machine_id) latest ORDER BY time DESC",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Machine",
+        "multi": false,
+        "name": "machine_id",
+        "options": [],
+        "query": {
+          "query": "SELECT machine_id FROM (SELECT machine_id, MAX(time) AS time FROM telemetry WHERE time >= now() - INTERVAL '7 days' GROUP BY machine_id) latest ORDER BY time DESC",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "puda-influxdb"
+        },
+        "definition": "SELECT tube FROM (SELECT tube, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IS NOT NULL AND $__timeFilter(time) GROUP BY tube) latest ORDER BY time DESC",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Tube",
+        "multi": true,
+        "name": "tube",
+        "options": [],
+        "query": {
+          "query": "SELECT tube FROM (SELECT tube, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IS NOT NULL AND time >= now() - INTERVAL '30 days' GROUP BY tube) latest ORDER BY time DESC",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "puda-influxdb"
+        },
+        "definition": "SELECT category FROM (SELECT category, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND category IS NOT NULL AND $__timeFilter(time) GROUP BY category) latest ORDER BY time DESC",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Category",
+        "multi": true,
+        "name": "category",
+        "options": [],
+        "query": {
+          "query": "SELECT category FROM (SELECT category, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND category IS NOT NULL AND time >= now() - INTERVAL '30 days' GROUP BY category) latest ORDER BY time DESC",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "puda-influxdb"
+        },
+        "definition": "SELECT point_key FROM (SELECT point_key, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND category IN (${category:singlequote}) AND point_key IS NOT NULL AND $__timeFilter(time) GROUP BY point_key) latest ORDER BY time DESC",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Point",
+        "multi": true,
+        "name": "point_key",
+        "options": [],
+        "query": {
+          "query": "SELECT point_key FROM (SELECT point_key, MAX(time) AS time FROM ald_point WHERE machine_id IN (${machine_id:singlequote}) AND tube IN (${tube:singlequote}) AND category IN (${category:singlequote}) AND point_key IS NOT NULL AND time >= now() - INTERVAL '30 days' GROUP BY point_key) latest ORDER BY time DESC",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ALD OPC UA Monitoring",
+  "uid": "puda-ald-opcua",
+  "version": 1
+}

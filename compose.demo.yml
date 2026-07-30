@@ -1,0 +1,49 @@
+# DEMO ONLY. No InfluxDB authentication, TLS, license, or durable production policy.
+# Use compose.yml for any production-like deployment.
+name: puda-grafana-demo
+
+services:
+  influxdb:
+    image: influxdb:3-core
+    command:
+      - influxdb3
+      - serve
+      - --node-id
+      - demo
+      - --object-store
+      - file
+      - --data-dir
+      - /var/lib/influxdb3
+      - --without-auth
+    ports:
+      - "127.0.0.1:${PUDA_DEMO_INFLUX_PORT:-8182}:8181"
+    volumes:
+      - demo-influx-data:/var/lib/influxdb3
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:13.0.1
+    depends_on:
+      - influxdb
+    ports:
+      - "127.0.0.1:${PUDA_DEMO_GRAFANA_PORT:-3001}:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: puda-demo
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SECURITY_COOKIE_SECURE: "false"
+      INFLUXDB_URL: http://influxdb:8181
+      INFLUXDB_PUDA_DATABASE: machines
+      INFLUXDB_HERMES_DATABASE: hermes-logs
+      INFLUXDB_TOKEN: puda-demo-token
+    volumes:
+      - demo-grafana-data:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning:ro
+      - ./dashboards:/var/lib/grafana/dashboards:ro
+    restart: unless-stopped
+
+volumes:
+  demo-influx-data:
+  demo-grafana-data:

@@ -4,6 +4,27 @@ Real-time monitoring for PUDA lab machines (Biologic, FIRST, Opentrons).
 Health and command data is streamed via NATS, ingested and stored in InfluxDB 3 by the separate
 [`puda-logger`](../puda-logger) service, and visualised here in Grafana.
 
+## ALD working prototype (demo only)
+
+Start a loopback-only InfluxDB Core and Grafana instance without production
+credentials or licensing:
+
+```bash
+./demo-up.sh
+```
+
+Open `http://127.0.0.1:3001/d/puda-ald-opcua`; demo login is
+`admin / puda-demo`. The sibling `PUDA_ALD` repository can run the complete
+mock OPC UA → NATS → Telegraf → InfluxDB → Grafana flow with:
+
+```bash
+uv run --project edge python tools/run_demo_stack.py
+```
+
+`compose.demo.yml` intentionally uses InfluxDB `--without-auth`, a known demo
+password, anonymous Viewer access, and mutable image tags. It binds to
+loopback and is not a production configuration.
+
 ## Architecture
 
 ```
