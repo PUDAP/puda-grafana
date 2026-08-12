@@ -98,7 +98,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): running.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|PipQuBot MOF Status|Capper Status): running.*$",
                 "result": {
                   "text": "Status: running",
                   "color": "#8AB8FF",
@@ -109,7 +109,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): idle.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|PipQuBot MOF Status|Capper Status): idle.*$",
                 "result": {
                   "text": "Status: idle",
                   "color": "#8AB8FF",
@@ -120,7 +120,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): (success|succeeded).*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|PipQuBot MOF Status|Capper Status): (success|succeeded).*$",
                 "result": {
                   "text": "Status: succeeded",
                   "color": "#8AB8FF",
@@ -131,7 +131,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status): (error|failed).*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|PipQuBot MOF Status|Capper Status): (error|failed).*$",
                 "result": {
                   "text": "Status: error",
                   "color": "#8AB8FF",
@@ -142,7 +142,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|Capper Status):.*$",
+                "pattern": "^(PUDA IMRE MOF Status|Dobot Status|PipQuBot MOF Status|Capper Status):.*$",
                 "result": {
                   "text": "Status",
                   "color": "#8AB8FF",
@@ -544,6 +544,25 @@
             "matcher": {
               "id": "byName",
               "options": "Dobot Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PipQuBot MOF Status"
             },
             "properties": [
               {
@@ -1102,7 +1121,7 @@
         "y": 1
       },
       "id": 16,
-      "description": "Machine health for IMRE-MOF, dobot, and capper from nats://172.31.8.193:4222, ingested into the telemetry measurement.",
+      "description": "Machine health for IMRE-MOF, Dobot M1 Pro, PipQuBot MOF, and capper from nats://172.31.8.193:4222, ingested into the telemetry measurement.",
       "options": {
         "alignValue": "left",
         "colWidth": 0.05,
@@ -1134,8 +1153,17 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Dobot Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"Dobot Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "F",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"PipQuBot MOF Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "I",
           "rawQuery": true
         },
         {
@@ -1209,12 +1237,13 @@
               "time": 0,
               "PUDA IMRE MOF Status": 1,
               "Dobot Status": 2,
-              "Capper Status": 3,
-              "Session": 4,
-              "LLM Turn": 5,
-              "API Request": 6,
-              "Tool Call": 7,
-              "puda": 8
+              "PipQuBot MOF Status": 3,
+              "Capper Status": 4,
+              "Session": 5,
+              "LLM Turn": 6,
+              "API Request": 7,
+              "Tool Call": 8,
+              "puda": 9
             }
           }
         }
