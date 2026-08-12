@@ -486,6 +486,83 @@
             {
               "type": "regex",
               "options": {
+                "pattern": "^PipQuBot MOF Status: running$",
+                "result": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status: online$",
+                "result": {
+                  "text": "PipQuBot MOF Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status: offline$",
+                "result": {
+                  "text": "PipQuBot MOF Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^PipQuBot MOF Status:.*$",
+                "result": {
+                  "text": "PipQuBot MOF Status",
+                  "color": "#8AB8FF",
+                  "index": 15
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
                 "pattern": "^Capper Status: running$",
                 "result": {
                   "text": "Running",
@@ -671,7 +748,26 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "dobot"
+              "options": "dobot-m1pro"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open IMRE MOF dashboard",
+                    "url": "/d/imre-mof/imre-mof",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pipqubot_mof"
             },
             "properties": [
               {
@@ -782,7 +878,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, 'Dobot Status: ' || status AS \"dobot\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "rawSql": "SELECT time, 'PipQuBot MOF Status: ' || status AS \"pipqubot_mof\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "D",
           "rawQuery": true
         },
@@ -791,8 +887,26 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"dobot\" FROM commands WHERE machine_id = 'dobot' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"pipqubot_mof\" FROM commands WHERE machine_id = 'pipqubot_mof' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "E",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, 'Dobot Status: ' || status AS \"dobot-m1pro\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "K",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'PUDA: queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'PUDA: queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'PUDA: immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'PUDA: immediate response' ELSE 'PUDA: ' || COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"dobot-m1pro\" FROM commands WHERE machine_id = 'dobot-m1pro' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "L",
           "rawQuery": true
         },
         {
@@ -1072,7 +1186,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1132,7 +1246,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1201,7 +1315,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1261,7 +1375,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1360,7 +1474,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'imre-mof' THEN 1 END) AS \"imre-mof\", COUNT(CASE WHEN machine_id = 'dobot' THEN 1 END) AS \"dobot\", COUNT(CASE WHEN machine_id = 'capper' THEN 1 END) AS \"capper\", COUNT(CASE WHEN machine_id = 'pescador-pipqubot' THEN 1 END) AS \"pescador-pipqubot\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'imre-mof' THEN 1 END) AS \"imre-mof\", COUNT(CASE WHEN machine_id = 'dobot-m1pro' THEN 1 END) AS \"dobot-m1pro\", COUNT(CASE WHEN machine_id = 'pipqubot_mof' THEN 1 END) AS \"pipqubot_mof\", COUNT(CASE WHEN machine_id = 'capper' THEN 1 END) AS \"capper\", COUNT(CASE WHEN machine_id = 'pescador-pipqubot' THEN 1 END) AS \"pescador-pipqubot\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1369,7 +1483,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -2281,7 +2395,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot', 'capper', 'pescador-pipqubot') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE $__timeFilter(time) AND machine_id IN ('imre-mof', 'dobot-m1pro', 'pipqubot_mof', 'capper', 'pescador-pipqubot') ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
