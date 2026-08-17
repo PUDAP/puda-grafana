@@ -2314,10 +2314,14 @@
                 "value": "Params"
               },
               {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
                 "id": "custom.cellOptions",
                 "value": {
                   "type": "auto",
-                  "wrapText": true
+                  "wrapText": false
                 }
               }
             ]
@@ -2337,10 +2341,18 @@
                 "value": 320
               },
               {
+                "id": "description",
+                "value": "Long values stay on one line. Hover the cell and click the inspect icon to view the full response."
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
                 "id": "custom.cellOptions",
                 "value": {
                   "type": "auto",
-                  "wrapText": true
+                  "wrapText": false
                 }
               }
             ]
