@@ -28,7 +28,7 @@ PUDA NATS subjects
 | VIPSA | `/d/vipsa` | VIPSA machine status and command logs |
 | IFIM | `/d/ifim` | IFIM PL system status and command logs |
 | Bears | `/d/bears` | Bears FIRST, Biologic, and Opentrons status and command logs |
-| Hermes token usage | `/d/hermes-tokens` | LLM tokens by agent/model, prompt vs completion, tools (hermes-logs) |
+| Token usage | `/d/token-usage` | Daily midnight snapshot of LLM tokens (not live Influx scans) |
 
 ## Quick start
 
@@ -52,6 +52,11 @@ Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so chang
 
 Grafana 13 with provisioned InfluxDB data source and file-based dashboards.
 Anonymous viewer access is enabled.
+
+`hermes-token-cache` runs `scripts/cache-hermes-tokens.py` on a loop: it scans
+`hermes_api_request` once at **00:00 Asia/Singapore** (or immediately if no
+snapshot exists from the last 20 hours) and writes compact `token_cache_*`
+measurements. `/d/token-usage` reads only those tables, with auto-refresh off.
 
 InfluxDB itself is not part of this repo — it's ingested and hosted by the separate `puda-logger` service, which writes `machine_status` and `machine_commands` measurements from NATS traffic. This repo only reads from it via the provisioned Grafana data source.
 

@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Hermes LLM token usage across agents. Queries hermes-logs (api_end rows with total_tokens). Queries are hard-capped at the last 7 days even if the time picker is wider, because InfluxDB 3 Core rejects scans over ~432 Parquet files.",
+  "description": "Hermes LLM token usage. Grafana reads a midnight (Asia/Singapore) snapshot from token_cache_* — it does not scan hermes_api_request on page load.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -26,7 +26,7 @@
       "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
       "id": 1,
       "options": {
-        "content": "Live from **hermes-logs** on `bearsnas:8181`. Filter: `event = 'api_end' AND total_tokens IS NOT NULL`.\n\nQueries are **capped at the last 7 days** (InfluxDB 3 Core 432-file scan limit). A wider time picker will not error; it still only returns those 7 days. Prompt share near 100% means spend is context (tool-loop history), not completion length.",
+        "content": "This page reads a **daily snapshot** written at **00:00 Asia/Singapore** (plus a one-time fill if none exists yet). Opening or refreshing the dashboard does **not** scan `hermes_api_request`.\n\nWindow is the last 7 days as of that snapshot. Prompt share near 100% means spend is context (tool-loop history), not completion length.",
         "mode": "markdown"
       },
       "pluginVersion": "13.0.1",
@@ -67,7 +67,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT now() AS time, SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "rawSql": "SELECT now() AS time, s.value AS \"Tokens\" FROM token_cache_stats s INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON s.run_id = m.run_id WHERE s.stat = 'tokens'",
           "refId": "A",
           "rawQuery": true
         }
@@ -101,7 +101,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"API calls\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "rawSql": "SELECT now() AS time, s.value AS \"API calls\" FROM token_cache_stats s INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON s.run_id = m.run_id WHERE s.stat = 'calls'",
           "refId": "A",
           "rawQuery": true
         }
@@ -136,7 +136,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT now() AS time, AVG(total_tokens) AS \"Avg tokens / call\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "rawSql": "SELECT now() AS time, s.value AS \"Avg tokens / call\" FROM token_cache_stats s INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON s.run_id = m.run_id WHERE s.stat = 'avg_tokens'",
           "refId": "A",
           "rawQuery": true
         }
@@ -175,7 +175,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT now() AS time, CAST(SUM(prompt_tokens) AS DOUBLE) * 100.0 / NULLIF(SUM(total_tokens), 0) AS \"Prompt share\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "rawSql": "SELECT now() AS time, s.value AS \"Prompt share\" FROM token_cache_stats s INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON s.run_id = m.run_id WHERE s.stat = 'prompt_share'",
           "refId": "A",
           "rawQuery": true
         }
@@ -234,7 +234,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(total_tokens) AS tokens, agent_id FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1, agent_id ORDER BY 1",
+          "rawSql": "SELECT h.time, h.tokens, h.agent_id FROM token_cache_hourly h INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON h.run_id = m.run_id ORDER BY 1",
           "refId": "A",
           "rawQuery": true
         }
@@ -286,7 +286,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(prompt_tokens) AS \"Prompt\", SUM(completion_tokens) AS \"Completion\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1 ORDER BY 1",
+          "rawSql": "SELECT h.time, h.prompt AS \"Prompt\", h.completion AS \"Completion\" FROM token_cache_hourly_split h INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON h.run_id = m.run_id ORDER BY 1",
           "refId": "A",
           "rawQuery": true
         }
@@ -333,7 +333,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
-          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"API calls\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1 ORDER BY 1",
+          "rawSql": "SELECT h.time, h.calls AS \"API calls\" FROM token_cache_hourly_split h INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON h.run_id = m.run_id ORDER BY 1",
           "refId": "A",
           "rawQuery": true
         }
@@ -385,7 +385,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT agent_id AS \"Agent\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY agent_id ORDER BY 2 DESC",
+          "rawSql": "SELECT a.agent_id AS \"Agent\", a.tokens AS \"Tokens\" FROM token_cache_agent a INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON a.run_id = m.run_id ORDER BY 2 DESC",
           "refId": "A"
         }
       ],
@@ -429,7 +429,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT model AS \"Model\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY model ORDER BY 2 DESC",
+          "rawSql": "SELECT a.model AS \"Model\", a.tokens AS \"Tokens\" FROM token_cache_model a INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON a.run_id = m.run_id ORDER BY 2 DESC",
           "refId": "A"
         }
       ],
@@ -493,7 +493,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT agent_id AS \"Agent\", COUNT(*) AS \"Calls\", SUM(total_tokens) AS \"Tokens\", SUM(prompt_tokens) AS \"Prompt\", SUM(completion_tokens) AS \"Completion\", CAST(SUM(prompt_tokens) AS DOUBLE) * 100.0 / NULLIF(SUM(total_tokens), 0) AS \"Prompt %\", AVG(total_tokens) AS \"Avg tok/call\", AVG(message_count) AS \"Avg msgs\", AVG(api_duration_ms) AS \"Avg latency\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY agent_id ORDER BY 3 DESC",
+          "rawSql": "SELECT a.agent_id AS \"Agent\", a.calls AS \"Calls\", a.tokens AS \"Tokens\", a.prompt AS \"Prompt\", a.completion AS \"Completion\", a.prompt_pct AS \"Prompt %\", a.avg_tok AS \"Avg tok/call\", a.avg_msgs AS \"Avg msgs\", a.avg_ms AS \"Avg latency\" FROM token_cache_agent a INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON a.run_id = m.run_id ORDER BY 3 DESC",
           "refId": "A"
         }
       ],
@@ -526,7 +526,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT finish_reason AS \"Finish\", COUNT(*) AS \"Calls\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY finish_reason ORDER BY 2 DESC",
+          "rawSql": "SELECT a.finish_reason AS \"Finish\", a.calls AS \"Calls\", a.tokens AS \"Tokens\" FROM token_cache_finish a INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON a.run_id = m.run_id ORDER BY 2 DESC",
           "refId": "A"
         }
       ],
@@ -577,7 +577,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT tool_name AS \"Tool\", COUNT(*) AS \"Calls\" FROM hermes_tool_call WHERE event = 'tool_end' AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY tool_name ORDER BY 2 DESC LIMIT 15",
+          "rawSql": "SELECT a.tool_name AS \"Tool\", a.calls AS \"Calls\" FROM token_cache_tools a INNER JOIN (SELECT run_id FROM token_cache_meta WHERE time >= now() - INTERVAL '14 days' ORDER BY time DESC LIMIT 1) m ON a.run_id = m.run_id ORDER BY 2 DESC",
           "refId": "A"
         }
       ],
@@ -585,23 +585,14 @@
       "type": "barchart"
     }
   ],
-  "refresh": "1m",
+  "refresh": "",
   "schemaVersion": 39,
   "tags": ["hermes", "tokens"],
   "templating": { "list": [] },
-  "time": { "from": "now-7d", "to": "now" },
-  "timepicker": {
-    "refresh_intervals": ["30s", "1m", "5m", "15m"],
-    "quick_ranges": [
-      { "display": "Last 1 hour", "from": "now-1h", "to": "now" },
-      { "display": "Last 6 hours", "from": "now-6h", "to": "now" },
-      { "display": "Last 24 hours", "from": "now-24h", "to": "now" },
-      { "display": "Last 2 days", "from": "now-2d", "to": "now" },
-      { "display": "Last 7 days", "from": "now-7d", "to": "now" }
-    ]
-  },
+  "time": { "from": "now-8d", "to": "now" },
+  "timepicker": { "hidden": true },
   "timezone": "browser",
-  "title": "Hermes token usage",
-  "uid": "hermes-tokens",
+  "title": "Token usage",
+  "uid": "token-usage",
   "version": 1
 }
