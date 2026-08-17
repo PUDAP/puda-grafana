@@ -1,0 +1,631 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "PUDA command usage. Grafana sums cmd_cache_* over the dashboard time range — it does not scan commands on page load.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "content": "This page sums **daily cache rows** for the time range in the picker. Each midnight caches the previous Asia/Singapore calendar day of `commands` in 6-hour chunks (so Influx never hits the 432-file limit), walking back until logs start. Opening or refreshing does **not** scan the raw command log.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 3 },
+      "id": 2,
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 4 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT now() AS time, SUM(commands) AS \"Commands\" FROM cmd_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands sent",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "purple", "value": null }]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 4 },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT now() AS time, SUM(responses) AS \"Responses\" FROM cmd_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Responses",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 90 },
+              { "color": "green", "value": 99 }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 4 },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT now() AS time, CAST(SUM(successes) AS DOUBLE) * 100.0 / NULLIF(SUM(responses), 0) AS \"Success rate\" FROM cmd_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Success rate",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 1 },
+              { "color": "orange", "value": 20 },
+              { "color": "red", "value": 50 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 4 },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT now() AS time, SUM(errors) AS \"Errors\" FROM cmd_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Errors",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 },
+      "id": 7,
+      "title": "Volume over time",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Commands",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 9 },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT time, commands, machine_id FROM cmd_cache_hourly WHERE grain = 'day' AND $__timeFilter(time) ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands per hour by machine",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^commands\\s+(.*)$",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT time, commands AS \"Commands\", successes AS \"Success\", errors AS \"Errors\" FROM cmd_cache_hourly_split WHERE grain = 'day' AND $__timeFilter(time) ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands vs outcomes per hour",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Commands",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
+      "id": 10,
+      "options": {
+        "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "rawSql": "SELECT time, commands AS \"Commands\" FROM cmd_cache_hourly_split WHERE grain = 'day' AND $__timeFilter(time) ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Commands per hour",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 },
+      "id": 11,
+      "title": "Breakdown",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 27 },
+      "id": 12,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT machine_id AS \"Machine\", SUM(commands) AS \"Commands\" FROM cmd_cache_machine WHERE grain = 'day' AND $__timeFilter(time) GROUP BY machine_id ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Commands by machine",
+      "type": "barchart"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 27 },
+      "id": 13,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT cmd_name AS \"Command\", SUM(commands) AS \"Commands\" FROM cmd_cache_cmd WHERE grain = 'day' AND $__timeFilter(time) GROUP BY cmd_name ORDER BY 2 DESC LIMIT 20",
+          "refId": "A"
+        }
+      ],
+      "title": "Top commands",
+      "type": "barchart"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Success %" },
+            "properties": [
+              { "id": "unit", "value": "percent" },
+              { "id": "decimals", "value": 2 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 16, "x": 0, "y": 37 },
+      "id": 14,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT machine_id AS \"Machine\", SUM(commands) AS \"Commands\", SUM(responses) AS \"Responses\", SUM(successes) AS \"Success\", SUM(errors) AS \"Errors\", CAST(SUM(successes) AS DOUBLE) * 100.0 / NULLIF(SUM(responses), 0) AS \"Success %\" FROM cmd_cache_machine WHERE grain = 'day' AND $__timeFilter(time) GROUP BY machine_id ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Per-machine command stats",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "inspect": false
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 37 },
+      "id": 15,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT status AS \"Status\", SUM(calls) AS \"Count\" FROM cmd_cache_status WHERE grain = 'day' AND $__timeFilter(time) GROUP BY status ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Status",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 47 },
+      "id": 16,
+      "title": "Who and how",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 48 },
+      "id": 17,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT username AS \"User\", SUM(commands) AS \"Commands\" FROM cmd_cache_user WHERE grain = 'day' AND $__timeFilter(time) GROUP BY username ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Commands by user",
+      "type": "barchart"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 48 },
+      "id": 18,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "puda-influxdb" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT topic AS \"Topic\", SUM(commands) AS \"Commands\" FROM cmd_cache_topic WHERE grain = 'day' AND $__timeFilter(time) GROUP BY topic ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Commands by topic",
+      "type": "barchart"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": ["puda", "usage", "commands"],
+  "templating": { "list": [] },
+  "time": { "from": "now-30d", "to": "now" },
+  "timezone": "Asia/Singapore",
+  "title": "PUDA usage",
+  "uid": "puda-usage",
+  "version": 1
+}

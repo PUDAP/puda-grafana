@@ -22,10 +22,11 @@ services:
       - "traefik.http.routers.grafana.entrypoints=websecure"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
-  hermes-token-cache:
+  grafana-cache:
     image: python:3.12-alpine
-    container_name: hermes-token-cache
+    container_name: grafana-cache
     restart: unless-stopped
+    working_dir: /app
     env_file:
       - .env
     environment:
@@ -34,8 +35,8 @@ services:
     extra_hosts:
       - "bearsnas:100.87.23.102"
     volumes:
-      - ./scripts/cache-hermes-tokens.py:/app/cache-hermes-tokens.py:ro
-    command: ["python", "/app/cache-hermes-tokens.py", "--loop"]
+      - ./scripts:/app:ro
+    command: ["python", "cache_usage.py", "--loop"]
 
 networks:
   proxy:
