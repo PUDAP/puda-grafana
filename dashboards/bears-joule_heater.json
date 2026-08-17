@@ -2324,7 +2324,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 170
+                "value": 120
               },
               {
                 "id": "mappings",
@@ -2332,25 +2332,15 @@
                   {
                     "type": "value",
                     "options": {
-                      "queue command": {
-                        "text": "queue command",
+                      "queue": {
+                        "text": "queue",
                         "color": "blue",
                         "index": 0
                       },
-                      "queue response": {
-                        "text": "queue response",
-                        "color": "purple",
-                        "index": 1
-                      },
-                      "immediate command": {
-                        "text": "immediate command",
+                      "immediate": {
+                        "text": "immediate",
                         "color": "orange",
-                        "index": 2
-                      },
-                      "immediate response": {
-                        "text": "immediate response",
-                        "color": "green",
-                        "index": 3
+                        "index": 1
                       }
                     }
                   }
@@ -2520,7 +2510,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Response Data"
+                "value": "Response"
               },
               {
                 "id": "custom.width",
@@ -2569,7 +2559,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject FROM commands WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE machine_id = 'joule-heating' AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
