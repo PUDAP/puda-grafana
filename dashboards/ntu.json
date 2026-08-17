@@ -2562,7 +2562,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, 'Machine Status' AS source, 'online' AS event, machine_id AS agent_id, COALESCE(data, '') AS message, COALESCE(subject, '') AS details FROM telemetry WHERE machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber') AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
+              "rawSql": "SELECT time, 'Machine Status' AS source, 'online' AS event, machine_id AS agent_id, COALESCE(NULLIF(CAST(data AS VARCHAR), ''), 'cpu=' || COALESCE(CAST(cpu AS VARCHAR), '-') || ' mem=' || COALESCE(CAST(mem AS VARCHAR), '-') || ' temp=' || COALESCE(CAST(temp AS VARCHAR), '-') || ' connected=' || COALESCE(CAST(connected AS VARCHAR), '-') || ' status=' || COALESCE(status, '-')) AS message, COALESCE(subject, '') AS details FROM telemetry WHERE machine_id IN ('keithley-2450', 'keithley-707b', 'keysight-b2902b', 'light', 'stage', 'zaber') AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 2000) ORDER BY time ASC",
               "format": "table",
               "refId": "Status",
               "rawQuery": true

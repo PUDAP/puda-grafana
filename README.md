@@ -28,6 +28,7 @@ PUDA NATS subjects
 | VIPSA | `/d/vipsa` | VIPSA machine status and command logs |
 | IFIM | `/d/ifim` | IFIM PL system status and command logs |
 | Bears | `/d/bears` | Bears FIRST, Biologic, and Opentrons status and command logs |
+| Hermes token usage | `/d/hermes-tokens` | LLM tokens by agent/model, prompt vs completion, tools (hermes-logs) |
 
 ## Quick start
 

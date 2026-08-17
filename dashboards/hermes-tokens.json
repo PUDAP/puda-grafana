@@ -1,0 +1,607 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Hermes LLM token usage across agents. Queries hermes-logs (api_end rows with total_tokens). Queries are hard-capped at the last 7 days even if the time picker is wider, because InfluxDB 3 Core rejects scans over ~432 Parquet files.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "content": "Live from **hermes-logs** on `bearsnas:8181`. Filter: `event = 'api_end' AND total_tokens IS NOT NULL`.\n\nQueries are **capped at the last 7 days** (InfluxDB 3 Core 432-file scan limit). A wider time picker will not error; it still only returns those 7 days. Prompt share near 100% means spend is context (tool-loop history), not completion length.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 3 },
+      "id": 2,
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 4 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Tokens in range",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "purple", "value": null }]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 4 },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"API calls\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Completed API calls",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          },
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 4 },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, AVG(total_tokens) AS \"Avg tokens / call\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Avg tokens / call",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 95 },
+              { "color": "orange", "value": 99 }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 4 },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, CAST(SUM(prompt_tokens) AS DOUBLE) * 100.0 / NULLIF(SUM(total_tokens), 0) AS \"Prompt share\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days'",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Prompt share",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 },
+      "id": 7,
+      "title": "Volume over time",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Tokens",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 9 },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(total_tokens) AS tokens, agent_id FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1, agent_id ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Tokens per hour by agent",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Tokens",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(prompt_tokens) AS \"Prompt\", SUM(completion_tokens) AS \"Completion\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1 ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Prompt vs completion tokens",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Calls",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
+      "id": 10,
+      "options": {
+        "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"API calls\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY 1 ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "API calls per hour",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 },
+      "id": 11,
+      "title": "Breakdown",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 27 },
+      "id": 12,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT agent_id AS \"Agent\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY agent_id ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Tokens by agent",
+      "type": "barchart"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 27 },
+      "id": 13,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT model AS \"Model\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY model ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Tokens by model",
+      "type": "barchart"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Tokens" },
+            "properties": [{ "id": "unit", "value": "short" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Prompt" },
+            "properties": [{ "id": "unit", "value": "short" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Completion" },
+            "properties": [{ "id": "unit", "value": "short" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Prompt %" },
+            "properties": [
+              { "id": "unit", "value": "percent" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Avg tok/call" },
+            "properties": [
+              { "id": "unit", "value": "short" },
+              { "id": "decimals", "value": 0 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Avg latency" },
+            "properties": [{ "id": "unit", "value": "ms" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 16, "x": 0, "y": 37 },
+      "id": 14,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT agent_id AS \"Agent\", COUNT(*) AS \"Calls\", SUM(total_tokens) AS \"Tokens\", SUM(prompt_tokens) AS \"Prompt\", SUM(completion_tokens) AS \"Completion\", CAST(SUM(prompt_tokens) AS DOUBLE) * 100.0 / NULLIF(SUM(total_tokens), 0) AS \"Prompt %\", AVG(total_tokens) AS \"Avg tok/call\", AVG(message_count) AS \"Avg msgs\", AVG(api_duration_ms) AS \"Avg latency\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY agent_id ORDER BY 3 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Per-agent token stats",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "inspect": false
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 37 },
+      "id": 15,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT finish_reason AS \"Finish\", COUNT(*) AS \"Calls\", SUM(total_tokens) AS \"Tokens\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY finish_reason ORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Finish reason",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 47 },
+      "id": 16,
+      "title": "Tools",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1,
+            "scaleDistribution": { "type": "linear" }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 48 },
+      "id": 17,
+      "options": {
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT tool_name AS \"Tool\", COUNT(*) AS \"Calls\" FROM hermes_tool_call WHERE event = 'tool_end' AND $__timeFilter(time) AND time >= now() - INTERVAL '7 days' GROUP BY tool_name ORDER BY 2 DESC LIMIT 15",
+          "refId": "A"
+        }
+      ],
+      "title": "Top tool_end calls",
+      "type": "barchart"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": ["hermes", "tokens"],
+  "templating": { "list": [] },
+  "time": { "from": "now-7d", "to": "now" },
+  "timepicker": {
+    "refresh_intervals": ["30s", "1m", "5m", "15m"],
+    "quick_ranges": [
+      { "display": "Last 1 hour", "from": "now-1h", "to": "now" },
+      { "display": "Last 6 hours", "from": "now-6h", "to": "now" },
+      { "display": "Last 24 hours", "from": "now-24h", "to": "now" },
+      { "display": "Last 2 days", "from": "now-2d", "to": "now" },
+      { "display": "Last 7 days", "from": "now-7d", "to": "now" }
+    ]
+  },
+  "timezone": "browser",
+  "title": "Hermes token usage",
+  "uid": "hermes-tokens",
+  "version": 1
+}

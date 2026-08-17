@@ -1977,7 +1977,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, machine_id, host, subject, data FROM telemetry WHERE machine_id IN ('first', 'biologic') AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, connected, status, data FROM telemetry WHERE machine_id IN ('first', 'biologic') AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
