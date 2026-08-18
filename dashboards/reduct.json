@@ -1,0 +1,369 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "All PUDA NATS traffic logged to ReductStore (commands + telemetry).",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "gridPos": { "h": 2, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "content": "Reads from ReductStore bucket **puda** (`commands` and `telemetry` entries). Command metadata and telemetry use labels; command responses are read from the stored JSON.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 2 },
+      "id": 2,
+      "title": "Commands",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          { "matcher": { "id": "byRegexp", "options": "/machine_id$/" }, "properties": [{ "id": "displayName", "value": "Machine" }] },
+          { "matcher": { "id": "byRegexp", "options": "/topic$/" }, "properties": [{ "id": "displayName", "value": "Topic" }] },
+          { "matcher": { "id": "byRegexp", "options": "/cmd_name$/" }, "properties": [{ "id": "displayName", "value": "Command" }] },
+          { "matcher": { "id": "byRegexp", "options": "/msg_type$/" }, "properties": [{ "id": "displayName", "value": "Type" }] },
+          { "matcher": { "id": "byRegexp", "options": "/status$/" }, "properties": [{ "id": "displayName", "value": "Status" }] },
+          { "matcher": { "id": "byRegexp", "options": "/username$/" }, "properties": [{ "id": "displayName", "value": "User" }] },
+          { "matcher": { "id": "byRegexp", "options": "/run_id$/" }, "properties": [{ "id": "displayName", "value": "Run ID" }] },
+          { "matcher": { "id": "byRegexp", "options": "/user_id$/" }, "properties": [{ "id": "displayName", "value": "User ID" }] },
+          { "matcher": { "id": "byRegexp", "options": "/step_number$/" }, "properties": [{ "id": "displayName", "value": "Step" }] },
+          { "matcher": { "id": "byRegexp", "options": "/cmd_version$/" }, "properties": [{ "id": "displayName", "value": "Version" }] },
+          { "matcher": { "id": "byRegexp", "options": "/response_code$/" }, "properties": [{ "id": "displayName", "value": "Response code" }] },
+          { "matcher": { "id": "byRegexp", "options": "/response_message$/" }, "properties": [{ "id": "displayName", "value": "Response" }] },
+          { "matcher": { "id": "byRegexp", "options": "/response$/" }, "properties": [{ "id": "displayName", "value": "Response" }] },
+          { "matcher": { "id": "byRegexp", "options": "/completed_at$/" }, "properties": [{ "id": "displayName", "value": "Completed at" }] }
+        ]
+      },
+      "gridPos": { "h": 14, "w": 24, "x": 0, "y": 3 },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": true, "fields": "", "reducer": ["count"], "show": true },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Time" }]
+      },
+      "targets": [
+        {
+          "bucket": "puda",
+          "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+          "entry": "commands",
+          "options": {
+            "mode": "LabelAndContent",
+            "when": {
+              "#select_labels": [
+                "machine_id",
+                "topic",
+                "cmd_name",
+                "msg_type",
+                "status",
+                "username",
+                "run_id",
+                "user_id",
+                "step_number",
+                "cmd_version",
+                "response_code",
+                "completed_at"
+              ]
+            }
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Command log",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": { "byField": "time", "mode": "outer" }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "^(time|value commands/(machine_id|topic|cmd_name|msg_type|status|username|run_id|user_id|step_number|cmd_version|response_code|completed_at|\\$\\.(data\\.)?response))$"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "time": "Time",
+              "value commands/machine_id": "Machine",
+              "value commands/topic": "Topic",
+              "value commands/cmd_name": "Command",
+              "value commands/msg_type": "Type",
+              "value commands/status": "Status",
+              "value commands/username": "User",
+              "value commands/run_id": "Run ID",
+              "value commands/user_id": "User ID",
+              "value commands/step_number": "Step",
+              "value commands/cmd_version": "Version",
+              "value commands/response_code": "Response code",
+              "value commands/response_message": "Response",
+              "value commands/completed_at": "Completed at",
+              "value commands/$.response": "Response",
+              "value commands/$.data.response": "Response",
+              "value commands/commands/machine_id": "Machine",
+              "value commands/commands/topic": "Topic",
+              "value commands/commands/cmd_name": "Command",
+              "value commands/commands/msg_type": "Type",
+              "value commands/commands/status": "Status",
+              "value commands/commands/username": "User",
+              "value commands/commands/run_id": "Run ID",
+              "value commands/commands/user_id": "User ID",
+              "value commands/commands/step_number": "Step",
+              "value commands/commands/cmd_version": "Version",
+              "value commands/commands/response_code": "Response code",
+              "value commands/commands/response_message": "Response",
+              "value commands/commands/completed_at": "Completed at",
+              "commands/machine_id": "machine_id",
+              "commands/topic": "topic",
+              "commands/cmd_name": "cmd_name",
+              "commands/msg_type": "msg_type",
+              "commands/status": "status",
+              "commands/username": "username",
+              "commands/run_id": "run_id",
+              "commands/user_id": "user_id",
+              "commands/step_number": "step_number",
+              "commands/cmd_version": "cmd_version",
+              "commands/response_code": "response_code",
+              "commands/response_message": "response_message",
+              "commands/completed_at": "completed_at"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 17 },
+      "id": 4,
+      "title": "Telemetry",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byRegexp", "options": "/temp/i" },
+            "properties": [{ "id": "unit", "value": "celsius" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 18 },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": ["lastNotNull"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        {
+          "bucket": "puda",
+          "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+          "entry": "telemetry",
+          "options": {
+            "mode": "LabelOnly",
+            "when": {
+              "$each_t": "$__interval",
+              "#select_labels": ["machine_id", "cpu", "mem", "temp"]
+            }
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "CPU / mem / temp",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": { "pattern": "^(time|telemetry/(cpu|mem|temp))$" }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "telemetry/(.*)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          { "matcher": { "id": "byRegexp", "options": "/machine_id$/" }, "properties": [{ "id": "displayName", "value": "Machine" }] },
+          { "matcher": { "id": "byRegexp", "options": "/subject$/" }, "properties": [{ "id": "displayName", "value": "NATS subject" }] },
+          { "matcher": { "id": "byRegexp", "options": "/cpu$/" }, "properties": [{ "id": "displayName", "value": "CPU (%)" }] },
+          { "matcher": { "id": "byRegexp", "options": "/mem$/" }, "properties": [{ "id": "displayName", "value": "Memory (%)" }] },
+          { "matcher": { "id": "byRegexp", "options": "/temp$/" }, "properties": [{ "id": "displayName", "value": "Temperature (°C)" }] },
+          { "matcher": { "id": "byRegexp", "options": "/connected$/" }, "properties": [{ "id": "displayName", "value": "Connected" }] },
+          { "matcher": { "id": "byRegexp", "options": "/status$/" }, "properties": [{ "id": "displayName", "value": "Status" }] }
+        ]
+      },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 28 },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": { "countRows": true, "fields": "", "reducer": ["count"], "show": true },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Time" }]
+      },
+      "targets": [
+        {
+          "bucket": "puda",
+          "datasource": { "type": "reductstore-datasource", "uid": "puda-reductstore" },
+          "entry": "telemetry",
+          "options": {
+            "mode": "LabelOnly",
+            "when": {
+              "#select_labels": [
+                "machine_id",
+                "subject",
+                "cpu",
+                "mem",
+                "temp",
+                "connected",
+                "status"
+              ]
+            }
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Telemetry log",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": { "byField": "time", "mode": "outer" }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "time": "Time",
+              "value telemetry/machine_id": "Machine",
+              "value telemetry/subject": "NATS subject",
+              "value telemetry/cpu": "CPU (%)",
+              "value telemetry/mem": "Memory (%)",
+              "value telemetry/temp": "Temperature (°C)",
+              "value telemetry/connected": "Connected",
+              "value telemetry/status": "Status",
+              "value telemetry/telemetry/machine_id": "Machine",
+              "value telemetry/telemetry/subject": "NATS subject",
+              "value telemetry/telemetry/cpu": "CPU (%)",
+              "value telemetry/telemetry/mem": "Memory (%)",
+              "value telemetry/telemetry/temp": "Temperature (°C)",
+              "value telemetry/telemetry/connected": "Connected",
+              "value telemetry/telemetry/status": "Status",
+              "telemetry/machine_id": "machine_id",
+              "telemetry/subject": "subject",
+              "telemetry/cpu": "cpu",
+              "telemetry/mem": "mem",
+              "telemetry/temp": "temp",
+              "telemetry/connected": "connected",
+              "telemetry/status": "status"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["puda", "reductstore"],
+  "templating": { "list": [] },
+  "time": { "from": "now-1h", "to": "now" },
+  "timezone": "Asia/Singapore",
+  "title": "Reduct",
+  "uid": "reduct",
+  "version": 1,
+  "weekStart": ""
+}

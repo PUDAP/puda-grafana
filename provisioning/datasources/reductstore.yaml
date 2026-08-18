@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: PUDA ReductStore
+    type: reductstore-datasource
+    uid: puda-reductstore
+    access: proxy
+    jsonData:
+      serverURL: $REDUCTSTORE_URL
+      verifySSL: false
+    secureJsonData:
+      serverToken: $REDUCTSTORE_TOKEN

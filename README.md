@@ -30,6 +30,7 @@ PUDA NATS subjects
 | Bears | `/d/bears` | Bears FIRST, Biologic, and Opentrons status and command logs |
 | Token usage | `/d/token-usage` | LLM tokens from the daily cache; time picker selects the range (not live Influx scans) |
 | PUDA usage | `/d/puda-usage` | Command log usage from the daily cache; time picker selects the range (not live Influx scans) |
+| Reduct | `/d/reduct` | Commands + telemetry from ReductStore (`bearsnas:8383`) |
 
 ## Quick start
 
@@ -74,9 +75,11 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `INFLUXDB_TOKEN` | `apiv3_puda` | InfluxDB admin token (generates `admin-token.json`; used by the InfluxDB datasource) |
 | `INFLUXDB_PUDA_DATABASE` | `machines` | InfluxDB database name for machine telemetry/command logs |
 | `INFLUXDB_HERMES_DATABASE` | `hermes-logs` | InfluxDB database name for Hermes agent session logs |
+| `REDUCTSTORE_URL` | `http://bearsnas:8383` | URL of the `puda-logger` ReductStore instance |
+| `REDUCTSTORE_TOKEN` | `reduct` | ReductStore API token (`RS_API_TOKEN`) |
 | `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username (expanded into `grafana.ini`) |
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password (expanded into `grafana.ini`) |
-| `GF_INSTALL_PLUGINS` | `marcusolsson-dynamictext-panel` | Installs the Business Text panel used for styled rolling chat/tool windows |
+| `GF_INSTALL_PLUGINS` | Business Text + ReductStore datasource | Installs panels/datasources on startup (ReductStore from GitHub zip) |
 
 Grafana's own settings (anonymous viewer access, disabled HTML sanitization for iframe panels, disabled self-signup, disabled embedding) live in `grafana.ini`, which is bind-mounted to `/etc/grafana/grafana.ini`. `GF_INSTALL_PLUGINS` is not a `grafana.ini` setting — it's read by the Grafana image's entrypoint script to install plugins before Grafana starts, so it stays an environment variable, sourced from `.env`.
 
