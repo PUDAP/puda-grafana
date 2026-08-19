@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Hermes LLM token usage. Grafana sums token_cache_* over the dashboard time range — it does not scan hermes_api_request on page load.",
+  "description": "Hermes LLM token usage. Grafana sums token_cache_* over the dashboard time range — it does not scan hermes_api_request on page load. Predicted electricity and water scale with tokens (1.1 Wh and 3.6 mL per 1,000 tokens).",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -26,7 +26,7 @@
       "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
       "id": 1,
       "options": {
-        "content": "This page sums **daily cache rows** for the time range in the picker. Each midnight caches the previous Asia/Singapore calendar day in 6-hour chunks (so Influx never hits the 432-file limit), walking back until logs start.`.\n\nPrompt share near 100% means spend is context (tool-loop history), not completion length.",
+        "content": "This page sums **daily cache rows** for the time range in the picker. Each midnight caches the previous Asia/Singapore calendar day in 6-hour chunks (so Influx never hits the 432-file limit), walking back until logs start.\n\nPrompt share near 100% means spend is context (tool-loop history), not completion length.\n\n**Predicted electricity and water** scale linearly with tokens using a GPT-4o inference estimate: **1.1 Wh** and **3.6 mL** per 1,000 tokens (order-of-magnitude; model and datacenter vary).",
         "mode": "markdown"
       },
       "pluginVersion": "13.0.1",
@@ -186,6 +186,148 @@
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 },
+      "id": 18,
+      "title": "Predicted electricity & water",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "description": "SUM(tokens) × 1.1 Wh / 1,000. GPT-4o inference estimate (order-of-magnitude; model and datacenter vary).",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "orange", "value": null }]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 9 },
+      "id": 19,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, CAST(SUM(tokens) AS DOUBLE) * 1.1 / 1000.0 AS \"Electricity\" FROM token_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Predicted electricity",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "description": "SUM(tokens) × 3.6 mL / 1,000. GPT-4o inference estimate (order-of-magnitude; model and datacenter vary).",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          },
+          "unit": "mlitre"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 9 },
+      "id": 20,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT now() AS time, CAST(SUM(tokens) AS DOUBLE) * 3.6 / 1000.0 AS \"Water\" FROM token_cache_stats WHERE grain = 'day' AND $__timeFilter(time)",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Predicted water",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+      "description": "Hourly tokens × 1.1 Wh and 3.6 mL per 1,000 tokens.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Electricity",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "decimals": 2,
+          "min": 0,
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Water" },
+            "properties": [
+              { "id": "unit", "value": "mlitre" },
+              { "id": "custom.axisPlacement", "value": "right" },
+              { "id": "custom.axisLabel", "value": "Water" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 4, "w": 12, "x": 12, "y": 9 },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
+          "rawSql": "SELECT time, CAST(prompt + completion AS DOUBLE) * 1.1 / 1000.0 AS \"Electricity\", CAST(prompt + completion AS DOUBLE) * 3.6 / 1000.0 AS \"Water\" FROM token_cache_hourly_split WHERE grain = 'day' AND $__timeFilter(time) ORDER BY 1",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Predicted electricity & water per hour",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
       "id": 7,
       "title": "Volume over time",
       "type": "row"
@@ -220,7 +362,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 9 },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 14 },
       "id": 8,
       "options": {
         "legend": {
@@ -281,7 +423,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 23 },
       "id": 9,
       "options": {
         "legend": {
@@ -333,7 +475,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 23 },
       "id": 10,
       "options": {
         "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom", "showLegend": false },
@@ -352,7 +494,7 @@
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 },
       "id": 11,
       "title": "Breakdown",
       "type": "row"
@@ -376,7 +518,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 27 },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 32 },
       "id": 12,
       "options": {
         "barWidth": 0.7,
@@ -420,7 +562,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 27 },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 32 },
       "id": 13,
       "options": {
         "barWidth": 0.7,
@@ -463,6 +605,20 @@
             "properties": [{ "id": "unit", "value": "short" }]
           },
           {
+            "matcher": { "id": "byName", "options": "Electricity" },
+            "properties": [
+              { "id": "unit", "value": "watth" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Water" },
+            "properties": [
+              { "id": "unit", "value": "mlitre" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
             "matcher": { "id": "byName", "options": "Prompt" },
             "properties": [{ "id": "unit", "value": "short" }]
           },
@@ -490,7 +646,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 16, "x": 0, "y": 37 },
+      "gridPos": { "h": 10, "w": 16, "x": 0, "y": 42 },
       "id": 14,
       "options": {
         "cellHeight": "sm",
@@ -502,7 +658,7 @@
           "datasource": { "type": "influxdb", "uid": "influxdb-hermes" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT agent_id AS \"Agent\", SUM(calls) AS \"Calls\", SUM(tokens) AS \"Tokens\", SUM(prompt) AS \"Prompt\", SUM(completion) AS \"Completion\", CAST(SUM(prompt) AS DOUBLE) * 100.0 / NULLIF(SUM(tokens), 0) AS \"Prompt %\", CAST(SUM(tokens) AS DOUBLE) / NULLIF(SUM(calls), 0) AS \"Avg tok/call\", SUM(sum_msgs) / NULLIF(SUM(calls), 0) AS \"Avg msgs\", SUM(sum_ms) / NULLIF(SUM(calls), 0) AS \"Avg latency\" FROM token_cache_agent WHERE grain = 'day' AND $__timeFilter(time) GROUP BY agent_id ORDER BY 3 DESC",
+          "rawSql": "SELECT agent_id AS \"Agent\", SUM(calls) AS \"Calls\", SUM(tokens) AS \"Tokens\", CAST(SUM(tokens) AS DOUBLE) * 1.1 / 1000.0 AS \"Electricity\", CAST(SUM(tokens) AS DOUBLE) * 3.6 / 1000.0 AS \"Water\", SUM(prompt) AS \"Prompt\", SUM(completion) AS \"Completion\", CAST(SUM(prompt) AS DOUBLE) * 100.0 / NULLIF(SUM(tokens), 0) AS \"Prompt %\", CAST(SUM(tokens) AS DOUBLE) / NULLIF(SUM(calls), 0) AS \"Avg tok/call\", SUM(sum_msgs) / NULLIF(SUM(calls), 0) AS \"Avg msgs\", SUM(sum_ms) / NULLIF(SUM(calls), 0) AS \"Avg latency\" FROM token_cache_agent WHERE grain = 'day' AND $__timeFilter(time) GROUP BY agent_id ORDER BY 3 DESC",
           "refId": "A"
         }
       ],
@@ -523,7 +679,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 37 },
+      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 42 },
       "id": 15,
       "options": {
         "cellHeight": "sm",
@@ -544,7 +700,7 @@
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 47 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 52 },
       "id": 16,
       "title": "Tools",
       "type": "row"
@@ -568,7 +724,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 48 },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 53 },
       "id": 17,
       "options": {
         "barWidth": 0.7,
@@ -602,5 +758,5 @@
   "timezone": "Asia/Singapore",
   "title": "Token usage",
   "uid": "token-usage",
-  "version": 4
+  "version": 5
 }
