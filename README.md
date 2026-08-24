@@ -23,6 +23,7 @@ PUDA NATS subjects
 
 | Dashboard | URL | Description |
 |---|---|---|
+| PUDA agents | `/d/puda-agents` | One card per AI agent, with the machines it controls plus dashboard and livestream links |
 | Machine Status | `/d/machine-status` | Status timeline, CPU, memory, temperature |
 | Command Log | `/d/command-log` | NATS commands sent and responses received |
 | VIPSA | `/d/vipsa` | VIPSA machine status and command logs |
@@ -45,7 +46,7 @@ Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so chang
 
 | Service | URL | Credentials |
 |---|---|---|
-| Grafana | http://localhost:3000 | admin / admin (override via `.env`) |
+| Grafana | http://localhost:3000 | admin / admin (admin, override via `.env`); puda / berkeleybears (viewer) |
 | InfluxDB | http://localhost:8181 | token: `INFLUXDB_TOKEN` from `.env` (default `apiv3_puda`) |
 
 ## Services
@@ -53,7 +54,7 @@ Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so chang
 ### `grafana`
 
 Grafana 13 with provisioned InfluxDB data source and file-based dashboards.
-Anonymous viewer access is enabled.
+Anonymous access is disabled; log in as `admin` or the `puda` viewer.
 
 `grafana-cache` runs `scripts/cache_usage.py` on a loop: each
 **00:00 Asia/Singapore** it caches the previous calendar day of Hermes tokens
@@ -81,7 +82,7 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password (expanded into `grafana.ini`) |
 | `GF_INSTALL_PLUGINS` | Business Text + ReductStore datasource | Installs panels/datasources on startup (ReductStore from GitHub zip) |
 
-Grafana's own settings (anonymous viewer access, disabled HTML sanitization for iframe panels, disabled self-signup, disabled embedding) live in `grafana.ini`, which is bind-mounted to `/etc/grafana/grafana.ini`. `GF_INSTALL_PLUGINS` is not a `grafana.ini` setting — it's read by the Grafana image's entrypoint script to install plugins before Grafana starts, so it stays an environment variable, sourced from `.env`.
+Grafana's own settings (anonymous access disabled, disabled HTML sanitization for iframe panels, disabled self-signup, disabled embedding) live in `grafana.ini`, which is bind-mounted to `/etc/grafana/grafana.ini`. `scripts/init.sh` creates the `puda` Viewer account if it is missing. `GF_INSTALL_PLUGINS` is not a `grafana.ini` setting — it's read by the Grafana image's entrypoint script to install plugins before Grafana starts, so it stays an environment variable, sourced from `.env`.
 
 ## Deploying to a new host
 

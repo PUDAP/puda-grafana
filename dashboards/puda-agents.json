@@ -1,0 +1,2100 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "One card per AI agent. Each agent lists the PUDA machines it controls, plus dashboard and livestream links.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "First",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bears-first/bears-first"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Opentrons",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bears-opentrons/bears-opentrons"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Elephant",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bears-elephant/bears-elephant"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Joule Heater",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bears-joule_heater/bears-joule_heater"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "IMRE MOF",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/imre-mof/imre-mof"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Pescador",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/imre-pescador/imre-pescador"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "VIPSA",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/ntu-vipsa/ntu-vipsa"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "First livestream",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-first.puda.co/livestream"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Opentrons livestream",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-opentron.puda.co/livestream"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Joule Heater cam",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-joule-heater.puda.co/cam"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "IMRE MOF livestream",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-imre-mof.puda.co/livestream"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Pescador livestream",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-pescador.puda.co/livestream"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "VIPSA camera 1",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-vipsa.puda.co/camera1/"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "VIPSA camera 2",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://cam-vipsa.puda.co/camera2/"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "VIPSA jog",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://vipsa-ubuntu:8765/"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "PUDA agents",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "content": "<style>\n.puda-map{font-family:Inter,Helvetica,Arial,sans-serif;color:#d8d9da;padding:4px 8px 8px}\n.puda-map *{box-sizing:border-box}\n.puda-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}\n.puda-col{background:#181b1f;border:1px solid rgba(204,204,220,.28);border-radius:4px;padding:12px;min-width:0}\na.puda-site,a.puda-site:link,a.puda-site:visited,a.puda-site:hover,a.puda-site:active{display:block;text-decoration:none!important;color:#fff!important;background:#1a56c9!important;border-radius:4px;padding:14px 12px;font-weight:800;font-size:22px;letter-spacing:.12em;margin:0 0 12px;text-align:center;line-height:1.2}\na.puda-site:hover{background:#3274d9!important;color:#fff!important}\na.puda-name,a.puda-name:link,a.puda-name:visited{color:#fff!important;text-decoration:none!important}\n.puda-card{border:1px solid rgba(204,204,220,.12);border-radius:3px;padding:10px;margin:0 0 8px}\n.puda-card:last-child{margin:0}\n.puda-name{display:block;text-decoration:none;font-size:15px;font-weight:650;color:#fff;margin:0 0 2px}\n.puda-name:hover{color:#3274d9}\n\n.puda-machines{font-size:13px;color:#d8d9da;margin:0 0 8px;line-height:1.4}\n.puda-links{display:flex;flex-wrap:wrap;gap:6px}\n.puda-links a{display:inline-block;text-decoration:none;color:#d8d9da;border:1px solid rgba(204,204,220,.28);border-radius:3px;padding:3px 8px;font-size:11px;font-weight:600}\n.puda-links a:hover{border-color:#3274d9;color:#fff}\n.puda-links a.live{border-color:#3274d9;color:#fff}\n@media (max-width: 1100px){.puda-grid{grid-template-columns:1fr}}\n</style>\n<div class=\"puda-map\">\n  <div class=\"puda-grid\">\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/bears/bears\">BEARS</a>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/bears-first/bears-first\">First</a>\n        <div class=\"puda-machines\">first, biologic</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-first/bears-first\">Dashboard</a> <a class=\"live\" href=\"https://cam-first.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/bears-opentrons/bears-opentrons\">Opentrons</a>\n        <div class=\"puda-machines\">opentrons</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-opentrons/bears-opentrons\">Dashboard</a> <a class=\"live\" href=\"https://cam-opentron.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/bears-elephant/bears-elephant\">Elephant</a>\n        <div class=\"puda-machines\">elephant</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-elephant/bears-elephant\">Dashboard</a>\n        </div>\n      </div>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/bears-joule_heater/bears-joule_heater\">Joule Heater</a>\n        <div class=\"puda-machines\">joule heater</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-joule_heater/bears-joule_heater\">Dashboard</a> <a class=\"live\" href=\"https://cam-joule-heater.puda.co/cam\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/imre/imre\">IMRE</a>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/imre-mof/imre-mof\">IMRE MOF</a>\n        <div class=\"puda-machines\">pipqubot, dobot, capper, bioshake</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-mof/imre-mof\">Dashboard</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/ipcam\" target=\"_blank\" rel=\"noopener noreferrer\">IP camera</a>\n        </div>\n      </div>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/imre-pescador/imre-pescador\">Pescador</a>\n        <div class=\"puda-machines\">pescador pipqubot</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-pescador/imre-pescador\">Dashboard</a> <a class=\"live\" href=\"https://cam-pescador.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/ntu/ntu\">NTU</a>\n      <div class=\"puda-card\">\n        <a class=\"puda-name\" href=\"/d/ntu-vipsa/ntu-vipsa\">VIPSA</a>\n        <div class=\"puda-machines\">light, stage, zaber, keithley 2450, keithley 707B, keysight B2902B</div>\n        <div class=\"puda-links\">\n          <a href=\"/d/ntu-vipsa/ntu-vipsa\">Dashboard</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera1/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 1</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera2/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 2</a> <a href=\"http://vipsa-ubuntu:8765/\" target=\"_blank\" rel=\"noopener noreferrer\">Manual jog</a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 3,
+      "title": "First  \u00b7  first",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id first",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/bears-first/bears-first",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-first.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 18
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'first' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "first",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id biologic",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/bears-first/bears-first",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-first.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 18
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'biologic' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "biologic",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 6,
+      "title": "Opentrons  \u00b7  opentrons",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id opentrons",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/bears-opentrons/bears-opentrons",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-opentron.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 22
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'opentrons' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "opentrons",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 8,
+      "title": "Elephant  \u00b7  elephant",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id elephant",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/bears-elephant/bears-elephant",
+              "targetBlank": false,
+              "oneClick": true
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 26
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'elephant' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "elephant",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 10,
+      "title": "Joule Heater  \u00b7  joule-heater",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id joule-heating",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/bears-joule_heater/bears-joule_heater",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-joule-heater.puda.co/cam",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 30
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'joule-heating' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "joule heater",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 12,
+      "title": "IMRE MOF  \u00b7  imre-mof",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id pipqubot_mof",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/imre-mof/imre-mof",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-imre-mof.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "IP camera",
+              "url": "https://cam-imre-mof.puda.co/ipcam",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 34
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "pipqubot",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id dobot-m1pro",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/imre-mof/imre-mof",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-imre-mof.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "IP camera",
+              "url": "https://cam-imre-mof.puda.co/ipcam",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 34
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "dobot",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id capper",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/imre-mof/imre-mof",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-imre-mof.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "IP camera",
+              "url": "https://cam-imre-mof.puda.co/ipcam",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 34
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'capper' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "capper",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id bioshake",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/imre-mof/imre-mof",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-imre-mof.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "IP camera",
+              "url": "https://cam-imre-mof.puda.co/ipcam",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 34
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'bioshake' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "bioshake",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 17,
+      "title": "Pescador  \u00b7  imre-pescador",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id pescador-pipqubot",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/imre-pescador/imre-pescador",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Livestream",
+              "url": "https://cam-pescador.puda.co/livestream",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 38
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pescador-pipqubot' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "pescador pipqubot",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 19,
+      "title": "VIPSA  \u00b7  vipsa",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id light",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 42
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'light' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "light",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id stage",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 42
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'stage' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "stage",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id zaber",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 42
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'zaber' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "zaber",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id keithley-2450",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 42
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'keithley-2450' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "keithley 2450",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id keithley-707b",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 42
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'keithley-707b' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "keithley 707B",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "description": "machine_id keysight-b2902b",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "online": {
+                  "text": "Online",
+                  "color": "green",
+                  "index": 0
+                },
+                "offline": {
+                  "text": "Offline",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Dashboard",
+              "url": "/d/ntu-vipsa/ntu-vipsa",
+              "targetBlank": false,
+              "oneClick": true
+            },
+            {
+              "title": "Camera 1",
+              "url": "https://cam-vipsa.puda.co/camera1/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Camera 2",
+              "url": "https://cam-vipsa.puda.co/camera2/",
+              "targetBlank": true,
+              "oneClick": false
+            },
+            {
+              "title": "Manual jog",
+              "url": "http://vipsa-ubuntu:8765/",
+              "targetBlank": true,
+              "oneClick": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 42
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^status$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'keysight-b2902b' AND time >= now() - INTERVAL '30 seconds'",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "title": "keysight B2902B",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 26,
+      "title": "Livestreams",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 46
+      },
+      "id": 27,
+      "options": {
+        "content": "<iframe src=\"https://cam-first.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "First",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 46
+      },
+      "id": 28,
+      "options": {
+        "content": "<iframe src=\"https://cam-opentron.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Opentrons",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 46
+      },
+      "id": 29,
+      "options": {
+        "content": "<iframe src=\"https://cam-joule-heater.puda.co/cam\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Joule Heater",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 46
+      },
+      "id": 30,
+      "options": {
+        "content": "<iframe src=\"https://cam-imre-mof.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "IMRE MOF",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 53
+      },
+      "id": 31,
+      "options": {
+        "content": "<iframe src=\"https://cam-pescador.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Pescador",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 53
+      },
+      "id": 32,
+      "options": {
+        "content": "<iframe src=\"https://cam-imre-mof.puda.co/ipcam\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "IMRE IP camera",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 53
+      },
+      "id": 33,
+      "options": {
+        "content": "<iframe src=\"https://cam-vipsa.puda.co/camera1/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "VIPSA camera 1",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 53
+      },
+      "id": 34,
+      "options": {
+        "content": "<iframe src=\"https://cam-vipsa.puda.co/camera2/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "VIPSA camera 2",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 60
+      },
+      "id": 35,
+      "title": "Useful links",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 36,
+      "options": {
+        "content": "<div style=\"display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 4px;font-family:Inter,Helvetica,Arial,sans-serif;\">\n<a href=\"/d/bears/bears\" style=\"text-decoration:none;background:#1a56c9;color:#fff !important;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">BEARS</a>\n<a href=\"/d/imre/imre\" style=\"text-decoration:none;background:#1a56c9;color:#fff !important;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">IMRE</a>\n<a href=\"/d/ntu/ntu\" style=\"text-decoration:none;background:#1a56c9;color:#fff !important;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">NTU</a>\n<a href=\"/d/ifim/ifim\" style=\"text-decoration:none;background:#1a56c9;color:#fff !important;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">IFIM</a>\n<a href=\"/d/token-usage/token-usage\" style=\"text-decoration:none;border:1px solid rgba(204,204,220,.28);color:#d8d9da;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">Token usage</a>\n<a href=\"/d/puda-usage/puda-usage\" style=\"text-decoration:none;border:1px solid rgba(204,204,220,.28);color:#d8d9da;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">PUDA usage</a>\n<a href=\"/d/reduct/reduct\" style=\"text-decoration:none;border:1px solid rgba(204,204,220,.28);color:#d8d9da;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">Reduct</a>\n<a href=\"http://vipsa-ubuntu:8765/\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"text-decoration:none;border:1px solid rgba(204,204,220,.28);color:#d8d9da;padding:8px 12px;border-radius:3px;font-weight:650;font-size:13px;\">VIPSA manual jog</a>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "",
+      "type": "text",
+      "transparent": true
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [
+    "puda",
+    "overview"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PUDA agents",
+  "uid": "puda-agents",
+  "version": 2
+}

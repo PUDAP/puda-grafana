@@ -12,6 +12,8 @@ INFLUXDB_HERMES_DATABASE="${INFLUXDB_HERMES_DATABASE:-hermes-logs}"
 GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
 GRAFANA_USER="${GF_SECURITY_ADMIN_USER:-admin}"
 GRAFANA_PASS="${GF_SECURITY_ADMIN_PASSWORD:-admin}"
+GRAFANA_VIEWER_USER="${GRAFANA_VIEWER_USER:-puda}"
+GRAFANA_VIEWER_PASSWORD="${GRAFANA_VIEWER_PASSWORD:-berkeleybears}"
 
 SUPERSEDED_UIDS=(
   puda-machine-status
@@ -88,4 +90,31 @@ if [[ "${needs_reset}" == true ]]; then
     sleep 1
   done
   echo "  Grafana reprovisioned from dashboards/"
+fi
+
+echo "▶ Ensuring Grafana viewer '${GRAFANA_VIEWER_USER}' exists …"
+if curl -sf -u "${GRAFANA_USER}:${GRAFANA_PASS}" \
+  "${GRAFANA_URL}/api/users/lookup?loginOrEmail=${GRAFANA_VIEWER_USER}" >/dev/null; then
+  echo "  Viewer '${GRAFANA_VIEWER_USER}' already exists"
+else
+  code=$(curl -s -o /tmp/gf-viewer.json -w "%{http_code}" \
+    -u "${GRAFANA_USER}:${GRAFANA_PASS}" \
+    -X POST "${GRAFANA_URL}/api/admin/users" \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"PUDA\",\"login\":\"${GRAFANA_VIEWER_USER}\",\"password\":\"${GRAFANA_VIEWER_PASSWORD}\"}")
+  case "$code" in
+    200)
+      user_id=$(python3 -c "import json; print(json.load(open('/tmp/gf-viewer.json'))['id'])")
+      curl -sf -u "${GRAFANA_USER}:${GRAFANA_PASS}" \
+        -X PATCH "${GRAFANA_URL}/api/org/users/${user_id}" \
+        -H "Content-Type: application/json" \
+        -d '{"role":"Viewer"}' >/dev/null
+      echo "  Created viewer '${GRAFANA_VIEWER_USER}'"
+      ;;
+    *)
+      echo "  Failed to create viewer '${GRAFANA_VIEWER_USER}' (HTTP ${code})" >&2
+      cat /tmp/gf-viewer.json >&2 || true
+      exit 1
+      ;;
+  esac
 fi
