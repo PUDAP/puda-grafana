@@ -1220,11 +1220,11 @@
       },
       "id": 17,
       "options": {
-        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">J</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Joule Heater</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
+        "content": "<div class=\"puda-chat-card\">\n  <div class=\"puda-avatar\">J</div>\n  <div class=\"puda-chat-main\">\n    <div class=\"puda-chat-meta\">\n      <span class=\"puda-speaker\">Joule Heater</span>\n      <span class=\"puda-pill\">{{event}}</span>\n      {{#if reasoning_tokens}}<span class=\"puda-pill puda-pill-muted\">{{reasoning_tokens}} reasoning</span>{{/if}}\n      <span class=\"puda-time\">{{time}}</span>\n    </div>\n    {{#if reasoning}}\n    <div class=\"puda-reasoning\" data-tokens=\"{{reasoning_tokens}}\">\n      <button class=\"puda-reasoning-toggle\" type=\"button\">Show reasoning</button>\n      <div class=\"puda-reasoning-text\">{{reasoning}}</div>\n    </div>\n    {{/if}}\n    <div class=\"puda-bubble\">\n      <button class=\"puda-show-more\" type=\"button\">Show more</button>\n      <div class=\"puda-bubble-text\">{{message}}</div>\n    </div>\n  </div>\n</div>",
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
-        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}",
+        "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-pill-muted{opacity:.8}.puda-reasoning{margin:0 0 8px 0;border:1px dashed rgba(223,255,105,.45);border-radius:12px;background:rgba(223,255,105,.06);padding:10px 12px}.puda-reasoning-toggle{border:1px solid rgba(223,255,105,.7);border-radius:999px;background:transparent;color:#dfff69;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}.puda-reasoning-open .puda-reasoning-toggle{background:#dfff69;color:#151515}.puda-reasoning-text{display:none;margin:10px 0 0 0;white-space:pre-wrap;color:#cfd3c4;font-size:13px;line-height:1.45}.puda-reasoning-open .puda-reasoning-text{display:block}",
         "helpers": "",
-        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n}",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n  root.querySelectorAll(\".puda-reasoning\").forEach((block) => {\n    const button = block.querySelector(\".puda-reasoning-toggle\");\n    if (!button) return;\n    const tokens = (block.getAttribute(\"data-tokens\") || \"\").trim();\n    const label = tokens ? `Show reasoning \u00b7 ${tokens} tokens` : \"Show reasoning\";\n    const labelLess = tokens ? `Hide reasoning \u00b7 ${tokens} tokens` : \"Hide reasoning\";\n    button.textContent = label;\n    button.onclick = () => {\n      block.classList.toggle(\"puda-reasoning-open\");\n      button.textContent = block.classList.contains(\"puda-reasoning-open\") ? labelLess : label;\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -1234,7 +1234,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, COALESCE(NULLIF(CAST(assistant_response AS VARCHAR), ''), NULLIF(CAST(user_message AS VARCHAR), ''), '') AS message FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12",
+          "rawSql": "SELECT t.time, t.event, COALESCE(NULLIF(CAST(t.assistant_response AS VARCHAR), ''), NULLIF(CAST(t.user_message AS VARCHAR), ''), '') AS message, CASE WHEN t.event = 'turn_end' THEN COALESCE(r.reasoning, '') ELSE '' END AS reasoning, CASE WHEN t.event = 'turn_end' AND r.reasoning_tokens > 0 THEN CAST(r.reasoning_tokens AS VARCHAR) ELSE '' END AS reasoning_tokens FROM (SELECT time, event, assistant_response, user_message, turn_id FROM hermes_llm_turn WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time DESC LIMIT 12) t LEFT JOIN (SELECT CAST(turn_id AS VARCHAR) AS turn_id, CAST(NULL AS VARCHAR) AS reasoning, SUM(CAST(regexp_match(CAST(usage_payload AS VARCHAR), '\"reasoning_tokens\":[[:space:]]*([0-9]+)')[1] AS BIGINT)) AS reasoning_tokens FROM hermes_api_request WHERE agent_id = 'joule-heater' AND event = 'api_end' AND $__timeFilter(time) GROUP BY CAST(turn_id AS VARCHAR)) r ON CAST(t.turn_id AS VARCHAR) = r.turn_id ORDER BY t.time DESC",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1519,6 +1519,21 @@
                     "id": "custom.cellOptions",
                     "value": {
                       "type": "json-view"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "reasoning"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "auto",
+                      "inspect": true
                     }
                   }
                 ]
@@ -2014,7 +2029,23 @@
           "unit": "short",
           "mappings": []
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reasoning Tokens"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -2043,7 +2074,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\" FROM hermes_api_request WHERE agent_id = 'joule-heater' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, total_tokens AS \"Total Tokens\", CAST(regexp_match(CAST(usage_payload AS VARCHAR), '\"reasoning_tokens\":[[:space:]]*([0-9]+)')[1] AS BIGINT) AS \"Reasoning Tokens\" FROM hermes_api_request WHERE agent_id = 'joule-heater' AND event = 'api_end' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -2163,6 +2194,22 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "reasoning_tokens"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Reasoning Tokens"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "finish_reason"
             },
             "properties": [
@@ -2209,7 +2256,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, event, model, provider, total_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT time, event, model, provider, total_tokens, CAST(regexp_match(CAST(usage_payload AS VARCHAR), '\"reasoning_tokens\":[[:space:]]*([0-9]+)')[1] AS BIGINT) AS reasoning_tokens, finish_reason FROM hermes_api_request WHERE agent_id = 'joule-heater' AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2826,5 +2873,5 @@
   "timezone": "browser",
   "title": "BEARS - Joule Heater",
   "uid": "bears-joule_heater",
-  "version": 1
+  "version": 2
 }
