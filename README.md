@@ -32,6 +32,7 @@ PUDA NATS subjects
 | Token usage | `/d/token-usage` | LLM tokens from the daily cache; time picker selects the range (not live Influx scans) |
 | PUDA usage | `/d/puda-usage` | Command log usage from the daily cache; time picker selects the range (not live Influx scans) |
 | Reduct | `/d/reduct` | Commands + telemetry from ReductStore (`bearsnas:8383`) |
+| isaac_sim | `/d/isaac_sim` | Embedded Isaac Sim web interface |
 
 ## Quick start
 
