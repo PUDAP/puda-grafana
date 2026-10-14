@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Hermes AI agent session timeline \u2014 tool calls, LLM turns, API requests",
+  "description": "Hermes AI agent session timeline — tool calls, LLM turns, API requests",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -1219,12 +1219,189 @@
       "type": "text"
     },
     {
+      "id": 108,
+      "type": "row",
+      "title": "Driver Telemetry Streams",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 109,
+      "type": "table",
+      "title": "Latest Telemetry per Stream",
+      "description": "Driver telemetry stored on bearsnas by the E2EE logger on pudadev. Payloads are stored as JSON strings; expand the JSON cell to inspect nested values. Only samples in the selected time range are shown.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 24,
+        "h": 6
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, stream, data FROM (SELECT time, stream, data, ROW_NUMBER() OVER (PARTITION BY stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id = 'first' AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY stream",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Payload (JSON)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stream"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 110,
+      "type": "table",
+      "title": "Telemetry Stream Samples (latest 500)",
+      "description": "Driver telemetry stored on bearsnas by the E2EE logger on pudadev. Expand the JSON cell to inspect nested values. Only samples in the selected time range are shown.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 24,
+        "h": 12
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, stream, data FROM telemetry_stream WHERE machine_id = 'first' AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Payload (JSON)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stream"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 34
       },
       "id": 107,
       "title": "Rolling Chat & Tool Windows",
@@ -1245,7 +1422,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 35
       },
       "id": 17,
       "options": {
@@ -1253,7 +1430,7 @@
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
         "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-pill-muted{opacity:.8}.puda-reasoning{margin:0 0 8px 0;border:1px dashed rgba(223,255,105,.45);border-radius:12px;background:rgba(223,255,105,.06);padding:10px 12px}.puda-reasoning-toggle{border:1px solid rgba(223,255,105,.7);border-radius:999px;background:transparent;color:#dfff69;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}.puda-reasoning-open .puda-reasoning-toggle{background:#dfff69;color:#151515}.puda-reasoning-text{display:none;margin:10px 0 0 0;white-space:pre-wrap;color:#cfd3c4;font-size:13px;line-height:1.45}.puda-reasoning-open .puda-reasoning-text{display:block}",
         "helpers": "",
-        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n  root.querySelectorAll(\".puda-reasoning\").forEach((block) => {\n    const button = block.querySelector(\".puda-reasoning-toggle\");\n    if (!button) return;\n    const tokens = (block.getAttribute(\"data-tokens\") || \"\").trim();\n    const label = tokens ? `Show reasoning \u00b7 ${tokens} tokens` : \"Show reasoning\";\n    const labelLess = tokens ? `Hide reasoning \u00b7 ${tokens} tokens` : \"Hide reasoning\";\n    button.textContent = label;\n    button.onclick = () => {\n      block.classList.toggle(\"puda-reasoning-open\");\n      button.textContent = block.classList.contains(\"puda-reasoning-open\") ? labelLess : label;\n    };\n  });\n}",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n  root.querySelectorAll(\".puda-reasoning\").forEach((block) => {\n    const button = block.querySelector(\".puda-reasoning-toggle\");\n    if (!button) return;\n    const tokens = (block.getAttribute(\"data-tokens\") || \"\").trim();\n    const label = tokens ? `Show reasoning · ${tokens} tokens` : \"Show reasoning\";\n    const labelLess = tokens ? `Hide reasoning · ${tokens} tokens` : \"Hide reasoning\";\n    button.textContent = label;\n    button.onclick = () => {\n      block.classList.toggle(\"puda-reasoning-open\");\n      button.textContent = block.classList.contains(\"puda-reasoning-open\") ? labelLess : label;\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -1288,7 +1465,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 35
       },
       "id": 18,
       "options": {
@@ -1322,7 +1499,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 45
       },
       "id": 104,
       "title": "Event Detail (click a point in the Event Timeline above)",
@@ -1460,7 +1637,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 22
+            "y": 41
           },
           "id": 12,
           "options": {
@@ -1573,7 +1750,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 30
+            "y": 49
           },
           "id": 13,
           "options": {
@@ -1671,7 +1848,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 38
+            "y": 57
           },
           "id": 10,
           "options": {
@@ -1769,7 +1946,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 46
+            "y": 65
           },
           "id": 14,
           "options": {
@@ -1867,7 +2044,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 54
+            "y": 73
           },
           "id": 15,
           "options": {
@@ -1965,7 +2142,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 58
+            "y": 77
           },
           "id": 20,
           "options": {
@@ -2009,7 +2186,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 46
       },
       "id": 102,
       "title": "API Calls",
@@ -2080,7 +2257,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 47
       },
       "id": 6,
       "options": {
@@ -2117,7 +2294,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 55
       },
       "id": 103,
       "title": "Event Log",
@@ -2258,7 +2435,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 56
       },
       "id": 7,
       "options": {
@@ -2646,7 +2823,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 66
       },
       "id": 8,
       "options": {
@@ -2828,7 +3005,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 56
       },
       "id": 9,
       "options": {
