@@ -23,7 +23,7 @@ PUDA NATS subjects
 
 | Dashboard | URL | Description |
 |---|---|---|
-| PUDA agents | `/d/puda-agents` | One card per AI agent, with the machines it controls plus dashboard and livestream links |
+| PUDA deployments | `/d/puda-deployments` | Cloud PUDA agents and on-prem deployments, with machines plus dashboard and livestream links |
 | Machine Status | `/d/machine-status` | Status timeline, CPU, memory, temperature |
 | Command Log | `/d/command-log` | NATS commands sent and responses received |
 | VIPSA | `/d/vipsa` | VIPSA machine status and command logs |

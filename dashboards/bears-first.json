@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Hermes AI agent session timeline — tool calls, LLM turns, API requests",
+  "description": "Hermes AI agent session timeline \u2014 tool calls, LLM turns, API requests",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -28,7 +28,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 11
       },
       "id": 105,
       "title": "Machine Status and Event Timeline",
@@ -1080,7 +1080,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 12
       },
       "id": 16,
       "options": {
@@ -1206,7 +1206,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 24
       },
       "id": 21,
       "options": {
@@ -1219,6 +1219,34 @@
       "type": "text"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 140,
+      "title": "Cameras",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 141,
+      "options": {
+        "content": "<iframe src=\"https://cam-first.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "Livestream",
+      "type": "text"
+    },
+    {
       "id": 108,
       "type": "row",
       "title": "Driver Telemetry Streams",
@@ -1226,7 +1254,7 @@
       "panels": [],
       "gridPos": {
         "x": 0,
-        "y": 15,
+        "y": 34,
         "w": 24,
         "h": 1
       }
@@ -1242,7 +1270,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 16,
+        "y": 35,
         "w": 24,
         "h": 6
       },
@@ -1324,7 +1352,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 22,
+        "y": 41,
         "w": 24,
         "h": 12
       },
@@ -1401,7 +1429,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 0
       },
       "id": 107,
       "title": "Rolling Chat & Tool Windows",
@@ -1422,7 +1450,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 35
+        "y": 1
       },
       "id": 17,
       "options": {
@@ -1430,7 +1458,7 @@
         "defaultContent": "<div class=\"puda-empty\">No chat turns in the selected time range.</div>",
         "styles": ".puda-chat-card{display:flex;gap:12px;margin:0 0 14px 0;font-family:Inter,Arial,sans-serif;color:#f5f5f5}.puda-avatar{width:40px;height:40px;min-width:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#050505;background:#dfff69;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 18px rgba(223,255,105,.24)}.puda-chat-main{min-width:0;flex:1}.puda-chat-meta{display:flex;align-items:center;gap:8px;margin:0 0 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.puda-speaker{font-weight:800;color:#dfff69}.puda-pill{border:1px solid rgba(223,255,105,.7);color:#dfff69;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:.04em}.puda-time{font-size:12px;color:#d6d6d6}.puda-bubble{position:relative;background:#f3f3ef;color:#151515;border:2px solid #dfff69;border-left-width:5px;border-radius:0 20px 20px 20px;padding:16px;line-height:1.55;font-size:15px}.puda-bubble-text{max-height:156px;overflow:hidden;white-space:pre-wrap;padding-right:92px}.puda-bubble.puda-expanded .puda-bubble-text{max-height:none;overflow:visible}.puda-show-more{position:absolute;top:10px;right:12px;border:1px solid rgba(21,21,21,.35);border-radius:999px;background:#151515;color:#fff;padding:4px 9px;font-size:12px;font-weight:800;cursor:pointer}.puda-bubble.puda-expanded .puda-show-more{background:#dfff69;color:#151515}.puda-bubble:not(.puda-overflowing) .puda-show-more{display:none}.puda-prompt{margin-top:8px;color:#aeb4bf;font-size:12px;line-height:1.35;max-height:42px;overflow:hidden}.markdown-html{background:#050505;border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:14px 16px;max-height:100%;overflow:auto}.puda-pill-muted{opacity:.8}.puda-reasoning{margin:0 0 8px 0;border:1px dashed rgba(223,255,105,.45);border-radius:12px;background:rgba(223,255,105,.06);padding:10px 12px}.puda-reasoning-toggle{border:1px solid rgba(223,255,105,.7);border-radius:999px;background:transparent;color:#dfff69;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}.puda-reasoning-open .puda-reasoning-toggle{background:#dfff69;color:#151515}.puda-reasoning-text{display:none;margin:10px 0 0 0;white-space:pre-wrap;color:#cfd3c4;font-size:13px;line-height:1.45}.puda-reasoning-open .puda-reasoning-text{display:block}",
         "helpers": "",
-        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n  root.querySelectorAll(\".puda-reasoning\").forEach((block) => {\n    const button = block.querySelector(\".puda-reasoning-toggle\");\n    if (!button) return;\n    const tokens = (block.getAttribute(\"data-tokens\") || \"\").trim();\n    const label = tokens ? `Show reasoning · ${tokens} tokens` : \"Show reasoning\";\n    const labelLess = tokens ? `Hide reasoning · ${tokens} tokens` : \"Hide reasoning\";\n    button.textContent = label;\n    button.onclick = () => {\n      block.classList.toggle(\"puda-reasoning-open\");\n      button.textContent = block.classList.contains(\"puda-reasoning-open\") ? labelLess : label;\n    };\n  });\n}",
+        "afterRender": "const root = typeof document !== \"undefined\" ? document : null;\nif (root) {\n  root.querySelectorAll(\".puda-bubble\").forEach((bubble) => {\n    const text = bubble.querySelector(\".puda-bubble-text\");\n    const button = bubble.querySelector(\".puda-show-more\");\n    if (!text || !button) return;\n    const overflowing = text.scrollHeight > text.clientHeight + 2;\n    bubble.classList.toggle(\"puda-overflowing\", overflowing);\n    button.onclick = () => {\n      bubble.classList.toggle(\"puda-expanded\");\n      button.textContent = bubble.classList.contains(\"puda-expanded\") ? \"Show less\" : \"Show more\";\n    };\n  });\n  root.querySelectorAll(\".puda-reasoning\").forEach((block) => {\n    const button = block.querySelector(\".puda-reasoning-toggle\");\n    if (!button) return;\n    const tokens = (block.getAttribute(\"data-tokens\") || \"\").trim();\n    const label = tokens ? `Show reasoning \u00b7 ${tokens} tokens` : \"Show reasoning\";\n    const labelLess = tokens ? `Hide reasoning \u00b7 ${tokens} tokens` : \"Hide reasoning\";\n    button.textContent = label;\n    button.onclick = () => {\n      block.classList.toggle(\"puda-reasoning-open\");\n      button.textContent = block.classList.contains(\"puda-reasoning-open\") ? labelLess : label;\n    };\n  });\n}",
         "everyRow": true,
         "wrap": false
       },
@@ -1465,7 +1493,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 35
+        "y": 1
       },
       "id": 18,
       "options": {
@@ -1499,7 +1527,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 53
       },
       "id": 104,
       "title": "Event Detail (click a point in the Event Timeline above)",
@@ -2186,7 +2214,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 54
       },
       "id": 102,
       "title": "API Calls",
@@ -2257,7 +2285,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 55
       },
       "id": 6,
       "options": {
@@ -2294,7 +2322,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 63
       },
       "id": 103,
       "title": "Event Log",
@@ -2435,7 +2463,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 56
+        "y": 64
       },
       "id": 7,
       "options": {
@@ -2823,7 +2851,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 74
       },
       "id": 8,
       "options": {
@@ -3005,7 +3033,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 56
+        "y": 64
       },
       "id": 9,
       "options": {

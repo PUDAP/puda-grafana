@@ -7,6 +7,13 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      GF_LOG_LEVEL: warn
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
     extra_hosts:
       - "bearsnas:100.87.23.102"
     volumes:
@@ -32,6 +39,11 @@ services:
     environment:
       PYTHONUNBUFFERED: "1"
       TZ: Asia/Singapore
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
     extra_hosts:
       - "bearsnas:100.87.23.102"
     volumes:

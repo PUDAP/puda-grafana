@@ -28,7 +28,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 11
       },
       "id": 105,
       "title": "Machine Status and Event Timeline",
@@ -1061,7 +1061,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 12
       },
       "id": 16,
       "options": {
@@ -1177,7 +1177,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 24
       },
       "id": 21,
       "options": {
@@ -1195,7 +1195,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 0
       },
       "id": 107,
       "title": "Rolling Chat & Tool Windows",
@@ -1216,7 +1216,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 1
       },
       "id": 17,
       "options": {
@@ -1259,7 +1259,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 1
       },
       "id": 18,
       "options": {
@@ -1293,7 +1293,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 44
       },
       "id": 104,
       "title": "Event Detail (click a point in the Event Timeline above)",
@@ -1980,7 +1980,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 45
       },
       "id": 102,
       "title": "API Calls",
@@ -2051,7 +2051,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 46
       },
       "id": 6,
       "options": {
@@ -2088,7 +2088,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 54
       },
       "id": 103,
       "title": "Event Log",
@@ -2229,7 +2229,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 55
       },
       "id": 7,
       "options": {
@@ -2601,7 +2601,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 65
       },
       "id": 8,
       "options": {
@@ -2783,7 +2783,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 55
       },
       "id": 9,
       "options": {
@@ -2818,6 +2818,183 @@
       ],
       "title": "Tool Calls",
       "type": "table"
+    },
+    {
+      "id": 108,
+      "type": "row",
+      "title": "Driver Telemetry Streams",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 25,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 109,
+      "type": "table",
+      "title": "Latest Telemetry per Stream",
+      "description": "Driver telemetry stored as JSON payloads. Expand the JSON cell to inspect nested values. Only samples in the selected time range are shown.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 26,
+        "w": 24,
+        "h": 6
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, stream, data FROM (SELECT time, stream, data, ROW_NUMBER() OVER (PARTITION BY stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id = 'elephant' AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY stream",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Payload (JSON)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stream"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 110,
+      "type": "table",
+      "title": "Telemetry Stream Samples (latest 500)",
+      "description": "Driver telemetry stored as JSON payloads. Expand the JSON cell to inspect nested values. Only samples in the selected time range are shown.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "puda-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 24,
+        "h": 12
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, stream, data FROM telemetry_stream WHERE machine_id = 'elephant' AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "refId": "A",
+          "rawQuery": true,
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Payload (JSON)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stream"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
     }
   ],
   "refresh": "10s",
