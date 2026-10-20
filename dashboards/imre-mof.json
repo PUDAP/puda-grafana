@@ -98,7 +98,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(Bioshake Status|Dobot Status|PipQuBot MOF Status|Capper Status): running.*$",
+                "pattern": "^(Bioshake Status|Dobot Right Status|PipQuBot XL Status|SyringeQuBot Status|SF10 Pump Status|Shimadzu Balance Status): running.*$",
                 "result": {
                   "text": "Status: running",
                   "color": "#8AB8FF",
@@ -109,7 +109,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(Bioshake Status|Dobot Status|PipQuBot MOF Status|Capper Status): idle.*$",
+                "pattern": "^(Bioshake Status|Dobot Right Status|PipQuBot XL Status|SyringeQuBot Status|SF10 Pump Status|Shimadzu Balance Status): idle.*$",
                 "result": {
                   "text": "Status: idle",
                   "color": "#8AB8FF",
@@ -120,7 +120,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(Bioshake Status|Dobot Status|PipQuBot MOF Status|Capper Status): (success|succeeded).*$",
+                "pattern": "^(Bioshake Status|Dobot Right Status|PipQuBot XL Status|SyringeQuBot Status|SF10 Pump Status|Shimadzu Balance Status): (success|succeeded).*$",
                 "result": {
                   "text": "Status: succeeded",
                   "color": "#8AB8FF",
@@ -131,7 +131,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(Bioshake Status|Dobot Status|PipQuBot MOF Status|Capper Status): (error|failed).*$",
+                "pattern": "^(Bioshake Status|Dobot Right Status|PipQuBot XL Status|SyringeQuBot Status|SF10 Pump Status|Shimadzu Balance Status): (error|failed).*$",
                 "result": {
                   "text": "Status: error",
                   "color": "#8AB8FF",
@@ -142,7 +142,7 @@
             {
               "type": "regex",
               "options": {
-                "pattern": "^(Bioshake Status|Dobot Status|PipQuBot MOF Status|Capper Status):.*$",
+                "pattern": "^(Bioshake Status|Dobot Right Status|PipQuBot XL Status|SyringeQuBot Status|SF10 Pump Status|Shimadzu Balance Status):.*$",
                 "result": {
                   "text": "Status",
                   "color": "#8AB8FF",
@@ -543,7 +543,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Dobot Status"
+              "options": "Dobot Right Status"
             },
             "properties": [
               {
@@ -562,7 +562,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PipQuBot MOF Status"
+              "options": "PipQuBot XL Status"
             },
             "properties": [
               {
@@ -581,7 +581,45 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Capper Status"
+              "options": "SyringeQuBot Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SF10 Pump Status"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "${__value.raw} | Click in to view full details",
+                    "url": "/d/imre-mof/imre-mof?viewPanel=20&var-event_time=${__value.time}",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shimadzu Balance Status"
             },
             "properties": [
               {
@@ -1121,7 +1159,7 @@
         "y": 12
       },
       "id": 16,
-      "description": "Machine health for PipQuBot MOF, Dobot M1 Pro, capper, and bioshake. Hermes agent events use agent_id imre-mof.",
+      "description": "Machine health for PipQuBot XL, Dobot Right, SyringeQuBot, SF10 pump, Shimadzu balance, and bioshake. Hermes agent events use agent_id imre-mof.",
       "options": {
         "alignValue": "left",
         "colWidth": 0.05,
@@ -1153,7 +1191,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Dobot Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot-m1pro' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"Dobot Right Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'dobot-right' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'dobot-right' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "F",
           "rawQuery": true
         },
@@ -1162,7 +1200,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"PipQuBot MOF Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pipqubot_mof' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"PipQuBot XL Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'pipqubot-xl' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'pipqubot-xl' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "I",
           "rawQuery": true
         },
@@ -1171,8 +1209,26 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, status AS \"Capper Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'capper' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'capper' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "rawSql": "SELECT time, status AS \"SyringeQuBot Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'syringequbot' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'syringequbot' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
           "refId": "H",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"SF10 Pump Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'sf10-peristaltic-pump' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'sf10-peristaltic-pump' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "J",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, status AS \"Shimadzu Balance Status\" FROM (SELECT time, 'online' AS status FROM telemetry WHERE machine_id = 'shimadzu-balance' AND $__timeFilter(time) UNION ALL SELECT now() AS time, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status FROM telemetry WHERE machine_id = 'shimadzu-balance' AND time >= now() - INTERVAL '30 seconds') ORDER BY time ASC",
+          "refId": "K",
           "rawQuery": true
         },
         {
@@ -1216,7 +1272,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS \"puda\" FROM commands WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "G",
           "rawQuery": true
         }
@@ -1235,15 +1291,17 @@
           "options": {
             "indexByName": {
               "time": 0,
-              "Dobot Status": 2,
-              "PipQuBot MOF Status": 3,
-              "Capper Status": 4,
-              "Session": 5,
-              "LLM Turn": 6,
-              "API Request": 7,
-              "Tool Call": 8,
-              "puda": 9,
-              "Bioshake Status": 1
+              "Bioshake Status": 1,
+              "Dobot Right Status": 2,
+              "PipQuBot XL Status": 3,
+              "SyringeQuBot Status": 4,
+              "SF10 Pump Status": 5,
+              "Shimadzu Balance Status": 6,
+              "Session": 7,
+              "LLM Turn": 8,
+              "API Request": 9,
+              "Tool Call": 10,
+              "puda": 11
             }
           }
         }
@@ -1270,7 +1328,7 @@
       "id": 21,
       "options": {
         "mode": "html",
-        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Bioshake Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Dobot Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Capper Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>immediate command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>immediate response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>queue response</span>\n</div>"
+        "content": "<div style=\"height:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 14px;color:#c7cedb;font-family:Inter,Arial,sans-serif;font-size:12px;font-weight:700;\">\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Bioshake Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Dobot Right Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>PipQuBot XL Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>SyringeQuBot Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>SF10 Pump Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#8AB8FF;display:inline-block;\"></i>Shimadzu Balance Status</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>Session</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FADE2A;display:inline-block;\"></i>LLM_start</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>LLM_end</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#6ED0E0;display:inline-block;\"></i>API_Request</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>API_Response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#3274D9;display:inline-block;\"></i>terminal</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#73BF69;display:inline-block;\"></i>read_file</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>search_files</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>process</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#B877D9;display:inline-block;\"></i>skill_view</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>execute_code</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#F2495C;display:inline-block;\"></i>immediate command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF66C4;display:inline-block;\"></i>immediate response</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#FF9830;display:inline-block;\"></i>queue command</span>\n  <span style=\"display:inline-flex;align-items:center;gap:6px;white-space:nowrap;\"><i style=\"width:14px;height:4px;border-radius:999px;background:#5794F2;display:inline-block;\"></i>queue response</span>\n</div>"
       },
       "pluginVersion": "13.0.0",
       "title": "",
@@ -1997,7 +2055,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT * FROM commands WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
+              "rawSql": "SELECT * FROM commands WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND time >= to_timestamp_millis($event_time - 2000) AND time < to_timestamp_millis($event_time + 1) AND ('$puda_event' = '' OR CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue command' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue response' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate command' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate response' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END = '$puda_event') ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2095,7 +2153,7 @@
                 "type": "influxdb",
                 "uid": "puda-influxdb"
               },
-              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, connected, status, data FROM telemetry WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
+              "rawSql": "SELECT time, machine_id, host, subject, cpu, mem, temp, connected, status, data FROM telemetry WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND time >= to_timestamp_millis($event_time) AND time < to_timestamp_millis($event_time + 1) ORDER BY time ASC",
               "refId": "A",
               "rawQuery": true,
               "format": "table"
@@ -2777,13 +2835,13 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
         }
       ],
-      "title": "Machine Command Log (pipqubot, dobot, capper, bioshake, latest 500)",
+      "title": "Machine Command Log (latest 500)",
       "type": "table"
     },
     {
@@ -3069,7 +3127,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT time, machine_id, stream, data FROM (SELECT time, machine_id, stream, data, ROW_NUMBER() OVER (PARTITION BY machine_id, stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY machine_id, stream",
+          "rawSql": "SELECT time, machine_id, stream, data FROM (SELECT time, machine_id, stream, data, ROW_NUMBER() OVER (PARTITION BY machine_id, stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY machine_id, stream",
           "refId": "A"
         }
       ]
@@ -3163,7 +3221,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT time, machine_id, stream, data FROM telemetry_stream WHERE machine_id IN ('pipqubot_mof', 'dobot-m1pro', 'capper', 'bioshake') AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, stream, data FROM telemetry_stream WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "refId": "A"
         }
       ]
