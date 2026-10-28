@@ -636,6 +636,83 @@
                   "index": 15
                 }
               }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: running$",
+                "result": {
+                  "text": "Running",
+                  "color": "blue",
+                  "index": 9
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: (success|succeeded)$",
+                "result": {
+                  "text": "Succeeded",
+                  "color": "green",
+                  "index": 10
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: idle$",
+                "result": {
+                  "text": "Idle",
+                  "color": "super-light-blue",
+                  "index": 11
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: (error|failed)$",
+                "result": {
+                  "text": "Error",
+                  "color": "red",
+                  "index": 12
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: online$",
+                "result": {
+                  "text": "TP-MEA Status: online",
+                  "color": "green",
+                  "index": 13
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status: offline$",
+                "result": {
+                  "text": "TP-MEA Status: offline",
+                  "color": "red",
+                  "index": 14
+                }
+              }
+            },
+            {
+              "type": "regex",
+              "options": {
+                "pattern": "^TP-MEA Status:.*$",
+                "result": {
+                  "text": "TP-MEA Status",
+                  "color": "#8AB8FF",
+                  "index": 15
+                }
+              }
             }
           ],
           "thresholds": {
@@ -718,6 +795,25 @@
                   {
                     "title": "Open Joule Heater dashboard",
                     "url": "/d/bears-joule_heater/bears-joule_heater",
+                    "targetBlank": false,
+                    "oneClick": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tp-mea"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open TP-MEA dashboard",
+                    "url": "/d/bears-tp-mea/bears-tp-mea",
                     "targetBlank": false,
                     "oneClick": true
                   }
@@ -856,6 +952,33 @@
           },
           "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"joule-heater\" FROM commands WHERE machine_id = 'joule-heating' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
           "refId": "K",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT time, 'TP-MEA Status: online' AS \"tp-mea\" FROM telemetry WHERE machine_id = 'mea-omron-i4-650h' AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "M",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-hermes"
+          },
+          "rawSql": "SELECT time, event AS \"tp-mea\" FROM (SELECT time, event FROM (SELECT time, 'LLM Turn: ' || event AS event FROM hermes_llm_turn WHERE agent_id = 'tp-mea' AND $__timeFilter(time) UNION ALL SELECT time, 'API Request: ' || event AS event FROM hermes_api_request WHERE agent_id = 'tp-mea' AND $__timeFilter(time) UNION ALL SELECT time, 'Tool Call: ' || event || ': ' || tool_name AS event FROM hermes_tool_call WHERE agent_id = 'tp-mea' AND $__timeFilter(time)) ORDER BY time DESC LIMIT 300) ORDER BY time ASC",
+          "refId": "N",
+          "rawQuery": true
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "puda-influxdb"
+          },
+          "rawSql": "SELECT CASE WHEN topic IN ('response.queue', 'response.immediate') AND msg_type = 'response' THEN time + INTERVAL '2 seconds' ELSE time END AS time, CASE WHEN topic IN ('response.queue', 'queue') THEN 'PUDA: queue response: ' || msg_type WHEN topic IN ('response.immediate', 'immediate') THEN 'PUDA: immediate response: ' || msg_type ELSE 'PUDA: ' || REPLACE(topic, 'response.', '') || ' ' || msg_type END AS \"tp-mea\" FROM commands WHERE machine_id = 'mea-omron-i4-650h' AND msg_type IS NOT NULL AND $__timeFilter(time) ORDER BY time ASC",
+          "refId": "O",
           "rawQuery": true
         }
       ],
@@ -1009,6 +1132,22 @@
       "type": "text"
     },
     {
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 39
+      },
+      "id": 185,
+      "options": {
+        "content": "<iframe src=\"https://cam-tp-mea.puda.co/webcam/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.0.1",
+      "title": "TP-MEA Camera",
+      "type": "text"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -1053,7 +1192,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT t.time, t.agent_id, t.event, COALESCE(NULLIF(CAST(t.assistant_response AS VARCHAR), ''), NULLIF(CAST(t.user_message AS VARCHAR), ''), '') AS message, CASE WHEN t.event = 'turn_end' THEN COALESCE(r.reasoning, '') ELSE '' END AS reasoning, CASE WHEN t.event = 'turn_end' AND r.reasoning_tokens > 0 THEN CAST(r.reasoning_tokens AS VARCHAR) ELSE '' END AS reasoning_tokens FROM (SELECT time, agent_id, event, assistant_response, user_message, turn_id FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32) t LEFT JOIN (SELECT CAST(turn_id AS VARCHAR) AS turn_id, CAST(NULL AS VARCHAR) AS reasoning, SUM(CAST(regexp_match(CAST(usage_payload AS VARCHAR), '\"reasoning_tokens\":[[:space:]]*([0-9]+)')[1] AS BIGINT)) AS reasoning_tokens FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND event = 'api_end' AND $__timeFilter(time) GROUP BY CAST(turn_id AS VARCHAR)) r ON CAST(t.turn_id AS VARCHAR) = r.turn_id ORDER BY t.time DESC",
+          "rawSql": "SELECT t.time, t.agent_id, t.event, COALESCE(NULLIF(CAST(t.assistant_response AS VARCHAR), ''), NULLIF(CAST(t.user_message AS VARCHAR), ''), '') AS message, CASE WHEN t.event = 'turn_end' THEN COALESCE(r.reasoning, '') ELSE '' END AS reasoning, CASE WHEN t.event = 'turn_end' AND r.reasoning_tokens > 0 THEN CAST(r.reasoning_tokens AS VARCHAR) ELSE '' END AS reasoning_tokens FROM (SELECT time, agent_id, event, assistant_response, user_message, turn_id FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time) ORDER BY time DESC LIMIT 32) t LEFT JOIN (SELECT CAST(turn_id AS VARCHAR) AS turn_id, CAST(NULL AS VARCHAR) AS reasoning, SUM(CAST(regexp_match(CAST(usage_payload AS VARCHAR), '\"reasoning_tokens\":[[:space:]]*([0-9]+)')[1] AS BIGINT)) AS reasoning_tokens FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND event = 'api_end' AND $__timeFilter(time) GROUP BY CAST(turn_id AS VARCHAR)) r ON CAST(t.turn_id AS VARCHAR) = r.turn_id ORDER BY t.time DESC",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1096,7 +1235,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, COALESCE(CAST(duration_ms AS VARCHAR), 'pending') AS duration_ms, CASE WHEN event = 'tool_end' THEN COALESCE(NULLIF(CAST(result AS VARCHAR), ''), NULLIF(CAST(error_message AS VARCHAR), ''), 'No result returned.') ELSE COALESCE(NULLIF(CAST(args AS VARCHAR), ''), '{}') END AS message FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time) ORDER BY time DESC LIMIT 48",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -1112,7 +1251,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 65
       },
       "id": 120,
       "title": "Command Activity",
@@ -1147,7 +1286,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 59
+        "y": 66
       },
       "id": 30,
       "options": {
@@ -1170,7 +1309,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Commands Sent\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1207,7 +1346,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 59
+        "y": 66
       },
       "id": 31,
       "options": {
@@ -1230,7 +1369,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Responses\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1276,7 +1415,7 @@
         "h": 4,
         "w": 6,
         "x": 12,
-        "y": 59
+        "y": 66
       },
       "id": 32,
       "options": {
@@ -1299,7 +1438,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, CAST(COUNT(CASE WHEN status = 'success' THEN 1 END) AS DOUBLE) * 100.0 / NULLIF(COUNT(*), 0) AS \"Success Rate\" FROM commands WHERE msg_type = 'response' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1336,7 +1475,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 59
+        "y": 66
       },
       "id": 33,
       "options": {
@@ -1359,7 +1498,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating')",
+          "rawSql": "SELECT now() AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h')",
           "refId": "A",
           "rawQuery": true
         }
@@ -1435,7 +1574,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 70
       },
       "id": 40,
       "options": {
@@ -1458,7 +1597,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\", COUNT(CASE WHEN machine_id = 'elephant' THEN 1 END) AS \"elephant\", COUNT(CASE WHEN machine_id = 'joule-heating' THEN 1 END) AS \"joule-heater\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(CASE WHEN machine_id = 'first' THEN 1 END) AS \"first\", COUNT(CASE WHEN machine_id = 'biologic' THEN 1 END) AS \"biologic\", COUNT(CASE WHEN machine_id = 'opentrons' THEN 1 END) AS \"opentrons\", COUNT(CASE WHEN machine_id = 'elephant' THEN 1 END) AS \"elephant\", COUNT(CASE WHEN machine_id = 'joule-heating' THEN 1 END) AS \"joule-heater\" FROM commands WHERE msg_type = 'command' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         },
@@ -1467,7 +1606,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, COUNT(*) AS \"Errors\" FROM commands WHERE status = 'error' AND $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "B",
           "rawQuery": true
         }
@@ -1481,7 +1620,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 78
       },
       "id": 180,
       "title": "Token Usage",
@@ -1548,7 +1687,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 79
       },
       "id": 181,
       "options": {
@@ -1571,7 +1710,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'first' THEN total_tokens ELSE 0 END) AS \"first\", SUM(CASE WHEN agent_id = 'biologic' THEN total_tokens ELSE 0 END) AS \"biologic\", SUM(CASE WHEN agent_id = 'opentrons' THEN total_tokens ELSE 0 END) AS \"opentrons\", SUM(CASE WHEN agent_id = 'elephant' THEN total_tokens ELSE 0 END) AS \"elephant\", SUM(CASE WHEN agent_id = 'joule-heater' THEN total_tokens ELSE 0 END) AS \"joule-heater\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') GROUP BY 1 ORDER BY 1 ASC",
+          "rawSql": "SELECT date_bin(INTERVAL '1 minute', time, TIMESTAMP '1970-01-01 00:00:00Z') AS time, SUM(CASE WHEN agent_id = 'first' THEN total_tokens ELSE 0 END) AS \"first\", SUM(CASE WHEN agent_id = 'biologic' THEN total_tokens ELSE 0 END) AS \"biologic\", SUM(CASE WHEN agent_id = 'opentrons' THEN total_tokens ELSE 0 END) AS \"opentrons\", SUM(CASE WHEN agent_id = 'elephant' THEN total_tokens ELSE 0 END) AS \"elephant\", SUM(CASE WHEN agent_id = 'joule-heater' THEN total_tokens ELSE 0 END) AS \"joule-heater\", SUM(CASE WHEN agent_id = 'tp-mea' THEN total_tokens ELSE 0 END) AS \"tp-mea\" FROM hermes_api_request WHERE event = 'api_end' AND total_tokens IS NOT NULL AND $__timeFilter(time) AND agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') GROUP BY 1 ORDER BY 1 ASC",
           "refId": "A",
           "rawQuery": true
         }
@@ -1585,7 +1724,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 87
       },
       "id": 170,
       "title": "Event & Tool Logs",
@@ -1786,7 +1925,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 81
+        "y": 88
       },
       "id": 171,
       "options": {
@@ -1813,7 +1952,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, source, event, message FROM (SELECT time, agent_id, 'Session' AS source, event, '' AS message FROM hermes_session WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'LLM Turn' AS source, event, COALESCE(NULLIF(substr(CAST(assistant_response AS VARCHAR), 1, 500), ''), NULLIF(substr(CAST(user_message AS VARCHAR), 1, 500), ''), '') AS message FROM hermes_llm_turn WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time) UNION ALL SELECT time, agent_id, 'API Request' AS source, event, COALESCE(model, '') AS message FROM hermes_api_request WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time)) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2017,7 +2156,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 81
+        "y": 88
       },
       "id": 172,
       "options": {
@@ -2044,7 +2183,7 @@
             "type": "influxdb",
             "uid": "influxdb-hermes"
           },
-          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, agent_id, event, COALESCE(tool_name, 'tool') AS tool_name, COALESCE(status, '') AS status, duration_ms, COALESCE(error_message, '') AS message, COALESCE(substr(CAST(args AS VARCHAR), 1, 700), '{}') AS args FROM hermes_tool_call WHERE agent_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heater', 'tp-mea') AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2059,7 +2198,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 91
+        "y": 98
       },
       "id": 130,
       "title": "Command Log",
@@ -2383,7 +2522,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 99
       },
       "id": 50,
       "options": {
@@ -2411,7 +2550,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h') ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -2428,7 +2567,7 @@
       "panels": [],
       "gridPos": {
         "x": 0,
-        "y": 39,
+        "y": 46,
         "w": 24,
         "h": 1
       }
@@ -2444,7 +2583,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 40,
+        "y": 47,
         "w": 24,
         "h": 6
       },
@@ -2454,7 +2593,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, stream, data FROM (SELECT time, machine_id, stream, data, ROW_NUMBER() OVER (PARTITION BY machine_id, stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY machine_id, stream",
+          "rawSql": "SELECT time, machine_id, stream, data FROM (SELECT time, machine_id, stream, data, ROW_NUMBER() OVER (PARTITION BY machine_id, stream ORDER BY time DESC) AS sample_rank FROM telemetry_stream WHERE machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h') AND data IS NOT NULL AND $__timeFilter(time)) WHERE sample_rank = 1 ORDER BY machine_id, stream",
           "refId": "A",
           "rawQuery": true,
           "format": "table"
@@ -2538,7 +2677,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 46,
+        "y": 53,
         "w": 24,
         "h": 12
       },
@@ -2548,7 +2687,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, stream, data FROM telemetry_stream WHERE machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating') AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, stream, data FROM telemetry_stream WHERE machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h') AND data IS NOT NULL AND $__timeFilter(time) ORDER BY time DESC LIMIT 500",
           "refId": "A",
           "rawQuery": true,
           "format": "table"

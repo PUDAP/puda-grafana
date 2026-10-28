@@ -20,200 +20,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "links": [
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "First",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/bears-first/bears-first"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Opentrons",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/bears-opentrons/bears-opentrons"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Elephant",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/bears-elephant/bears-elephant"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Joule Heater",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/bears-joule_heater/bears-joule_heater"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "IMRE MOF",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/imre-mof/imre-mof"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Pescador",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/imre-pescador/imre-pescador"
-    },
-    {
-      "asDropdown": false,
-      "icon": "dashboard",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "VIPSA",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/ntu-vipsa/ntu-vipsa"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "First livestream",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-first.puda.co/livestream"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Opentrons livestream",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-opentron.puda.co/livestream"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Joule Heater cam",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-joule-heater.puda.co/cam"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "IMRE MOF left",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-imre-mof.puda.co/hikvision-ptz-left/"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "IMRE MOF right",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-imre-mof.puda.co/hikvision-ptz-right/"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Pescador livestream",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-pescador.puda.co/livestream"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "VIPSA camera 1",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-vipsa.puda.co/camera1/"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "VIPSA camera 2",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://cam-vipsa.puda.co/camera2/"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "VIPSA jog",
-      "tooltip": "",
-      "type": "link",
-      "url": "http://vipsa-ubuntu:8765/"
-    }
-  ],
+  "links": [],
   "panels": [
     {
       "collapsed": false,
@@ -229,14 +36,14 @@
     },
     {
       "gridPos": {
-        "h": 18,
+        "h": 22,
         "w": 24,
         "x": 0,
         "y": 1
       },
       "id": 2,
       "options": {
-        "content": "<div class=\"puda-map\">\n  <div class=\"puda-grid\">\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/bears/bears\">BEARS</a>\n      <div class=\"puda-card status-{{first}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-first/bears-first\">First</a>\n          <span class=\"puda-status\">{{first}}</span>\n        </div>\n        <div class=\"puda-desc\">electrochemistry</div>\n        <div class=\"puda-machines\"><span>first</span><span>biologic</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-first/bears-first\">Dashboard</a> <a class=\"live\" href=\"https://cam-first.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{opentrons}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-opentrons/bears-opentrons\">Opentrons</a>\n          <span class=\"puda-status\">{{opentrons}}</span>\n        </div>\n        <div class=\"puda-desc\">color mixing and viscosity testing</div>\n        <div class=\"puda-machines\"><span>opentrons</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-opentrons/bears-opentrons\">Dashboard</a> <a class=\"live\" href=\"https://cam-opentron.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{elephant}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-elephant/bears-elephant\">Elephant</a>\n          <span class=\"puda-status\">{{elephant}}</span>\n        </div>\n        <div class=\"puda-desc\">robotic arm</div>\n        <div class=\"puda-machines\"><span>elephant</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-elephant/bears-elephant\">Dashboard</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{joule}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-joule_heater/bears-joule_heater\">Joule Heater</a>\n          <span class=\"puda-status\">{{joule}}</span>\n        </div>\n        <div class=\"puda-desc\">joule synthesis</div>\n        <div class=\"puda-machines\"><span>joule heater</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-joule_heater/bears-joule_heater\">Dashboard</a> <a class=\"live\" href=\"https://cam-joule-heater.puda.co/cam\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/imre/imre\">IMRE</a>\n      <div class=\"puda-card status-{{mof}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/imre-mof/imre-mof\">IMRE MOF</a>\n          <span class=\"puda-status\">{{mof}}</span>\n        </div>\n        <div class=\"puda-desc\">MOF synthesis</div>\n        <div class=\"puda-machines\"><span>pipqubot-xl</span><span>dobot-right</span><span>syringequbot</span><span>sf10 pump</span><span>shimadzu balance</span><span>bioshake</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-mof/imre-mof\">Dashboard</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/hikvision-ptz-left/\" target=\"_blank\" rel=\"noopener noreferrer\">Left camera</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/hikvision-ptz-right/\" target=\"_blank\" rel=\"noopener noreferrer\">Right camera</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{pescador}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/imre-pescador/imre-pescador\">Pescador</a>\n          <span class=\"puda-status\">{{pescador}}</span>\n        </div>\n        <div class=\"puda-desc\">polymer electrolyte materials acceleration platform, performing formulation, synthesis and characterization of photocurable polymer electrolyte samples</div>\n        <div class=\"puda-machines\"><span>pescador pipqubot</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-pescador/imre-pescador\">Dashboard</a> <a class=\"live\" href=\"https://cam-pescador.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/ntu/ntu\">NTU</a>\n      <div class=\"puda-card status-{{vipsa}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/ntu-vipsa/ntu-vipsa\">VIPSA</a>\n          <span class=\"puda-status\">{{vipsa}}</span>\n        </div>\n        <div class=\"puda-desc\">memresistor</div>\n        <div class=\"puda-machines\"><span>light</span><span>stage</span><span>zaber</span><span>keithley 2450</span><span>keithley 707B</span><span>keysight B2902B</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/ntu-vipsa/ntu-vipsa\">Dashboard</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera1/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 1</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera2/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 2</a> <a href=\"http://vipsa-ubuntu:8765/\" target=\"_blank\" rel=\"noopener noreferrer\">Manual jog</a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n",
+        "content": "<div class=\"puda-map\">\n  <div class=\"puda-grid\">\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/bears/bears\">BEARS</a>\n      <div class=\"puda-card status-{{first}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-first/bears-first\">First</a>\n          <span class=\"puda-status\">{{first}}</span>\n        </div>\n        <div class=\"puda-desc\">electrochemistry</div>\n        <div class=\"puda-machines\"><span>first</span><span>biologic</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-first/bears-first\">Dashboard</a> <a class=\"live\" href=\"https://cam-first.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{opentrons}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-opentrons/bears-opentrons\">Opentrons</a>\n          <span class=\"puda-status\">{{opentrons}}</span>\n        </div>\n        <div class=\"puda-desc\">color mixing and viscosity testing</div>\n        <div class=\"puda-machines\"><span>opentrons</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-opentrons/bears-opentrons\">Dashboard</a> <a class=\"live\" href=\"https://cam-opentron.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{elephant}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-elephant/bears-elephant\">Elephant</a>\n          <span class=\"puda-status\">{{elephant}}</span>\n        </div>\n        <div class=\"puda-desc\">robotic arm</div>\n        <div class=\"puda-machines\"><span>elephant</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-elephant/bears-elephant\">Dashboard</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{joule}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-joule_heater/bears-joule_heater\">Joule Heater</a>\n          <span class=\"puda-status\">{{joule}}</span>\n        </div>\n        <div class=\"puda-desc\">joule synthesis</div>\n        <div class=\"puda-machines\"><span>joule heater</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-joule_heater/bears-joule_heater\">Dashboard</a> <a class=\"live\" href=\"https://cam-joule-heater.puda.co/cam\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{tpmea}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/bears-tp-mea/bears-tp-mea\">TP-MEA</a>\n          <span class=\"puda-status\">{{tpmea}}</span>\n        </div>\n        <div class=\"puda-desc\">mea cell assembly</div>\n        <div class=\"puda-machines\"><span>mea-omron-i4-650h</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/bears-tp-mea/bears-tp-mea\">Dashboard</a> <a class=\"live\" href=\"https://cam-tp-mea.puda.co/webcam/\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/imre/imre\">IMRE</a>\n      <div class=\"puda-card status-{{mof}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/imre-mof/imre-mof\">IMRE MOF</a>\n          <span class=\"puda-status\">{{mof}}</span>\n        </div>\n        <div class=\"puda-desc\">MOF synthesis</div>\n        <div class=\"puda-machines\"><span>pipqubot-xl</span><span>dobot-right</span><span>syringequbot</span><span>sf10 pump</span><span>shimadzu balance</span><span>bioshake</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-mof/imre-mof\">Dashboard</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/hikvision-ptz-left/\" target=\"_blank\" rel=\"noopener noreferrer\">Left camera</a> <a class=\"live\" href=\"https://cam-imre-mof.puda.co/hikvision-ptz-right/\" target=\"_blank\" rel=\"noopener noreferrer\">Right camera</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{pescador}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/imre-pescador/imre-pescador\">Pescador</a>\n          <span class=\"puda-status\">{{pescador}}</span>\n        </div>\n        <div class=\"puda-desc\">polymer electrolyte materials acceleration platform, performing formulation, synthesis and characterization of photocurable polymer electrolyte samples</div>\n        <div class=\"puda-machines\"><span>pescador pipqubot</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/imre-pescador/imre-pescador\">Dashboard</a> <a class=\"live\" href=\"https://cam-pescador.puda.co/livestream\" target=\"_blank\" rel=\"noopener noreferrer\">Livestream</a>\n        </div>\n      </div>\n    </div>\n    <div class=\"puda-col\">\n      <a class=\"puda-site\" href=\"/d/ntu/ntu\">NTU</a>\n      <div class=\"puda-card status-{{vipsa}}\">\n        <div class=\"puda-card-head\">\n          <a class=\"puda-name\" href=\"/d/ntu-vipsa/ntu-vipsa\">VIPSA</a>\n          <span class=\"puda-status\">{{vipsa}}</span>\n        </div>\n        <div class=\"puda-desc\">memresistor</div>\n        <div class=\"puda-machines\"><span>light</span><span>stage</span><span>zaber</span><span>keithley 2450</span><span>keithley 707B</span><span>keysight B2902B</span></div>\n        <div class=\"puda-links\">\n          <a href=\"/d/ntu-vipsa/ntu-vipsa\">Dashboard</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera1/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 1</a> <a class=\"live\" href=\"https://cam-vipsa.puda.co/camera2/\" target=\"_blank\" rel=\"noopener noreferrer\">Camera 2</a> <a href=\"http://vipsa-ubuntu:8765/\" target=\"_blank\" rel=\"noopener noreferrer\">Manual jog</a>\n        </div>\n      </div>\n      <div class=\"puda-card status-{{probot}}\">\n        <div class=\"puda-card-head\">\n          <span class=\"puda-name\">Probot</span>\n          <span class=\"puda-status\">{{probot}}</span>\n        </div>\n        <div class=\"puda-desc\">automated electrical and optoelectronic characterization platform</div>\n        <div class=\"puda-machines\"><span>Keysight SMU</span><span>Ender Stage</span><span>Pico Light</span></div>\n      </div>\n    </div>\n  </div>\n</div>\n",
         "defaultContent": "No setup status.",
         "everyRow": true,
         "renderMode": "everyRow",
@@ -264,7 +71,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT\n  now() AS time,\n  MAX(CASE WHEN setup = 'first' THEN status END) AS first,\n  MAX(CASE WHEN setup = 'opentrons' THEN status END) AS opentrons,\n  MAX(CASE WHEN setup = 'elephant' THEN status END) AS elephant,\n  MAX(CASE WHEN setup = 'joule' THEN status END) AS joule,\n  MAX(CASE WHEN setup = 'mof' THEN status END) AS mof,\n  MAX(CASE WHEN setup = 'pescador' THEN status END) AS pescador,\n  MAX(CASE WHEN setup = 'vipsa' THEN status END) AS vipsa\nFROM (\n  SELECT 'first' AS setup, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status\n  FROM telemetry WHERE machine_id = 'first' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'opentrons', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'opentrons' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'elephant', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'elephant' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'joule', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'joule-heating' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'mof', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'pescador', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'pescador-pipqubot' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'vipsa', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id IN ('light', 'stage', 'zaber', 'keithley-2450', 'keithley-707b', 'keysight-b2902b') AND time >= now() - INTERVAL '2 minutes'\n)",
+          "rawSql": "SELECT\n  now() AS time,\n  MAX(CASE WHEN setup = 'first' THEN status END) AS first,\n  MAX(CASE WHEN setup = 'opentrons' THEN status END) AS opentrons,\n  MAX(CASE WHEN setup = 'elephant' THEN status END) AS elephant,\n  MAX(CASE WHEN setup = 'joule' THEN status END) AS joule,\n  MAX(CASE WHEN setup = 'tpmea' THEN status END) AS tpmea,\n  MAX(CASE WHEN setup = 'mof' THEN status END) AS mof,\n  MAX(CASE WHEN setup = 'pescador' THEN status END) AS pescador,\n  MAX(CASE WHEN setup = 'vipsa' THEN status END) AS vipsa,\n  MAX(CASE WHEN setup = 'probot' THEN status END) AS probot\nFROM (\n  SELECT 'first' AS setup, CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END AS status\n  FROM telemetry WHERE machine_id = 'first' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'opentrons', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'opentrons' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'elephant', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'elephant' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'joule', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'joule-heating' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'tpmea', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'mea-omron-i4-650h' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'mof', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id IN ('pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake') AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'pescador', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id = 'pescador-pipqubot' AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'vipsa', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id IN ('light', 'stage', 'zaber', 'keithley-2450', 'keithley-707b', 'keysight-b2902b') AND time >= now() - INTERVAL '2 minutes'\n  UNION ALL\n  SELECT 'probot', CASE WHEN COUNT(*) > 0 THEN 'online' ELSE 'offline' END\n  FROM telemetry WHERE machine_id IN ('probot-keysight-pico', 'probot-stage') AND time >= now() - INTERVAL '2 minutes'\n)",
           "format": "table",
           "refId": "A",
           "rawQuery": true
@@ -277,7 +84,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 23
       },
       "id": 39,
       "title": "On-prem deployments",
@@ -288,7 +95,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 24
       },
       "id": 40,
       "options": {
@@ -305,7 +112,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 37
       },
       "id": 26,
       "title": "Livestreams",
@@ -316,7 +123,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 34
+        "y": 38
       },
       "id": 27,
       "options": {
@@ -332,7 +139,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 34
+        "y": 38
       },
       "id": 28,
       "options": {
@@ -348,7 +155,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 34
+        "y": 38
       },
       "id": 29,
       "options": {
@@ -364,7 +171,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 34
+        "y": 38
       },
       "id": 30,
       "options": {
@@ -380,15 +187,15 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 41
+        "y": 45
       },
       "id": 31,
       "options": {
-        "content": "<iframe src=\"https://cam-pescador.puda.co/livestream\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
+        "content": "<iframe src=\"https://cam-tp-mea.puda.co/webcam/\" style=\"width:100%;height:100%;border:0;display:block;background:#000;\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe>",
         "mode": "html"
       },
       "pluginVersion": "13.0.1",
-      "title": "Pescador",
+      "title": "TP-MEA",
       "type": "text"
     },
     {
@@ -396,7 +203,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 41
+        "y": 45
       },
       "id": 32,
       "options": {
@@ -412,7 +219,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 41
+        "y": 45
       },
       "id": 33,
       "options": {
@@ -428,7 +235,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 41
+        "y": 45
       },
       "id": 34,
       "options": {
@@ -445,7 +252,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 52
       },
       "id": 35,
       "title": "Useful links",
@@ -456,7 +263,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 53
       },
       "id": 36,
       "options": {
@@ -474,7 +281,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 56
       },
       "id": 37,
       "title": "Command Log",
@@ -798,7 +605,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 57
       },
       "id": 38,
       "options": {
@@ -826,7 +633,7 @@
             "type": "influxdb",
             "uid": "puda-influxdb"
           },
-          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake', 'pescador-pipqubot', 'light', 'stage', 'zaber', 'keithley-2450', 'keithley-707b', 'keysight-b2902b') ORDER BY time DESC LIMIT 500",
+          "rawSql": "SELECT time, machine_id, msg_type, CASE WHEN topic = 'queue' AND msg_type = 'command' THEN 'queue' WHEN topic = 'response.queue' AND msg_type = 'response' THEN 'queue' WHEN topic = 'immediate' AND msg_type = 'command' THEN 'immediate' WHEN topic = 'response.immediate' AND msg_type = 'response' THEN 'immediate' ELSE COALESCE(topic, '') || ' ' || COALESCE(msg_type, '') END AS queue_type, COALESCE(cmd_name, '') AS command, status, COALESCE(CAST(step_number AS VARCHAR), '') AS step, username, COALESCE(run_id, '') AS run_id, COALESCE(CAST(completed_at AS VARCHAR), '') AS completed_at, COALESCE(cmd_version, '') AS version, COALESCE(host, '') AS host, COALESCE(subject, '') AS subject, COALESCE(CAST(response_message AS VARCHAR), CAST(response_code AS VARCHAR), '') AS response FROM commands WHERE $__timeFilter(time) AND machine_id IN ('first', 'biologic', 'opentrons', 'elephant', 'joule-heating', 'mea-omron-i4-650h', 'pipqubot-xl', 'dobot-right', 'syringequbot', 'sf10-peristaltic-pump', 'shimadzu-balance', 'bioshake', 'pescador-pipqubot', 'light', 'stage', 'zaber', 'keithley-2450', 'keithley-707b', 'keysight-b2902b', 'probot-keysight-pico', 'probot-stage') ORDER BY time DESC LIMIT 500",
           "format": "table",
           "refId": "A",
           "rawQuery": true

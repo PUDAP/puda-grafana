@@ -1,0 +1,28 @@
+{
+  "apiVersion": 1,
+  "datasources": [
+    {
+      "name": "PUDA ClickHouse",
+      "uid": "puda-clickhouse",
+      "type": "grafana-clickhouse-datasource",
+      "access": "proxy",
+      "isDefault": false,
+      "editable": false,
+      "version": 1,
+      "jsonData": {
+        "host": "100.87.23.102",
+        "port": 8123,
+        "protocol": "http",
+        "username": "grafana_test_clickhouse",
+        "defaultDatabase": "puda",
+        "defaultTable": "events",
+        "secure": false,
+        "dialTimeout": 10,
+        "queryTimeout": 60
+      },
+      "secureJsonData": {
+        "password": "${CLICKHOUSE_GRAFANA_PASSWORD}"
+      }
+    }
+  ]
+}
