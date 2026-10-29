@@ -78,8 +78,8 @@ Copy `.env.example` to `.env` and adjust as needed. All variables have defaults 
 | `INFLUXDB_HERMES_DATABASE` | `hermes-logs` | InfluxDB database name for Hermes agent session logs |
 | `REDUCTSTORE_URL` | `http://bearsnas:8383` | URL of the `puda-logger` ReductStore instance |
 | `REDUCTSTORE_TOKEN` | `reduct` | ReductStore API token (`RS_API_TOKEN`) |
-| `GF_SECURITY_ADMIN_USER` | `admin` | Grafana admin username (expanded into `grafana.ini`) |
-| `GF_SECURITY_ADMIN_PASSWORD` | `admin` | Grafana admin password (expanded into `grafana.ini`) |
+| `GRAFANA_USER` | `admin` | Grafana admin username (expanded into `grafana.ini`, used by `scripts/init.sh`) |
+| `GRAFANA_PASS` | `admin` | Grafana admin password (expanded into `grafana.ini`, used by `scripts/init.sh`) |
 | `GF_INSTALL_PLUGINS` | Business Text + ReductStore datasource | Installs panels/datasources on startup (ReductStore from GitHub zip) |
 
 Grafana's own settings (anonymous access disabled, disabled HTML sanitization for iframe panels, disabled self-signup, disabled embedding) live in `grafana.ini`, which is bind-mounted to `/etc/grafana/grafana.ini`. `scripts/init.sh` creates the `puda` Viewer account if it is missing. `GF_INSTALL_PLUGINS` is not a `grafana.ini` setting — it's read by the Grafana image's entrypoint script to install plugins before Grafana starts, so it stays an environment variable, sourced from `.env`.
