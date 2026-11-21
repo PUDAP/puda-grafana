@@ -46,7 +46,7 @@ Dashboard JSON files are bind-mounted into Grafana from `./dashboards`, so chang
 
 | Service | URL | Credentials |
 |---|---|---|
-| Grafana | http://localhost:3000 | admin / admin (admin, override via `.env`); puda / berkeleybears (viewer) |
+| Grafana | http://localhost:3000 | admin / admin (admin, override via `.env`); `puda` / `GRAFANA_VIEWER_PASSWORD` from `.env` (viewer) |
 | InfluxDB | http://localhost:8181 | token: `INFLUXDB_TOKEN` from `.env` (default `apiv3_puda`) |
 
 ## Services
